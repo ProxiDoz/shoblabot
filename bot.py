@@ -660,13 +660,12 @@ def send_discount(message):
         user_id = constants.tg_ids.index(message.from_user.id)
         if user_id is not None:
             if user_id is 16:
-                bot.send_message(message.chat.id, '🍕 [Достаевский](https://i.imgur.com/LTx5ztX.jpg)\n'
-                                                  '*ТОЛЬКО ПРИ ЗАКАЗЕ ПО ТЕЛЕФОНУ*',
-                                 reply_markup=keyboard_dosta,
+                bot.send_message(message.chat.id, '🛒 [Перекресток](https://i.imgur.com/my5Q8RF.jpg)',
+                                 reply_markup=keyboard_perik,
                                  parse_mode='Markdown')
             elif user_id is 18:
-                bot.send_message(message.chat.id, '🍷 [К&Б](https://i.imgur.com/l9g2rO3.jpg)',
-                                 reply_markup=keyboard_krasnoe,
+                bot.send_message(message.chat.id, '🛒 [Перекресток](https://i.imgur.com/my5Q8RF.jpg)',
+                                 reply_markup=keyboard_perik,
                                  parse_mode='Markdown')
             else:
                 bot.send_message(message.chat.id, '🛒 [О\'КЕЙ](https://i.imgur.com/TZV4nCd.jpg)', reply_markup=keyboard_okey,
