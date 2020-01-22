@@ -714,6 +714,7 @@ def who_will_kinch(message):
 
 # # # # # # Обработка данных
 # Обработка девки за рулем
+# TODO: deprecated. Need delete if function below will be approved
 @bot.message_handler(func=lambda
         message: message.text and message.text.lower() in constants.dvk and message.chat.id == secret.tg_chat_id)
 def aaa(message):
@@ -725,8 +726,14 @@ def aaa(message):
 
 @bot.message_handler(func=lambda
         message: message.text and message.text.lower() in constants.devka and message.chat.id == secret.tg_chat_id)
+# TODO: message: message.text and is_message_has_only_a_char(message.text) and message.chat.id == secret.tg_chat_id)
 def aaaa(message):
     try:
+        #if (len(message.text) <= 3):
+        #    bot.send_message(secret.tg_chat_id, 'Двк з рлм')
+        #else:
+        #    bot.send_message(secret.tg_chat_id, 'Девка за рулём')
+
         bot.send_message(secret.tg_chat_id, 'Девка за рулём')
     except Exception as e:
         bot.send_message(secret.apple_id, 'Ошибка в функции aaaa:\n\n' + str(e))
