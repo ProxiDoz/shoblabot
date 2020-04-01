@@ -711,6 +711,14 @@ def who_will_kinch(message):
     except Exception as e:
         bot.send_message(secret.apple_id, 'Ошибка в функции who_will_kinch:\n\n' + str(e))
 
+# Отправка стикера со статистикой про Коронавирус в шоблу
+@bot.message_handler(commands=['corona'])
+def corona(message):
+    try:
+        bot.send_sticker(secret.tg_chat_id, 'CAACAgIAAxkBAAJ7k16EtnmSM4Wzy5BjSryqZymDondiAAK3oAIAAZJlSgvdtGD02Ww35xgE')  # Мир
+        bot.send_sticker(secret.tg_chat_id, 'CAACAgIAAxkBAAJ7jV6EthT3WNF6k-BA1cyMC4A395VyAAK4oAIAAZJlSgtYkgABa0Y4cncYBA')  # Россия
+    except Exception as e:
+        bot.send_message(secret.apple_id, 'Ошибка в функции corona:\n\n' + str(e))
 
 # # # # # # Обработка данных
 # Обработка девки за рулем
@@ -893,7 +901,6 @@ def send_text(message):
                                  disable_notification=False)
     except Exception as e:
         bot.send_message(secret.apple_id, 'Ошибка в обработчике текста send_text:\n\n' + str(e))
-
 
 # Обработчик Call Back Data
 @bot.callback_query_handler(func=lambda call: True)
@@ -1371,16 +1378,6 @@ except Exception as e:
 # except Exception as e:
 #     bot.send_message(secret.apple_id,
 #                      'Ошибка в запуске встроенный функций:\n# send_vk_dialog_messages\n\new_friends()\n\n' + str(e))
-
-# Отправка стикера со статистикой про Коронавирус в шоблу
-@bot.message_handler(commands=['corona'])
-def corona(message):
-    try:
-        bot.send_sticker(secret.tg_chat_id, 'CAACAgIAAxkBAAJ7k16EtnmSM4Wzy5BjSryqZymDondiAAK3oAIAAZJlSgvdtGD02Ww35xgE')  # Мир
-        bot.send_sticker(secret.tg_chat_id, 'CAACAgIAAxkBAAJ7jV6EthT3WNF6k-BA1cyMC4A395VyAAK4oAIAAZJlSgtYkgABa0Y4cncYBA')  # Россия
-    except Exception as e:
-        bot.send_message(secret.apple_id, 'Ошибка в функции corona:\n\n' + str(e))
-        
 
 # Отправка стикера о Коронавирусе в Шоблу
 def coronasticker():
