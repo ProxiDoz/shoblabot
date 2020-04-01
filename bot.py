@@ -1392,8 +1392,7 @@ def coronasticker():
         bot.send_sticker(secret.tg_chat_id, 'CAACAgIAAxkBAAJ7k16EtnmSM4Wzy5BjSryqZymDondiAAK3oAIAAZJlSgvdtGD02Ww35xgE')  # Мир
         bot.send_sticker(secret.tg_chat_id, 'CAACAgIAAxkBAAJ7jV6EthT3WNF6k-BA1cyMC4A395VyAAK4oAIAAZJlSgtYkgABa0Y4cncYBA')  # Россия
     except Exception as e:
-        bot.send_message(secret.apple_id,
-                         'Ошибка в функции отправки поздравления в Шоблу coronasticker():\n\n' + str(e))
+        bot.send_message(secret.apple_id, 'Ошибка в функции отправки поздравления в Шоблу coronasticker():\n\n' + str(e))
 
 try:
     coronasticker()
