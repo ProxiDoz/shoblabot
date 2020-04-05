@@ -1363,10 +1363,10 @@ try:
 except Exception as e:
     bot.send_message(secret.apple_id, 'Ошибка в запуске встроенный функций:\n\sdr()\n\n' + str(e))
 
-try:
-    backup_base_by_time()
-except Exception as e:
-    bot.send_message(secret.apple_id, 'Ошибка в запуске встроенный функций:\n\backup_base_by_time()\n\n' + str(e))
+# try:
+#     backup_base_by_time()
+# except Exception as e:
+#     bot.send_message(secret.apple_id, 'Ошибка в запуске встроенный функций:\n\backup_base_by_time()\n\n' + str(e))
 # try:
 #     reboot_me()
 # except Exception as e:
