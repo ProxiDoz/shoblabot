@@ -770,7 +770,7 @@ def barsuk(message):
         bot.send_message(secret.tg_chat_id, 'Барсук')
     except Exception as e:
         bot.send_message(secret.apple_id, 'Ошибка в функции barsuk:\n\n' + str(e))
-
+        
 
 # Обработка барсюка
 @bot.message_handler(func=lambda
@@ -780,7 +780,17 @@ def barsyuk(message):
         bot.send_message(secret.tg_chat_id, 'Барсюк')
     except Exception as e:
         bot.send_message(secret.apple_id, 'Ошибка в функции barsyuk:\n\n' + str(e))
+        
 
+# Обработка IPv6
+@bot.message_handler(func=lambda
+        message: message.text and message.text.lower() in constants.ip_block and message.chat.id == secret.tg_chat_id)
+def block(message):
+    try:
+        bot.send_message(secret.tg_chat_id, 'Значит так, - сразу нахуй!')
+    except Exception as e:
+        bot.send_message(secret.apple_id, 'Ошибка в функции block:\n\n' + str(e))
+        
 
 # Обработчик текста
 @bot.message_handler(content_types=['text'])
