@@ -1,4 +1,4 @@
-#!/usr/bin/python3.5
+ #!/usr/bin/python3.5
 # -*- coding: utf-8 -*-
 import vk  # Для использования VK API
 import os  # Для проверки на существование файла
@@ -775,6 +775,14 @@ def git2(message):
     except Exception as e:
         bot.send_message(secret.apple_id, 'Ошибка в функции git2:\n\n' + str(e))
 
+# Обработка @team
+@bot.message_handler(func=lambda
+        message: message.text and message.text.lower() in constants.team and message.chat.id == secret.tg_chat_id)
+def team(message):
+    try:
+        bot.send_message(secret.tg_chat_id, '⚠️ *Внимание, Шобла*\n\n[Тарс](t.me/shackoor), [Апол](t.me/apoll), [Ивановский](t.me/ivanovmm), [Конатик](t.me/KanatoF), [Кир](t.me/zhuykovkb), [Катя](tg://user?id=434756061), [Максон](t.me/MrGogu), [Носик](tg://user?id=51994109), [Окз](t.me/oxy_genium), [Паузеньк](t.me/Pausenk), [НТЩ](t.me/ntshch), [Толяновский](t.me/toliyansky), [Виктор](t.me/FrelVick), [Морго](t.me/margoiv_a), [Мишаня](t.me/Mich37), [Ксю](t.me/ksenia_boorda), [Ромолэ](t.me/Roman_Kazitskiy), [Эльтос](t.me/elvira_aes)', parse_mode="MarkdownV2")
+    except Exception as e:
+        bot.send_message(secret.apple_id, 'Ошибка в функции team:\n\n' + str(e))
 
 # Обработка барсука
 @bot.message_handler(func=lambda
