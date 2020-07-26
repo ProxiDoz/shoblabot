@@ -1,4 +1,4 @@
-#!/usr/bin/python3.5
+ #!/usr/bin/python3.5
 # -*- coding: utf-8 -*-
 import vk  # Для использования VK API
 import os  # Для проверки на существование файла
@@ -660,13 +660,12 @@ def send_discount(message):
         user_id = constants.tg_ids.index(message.from_user.id)
         if user_id is not None:
             if user_id is 16:
-                bot.send_message(message.chat.id, '🍕 [Достаевский](https://i.imgur.com/LTx5ztX.jpg)\n'
-                                                  '*ТОЛЬКО ПРИ ЗАКАЗЕ ПО ТЕЛЕФОНУ*',
-                                 reply_markup=keyboard_dosta,
+                bot.send_message(message.chat.id, '🛒 [Перекресток](https://i.imgur.com/my5Q8RF.jpg)',
+                                 reply_markup=keyboard_perik,
                                  parse_mode='Markdown')
             elif user_id is 18:
-                bot.send_message(message.chat.id, '🍷 [К&Б](https://i.imgur.com/l9g2rO3.jpg)',
-                                 reply_markup=keyboard_krasnoe,
+                bot.send_message(message.chat.id, '🛒 [Перекресток](https://i.imgur.com/my5Q8RF.jpg)',
+                                 reply_markup=keyboard_perik,
                                  parse_mode='Markdown')
             else:
                 bot.send_message(message.chat.id, '🛒 [О\'КЕЙ](https://i.imgur.com/TZV4nCd.jpg)', reply_markup=keyboard_okey,
@@ -712,9 +711,18 @@ def who_will_kinch(message):
     except Exception as e:
         bot.send_message(secret.apple_id, 'Ошибка в функции who_will_kinch:\n\n' + str(e))
 
+# Отправка стикера со статистикой про Коронавирус в шоблу
+# @bot.message_handler(commands=['corona'])
+# def corona(message):
+#     try:
+#         bot.send_sticker(secret.tg_chat_id, 'CAACAgIAAxkBAAJ7k16EtnmSM4Wzy5BjSryqZymDondiAAK3oAIAAZJlSgvdtGD02Ww35xgE')  # Мир
+#         bot.send_sticker(secret.tg_chat_id, 'CAACAgIAAxkBAAJ7jV6EthT3WNF6k-BA1cyMC4A395VyAAK4oAIAAZJlSgtYkgABa0Y4cncYBA')  # Россия
+#     except Exception as e:
+#         bot.send_message(secret.apple_id, 'Ошибка в функции corona:\n\n' + str(e))
 
 # # # # # # Обработка данных
 # Обработка девки за рулем
+# TODO: deprecated. Need delete if function below will be approved
 @bot.message_handler(func=lambda
         message: message.text and message.text.lower() in constants.dvk and message.chat.id == secret.tg_chat_id)
 def aaa(message):
@@ -726,8 +734,14 @@ def aaa(message):
 
 @bot.message_handler(func=lambda
         message: message.text and message.text.lower() in constants.devka and message.chat.id == secret.tg_chat_id)
+# TODO: message: message.text and is_message_has_only_a_char(message.text) and message.chat.id == secret.tg_chat_id)
 def aaaa(message):
     try:
+        #if (len(message.text) <= 3):
+        #    bot.send_message(secret.tg_chat_id, 'Двк з рлм')
+        #else:
+        #    bot.send_message(secret.tg_chat_id, 'Девка за рулём')
+
         bot.send_message(secret.tg_chat_id, 'Девка за рулём')
     except Exception as e:
         bot.send_message(secret.apple_id, 'Ошибка в функции aaaa:\n\n' + str(e))
@@ -761,6 +775,14 @@ def git2(message):
     except Exception as e:
         bot.send_message(secret.apple_id, 'Ошибка в функции git2:\n\n' + str(e))
 
+# Обработка @team
+@bot.message_handler(func=lambda
+        message: message.text and message.text.lower() in constants.team and message.chat.id == secret.tg_chat_id)
+def team(message):
+    try:
+        bot.send_message(secret.tg_chat_id, '⚠️ *Внимание, Шобла*\n\n[Тарс](t.me/shackoor), [Апол](t.me/apoll), [Ивановский](t.me/ivanovmm), [Конатик](t.me/KanatoF), [Кир](t.me/zhuykovkb), [Катя](tg://user?id=434756061), [Максон](t.me/MrGogu), [Носик](tg://user?id=51994109), [Окз](t.me/oxy_genium), [Паузеньк](t.me/Pausenk), [НТЩ](t.me/ntshch), [Толяновский](t.me/toliyansky), [Виктор](t.me/FrelVick), [Морго](t.me/margoiv_a), [Мишаня](t.me/Mich37), [Ксю](t.me/ksenia_boorda), [Ромолэ](t.me/Roman_Kazitskiy), [Эльтос](t.me/elvira_aes)', parse_mode="MarkdownV2")
+    except Exception as e:
+        bot.send_message(secret.apple_id, 'Ошибка в функции team:\n\n' + str(e))
 
 # Обработка барсука
 @bot.message_handler(func=lambda
@@ -897,7 +919,6 @@ def send_text(message):
                                  disable_notification=False)
     except Exception as e:
         bot.send_message(secret.apple_id, 'Ошибка в обработчике текста send_text:\n\n' + str(e))
-
 
 # Обработчик Call Back Data
 @bot.callback_query_handler(func=lambda call: True)
@@ -1360,10 +1381,10 @@ try:
 except Exception as e:
     bot.send_message(secret.apple_id, 'Ошибка в запуске встроенный функций:\n\sdr()\n\n' + str(e))
 
-try:
-    backup_base_by_time()
-except Exception as e:
-    bot.send_message(secret.apple_id, 'Ошибка в запуске встроенный функций:\n\backup_base_by_time()\n\n' + str(e))
+# try:
+#     backup_base_by_time()
+# except Exception as e:
+#     bot.send_message(secret.apple_id, 'Ошибка в запуске встроенный функций:\n\backup_base_by_time()\n\n' + str(e))
 # try:
 #     reboot_me()
 # except Exception as e:
@@ -1375,6 +1396,23 @@ except Exception as e:
 # except Exception as e:
 #     bot.send_message(secret.apple_id,
 #                      'Ошибка в запуске встроенный функций:\n# send_vk_dialog_messages\n\new_friends()\n\n' + str(e))
+
+# Отправка стикера о Коронавирусе в Шоблу
+# def coronasticker():
+#     try:
+#         threading.Timer(3600, sdr).start()  # Каждые полчаса - 1800, каждые 10 мин - 600
+#         now_time = datetime.datetime.now()
+#         if (now_time.hour + 8) is not 10:
+#             return
+#         bot.send_sticker(secret.tg_chat_id, 'CAACAgIAAxkBAAJ7k16EtnmSM4Wzy5BjSryqZymDondiAAK3oAIAAZJlSgvdtGD02Ww35xgE')  # Мир
+#         bot.send_sticker(secret.tg_chat_id, 'CAACAgIAAxkBAAJ7jV6EthT3WNF6k-BA1cyMC4A395VyAAK4oAIAAZJlSgtYkgABa0Y4cncYBA')  # Россия
+#     except Exception as e:
+#         bot.send_message(secret.apple_id, 'Ошибка в функции отправки поздравления в Шоблу coronasticker():\n\n' + str(e))
+
+# try:
+#     coronasticker()
+# except Exception as e:
+#     bot.send_message(secret.apple_id, 'Ошибка в запуске встроенный функций:\n\coronasticker()\n\n' + str(e))
 
 try:
     bot.polling()
