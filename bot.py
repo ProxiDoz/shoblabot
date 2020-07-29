@@ -20,6 +20,7 @@ import tmdbsimple as tmdb
 from datetime import timedelta
 import urllib.request as urllib2  # Для отправки фотографий из Telegram в Шоблу
 from urllib.parse import quote
+import json
 from telebot import apihelper
 
 # https://t.me/socks?server=telegram.vpn99.net&port=55655
