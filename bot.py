@@ -789,7 +789,7 @@ def team(message):
 # Обработка @rapid
 @bot.message_handler(func=lambda
         message: message.text and message.text.lower().startswith(constants.rapid) and message.chat.id == secret.tg_chat_id)
-def team(message):
+def rapid(message):
     try:
         data = message.text.lower().split(" ")
         response = urllib2.urlopen('https://bot.zhuykovkb.ru/rapid?action=add&data=' + quote(data[1]))
