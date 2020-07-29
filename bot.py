@@ -796,7 +796,7 @@ def team(message):
         answer = json.loads(response.read())
         bot.send_message(secret.tg_chat_id, answer['message'])
     except Exception as e:
-        bot.send_message(secret.apple_id, 'Ошибка в функции team:\n\n' + str(e))
+        bot.send_message(secret.apple_id, 'Ошибка в функции rapid:\n\n' + str(e))
 
 # Обработка барсука
 @bot.message_handler(func=lambda
