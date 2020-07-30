@@ -19,6 +19,8 @@ from io import BytesIO  # Для отправки фотографий из Tele
 import tmdbsimple as tmdb
 from datetime import timedelta
 import urllib.request as urllib2  # Для отправки фотографий из Telegram в Шоблу
+from urllib.parse import quote
+import json
 from telebot import apihelper
 
 # https://t.me/socks?server=telegram.vpn99.net&port=55655
@@ -783,6 +785,18 @@ def team(message):
         bot.send_message(chat_id=secret.tg_chat_id, disable_notification=False, reply_to_message_id=message.message_id , text='⚠️ *Внимание, Шобла*\n\n[Тарс](t.me/shackoor), [Апол](t.me/apoll), [Ивановский](t.me/ivanovmm), [Конатик](t.me/KanatoF), [Кир](t.me/zhuykovkb), [Катя](tg://user?id=434756061), [Максон](t.me/MrGogu), [Носик](tg://user?id=51994109), [Окз](t.me/oxy_genium), [Паузеньк](t.me/Pausenk), [НТЩ](t.me/ntshch), [Толяновский](t.me/toliyansky), [Виктор](t.me/FrelVick), [Морго](t.me/margoiv_a), [Мишаня](t.me/Mich37), [Ксю](t.me/ksenia_boorda), [Ромолэ](t.me/Roman_Kazitskiy), [Эльтос](t.me/elvira_aes)', disable_web_page_preview=True, parse_mode="MarkdownV2")
     except Exception as e:
         bot.send_message(secret.apple_id, 'Ошибка в функции team:\n\n' + str(e))
+
+# Обработка @rapid
+@bot.message_handler(func=lambda
+        message: message.text and message.text.lower().startswith(constants.rapid) and message.chat.id == secret.tg_chat_id)
+def rapid(message):
+    try:
+        data = message.text.lower().split(" ")
+        response = urllib2.urlopen('https://bot.zhuykovkb.ru/rapid?data=' + quote(data[1]) + '&memberid=' + message.from_user.id)
+        answer = json.loads(response.read())
+        bot.send_message(secret.tg_chat_id, answer['message'])
+    except Exception as e:
+        bot.send_message(secret.apple_id, 'Ошибка в функции rapid:\n\n' + str(e))
 
 # Обработка барсука
 @bot.message_handler(func=lambda
