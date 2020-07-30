@@ -792,7 +792,7 @@ def team(message):
 def rapid(message):
     try:
         data = message.text.lower().split(" ")
-        response = urllib2.urlopen('https://bot.zhuykovkb.ru/rapid?action=add&data=' + quote(data[1]))
+        response = urllib2.urlopen('https://bot.zhuykovkb.ru/rapid?data=' + quote(data[1]) + '&memberid=' + message.from_user.id)
         answer = json.loads(response.read())
         bot.send_message(secret.tg_chat_id, answer['message'])
     except Exception as e:
