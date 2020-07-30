@@ -793,10 +793,10 @@ def rapid(message):
     try:
         data = message.text.lower().split(" ")
         response = urllib2.urlopen('https://bot.zhuykovkb.ru/rapid?data=' + quote(data[1]) + '&memberid=' + str(message.from_user.id))
-        answer = json.loads(response.read())
+        answer = json.loads(str(response.read(), 'utf-8'))
         bot.send_message(secret.tg_chat_id, answer['message'])
     except Exception as e:
-        bot.send_message(secret.apple_id, 'Ошибка в функции rapid:\n\n' + str(e))
+        bot.send_message(873863, 'Ошибка в функции rapid:\n\n' + str(e))
 
 # Обработка барсука
 @bot.message_handler(func=lambda
