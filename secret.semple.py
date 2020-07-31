@@ -5,6 +5,7 @@ vk_chat_id = X  # shobla = XX, test_apple = XX
 tg_chat_id = -XXXXXXXXXXXXX  # -XXXXXXXXX  # zephir = -XXXXXXXXXXXXX, apol_tets = -XXXXXXXXX, apola testit X = -XXXXXXXXX
 tg_test_chat_id = -XXXXXXXXXXXXX
 tg_requests_chat_id = -XXXXXXXXX
+zhuykovkb_apple_id = XXXXXX
 
 #  Tokens
 tmdb_token = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
