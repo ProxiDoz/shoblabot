@@ -791,8 +791,17 @@ def team(message):
         message: message.text and message.text.lower().startswith(constants.rapid) and message.chat.id == secret.tg_chat_id)
 def rapid(message):
     try:
-        data = message.text.lower().split(" ")
-        response = urllib2.urlopen('https://bot.zhuykovkb.ru/rapid?data=' + quote(data[1]) + '&memberid=' + str(message.from_user.id))
+        # Сплитуем строку выпилив предварительно ненужные пробелы по бокам
+        data = message.text.lower().strip().split(" ")
+    
+        # Получаем количество элементов сплитованой строки
+        # и если тока 1 элемент то значит аргумент не передали
+        # следовательно help по дефолту
+        size = len(data)
+        value = 'help' if size == 1 else data[1]
+        
+        # Ну тут почти без изменений, тока data[1] became value
+        response = urllib2.urlopen('https://bot.zhuykovkb.ru/rapid?data=' + quote(value) + '&memberid=' + str(message.from_user.id))
         answer = json.loads(str(response.read(), 'utf-8'))
         bot.send_message(secret.tg_chat_id, answer['message'], parse_mode='Markdown')
     except Exception as e:
