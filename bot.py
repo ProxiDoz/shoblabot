@@ -1371,6 +1371,8 @@ def sdr():
         i = 0
         if (now_time.hour + 8) is not 10:
             return
+        if dr == str(28.5):  # День Баяна в Шобле отмечается 28 мая
+                bot.send_message(secret.tg_chat_id, 'Шобла, поздравляю с Днём Баяна🪗!🕺💃🥳', parse_mode='Markdown')
         for item in constants.tg_drs:
             if item == dr:
                 bot.send_message(secret.tg_chat_id,
