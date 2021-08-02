@@ -115,7 +115,7 @@ keyboard_perik.add(okey, lenta, karusel, pyatera, magnit, polushka, prisma, lime
 keyboard_karusel.add(okey, lenta, perik, pyatera, magnit, polushka, prisma, lime, ulibka, krasnoe, dosta, bushe, domovoi, ikea, podr, letual, sephora, ozerki, discounts, channel)
 keyboard_pyatera.add(okey, lenta, perik, karusel, magnit, polushka, prisma, lime, ulibka, krasnoe, dosta, bushe, domovoi, ikea, podr, letual, sephora, ozerki, discounts, channel)
 keyboard_magnit.add(okey, lenta, perik, karusel, pyatera, polushka, prisma, lime, ulibka, krasnoe, dosta, bushe, domovoi, ikea, podr, letual, sephora, ozerki, discounts, channel)
-keyboard_polushka.add(okey, lenta, perik, karusel, pyatera, spar, prisma, lime, ulibka, krasnoe, dosta, bushe, domovoi, ikea, podr, letual, sephora, ozerki, discounts, channel)
+keyboard_polushka.add(okey, lenta, perik, karusel, pyatera, magnit, prisma, lime, ulibka, krasnoe, dosta, bushe, domovoi, ikea, podr, letual, sephora, ozerki, discounts, channel)
 keyboard_prisma.add(okey, lenta, perik, karusel, pyatera, magnit, polushka, lime, ulibka, krasnoe, dosta, bushe, domovoi, ikea, podr, letual, sephora, ozerki, discounts, channel)
 keyboard_lime.add(okey, lenta, perik, karusel, pyatera, magnit, polushka, prisma, ulibka, krasnoe, dosta, bushe, domovoi, ikea, podr, letual, sephora, ozerki, discounts, channel)
 keyboard_ulibka.add(okey, lenta, perik, karusel, pyatera, magnit, polushka, prisma, lime, krasnoe, dosta, bushe, domovoi, ikea, podr, letual, sephora, ozerki, discounts, channel)
