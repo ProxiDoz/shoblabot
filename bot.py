@@ -84,7 +84,7 @@ keyboard_lime = telebot.types.InlineKeyboardMarkup(row_width=2)
 keyboard_ulibka = telebot.types.InlineKeyboardMarkup(row_width=2)
 keyboard_letual = telebot.types.InlineKeyboardMarkup(row_width=2)
 keyboard_ozerki = telebot.types.InlineKeyboardMarkup(row_width=2)
-keyboard_spar = telebot.types.InlineKeyboardMarkup(row_width=2)
+keyboard_magnit = telebot.types.InlineKeyboardMarkup(row_width=2)
 
 okey = telebot.types.InlineKeyboardButton(text='О\'КЕЙ 🛒', callback_data='okey')
 bushe = telebot.types.InlineKeyboardButton(text='Буше 🥐', callback_data='bushe')
@@ -104,30 +104,30 @@ lime = telebot.types.InlineKeyboardButton(text='Лайм 🛒', callback_data='l
 ulibka = telebot.types.InlineKeyboardButton(text='Улыбка 🌈', callback_data='ulibka')
 letual = telebot.types.InlineKeyboardButton(text='Л\'этуль 💛', callback_data='letual')
 ozerki = telebot.types.InlineKeyboardButton(text='Озерки 💊', callback_data='ozerki')
-spar = telebot.types.InlineKeyboardButton(text='SPAR 🛒', callback_data='spar')
+magnit = telebot.types.InlineKeyboardButton(text='Магнит 🛒', callback_data='spar')
 discounts = telebot.types.InlineKeyboardButton(text='Все скидки 💰', url='https://photos.app.goo.gl/Xu4UQWqhSTcBVwt27')
 channel = telebot.types.InlineKeyboardButton(text='Канал 💳', url='https://t.me/joinchat/AAAAAEk6NVud6BKc7YzZ2g')
 
 # okey, lenta, perik, karusel, pyatera, polushka, prisma, lime, ulibka, krasnoe, dosta, bushe, domovoi, ikea, podr, letual, sephora, discounts
-keyboard_okey.add(lenta, perik, karusel, pyatera, spar, polushka, prisma, lime, ulibka, krasnoe, dosta, bushe, domovoi, ikea, podr, letual, sephora, ozerki, discounts, channel)
-keyboard_lenta.add(okey, perik, karusel, pyatera, spar, polushka, prisma, lime, ulibka, krasnoe, dosta, bushe, domovoi, ikea, podr, letual, sephora, ozerki, discounts, channel)
-keyboard_perik.add(okey, lenta, karusel, pyatera, spar, polushka, prisma, lime, ulibka, krasnoe, dosta, bushe, domovoi, ikea, podr, letual, sephora, ozerki, discounts, channel)
-keyboard_karusel.add(okey, lenta, perik, pyatera, spar, polushka, prisma, lime, ulibka, krasnoe, dosta, bushe, domovoi, ikea, podr, letual, sephora, ozerki, discounts, channel)
-keyboard_pyatera.add(okey, lenta, perik, karusel, spar, polushka, prisma, lime, ulibka, krasnoe, dosta, bushe, domovoi, ikea, podr, letual, sephora, ozerki, discounts, channel)
-keyboard_spar.add(okey, lenta, perik, karusel, pyatera, polushka, prisma, lime, ulibka, krasnoe, dosta, bushe, domovoi, ikea, podr, letual, sephora, ozerki, discounts, channel)
+keyboard_okey.add(lenta, perik, karusel, pyatera, magnit, polushka, prisma, lime, ulibka, krasnoe, dosta, bushe, domovoi, ikea, podr, letual, sephora, ozerki, discounts, channel)
+keyboard_lenta.add(okey, perik, karusel, pyatera, magnit, polushka, prisma, lime, ulibka, krasnoe, dosta, bushe, domovoi, ikea, podr, letual, sephora, ozerki, discounts, channel)
+keyboard_perik.add(okey, lenta, karusel, pyatera, magnit, polushka, prisma, lime, ulibka, krasnoe, dosta, bushe, domovoi, ikea, podr, letual, sephora, ozerki, discounts, channel)
+keyboard_karusel.add(okey, lenta, perik, pyatera, magnit, polushka, prisma, lime, ulibka, krasnoe, dosta, bushe, domovoi, ikea, podr, letual, sephora, ozerki, discounts, channel)
+keyboard_pyatera.add(okey, lenta, perik, karusel, magnit, polushka, prisma, lime, ulibka, krasnoe, dosta, bushe, domovoi, ikea, podr, letual, sephora, ozerki, discounts, channel)
+keyboard_magnit.add(okey, lenta, perik, karusel, pyatera, polushka, prisma, lime, ulibka, krasnoe, dosta, bushe, domovoi, ikea, podr, letual, sephora, ozerki, discounts, channel)
 keyboard_polushka.add(okey, lenta, perik, karusel, pyatera, spar, prisma, lime, ulibka, krasnoe, dosta, bushe, domovoi, ikea, podr, letual, sephora, ozerki, discounts, channel)
-keyboard_prisma.add(okey, lenta, perik, karusel, pyatera, spar, polushka, lime, ulibka, krasnoe, dosta, bushe, domovoi, ikea, podr, letual, sephora, ozerki, discounts, channel)
-keyboard_lime.add(okey, lenta, perik, karusel, pyatera, spar, polushka, prisma, ulibka, krasnoe, dosta, bushe, domovoi, ikea, podr, letual, sephora, ozerki, discounts, channel)
-keyboard_ulibka.add(okey, lenta, perik, karusel, pyatera, spar, polushka, prisma, lime, krasnoe, dosta, bushe, domovoi, ikea, podr, letual, sephora, ozerki, discounts, channel)
-keyboard_krasnoe.add(okey, lenta, perik, karusel, pyatera, spar, polushka, prisma, lime, ulibka, dosta, bushe, domovoi, ikea, podr, letual, sephora, ozerki, discounts, channel)
-keyboard_dosta.add(okey, lenta, perik, karusel, pyatera, spar, polushka, prisma, lime, ulibka, krasnoe, bushe, domovoi, ikea, podr, letual, sephora, ozerki, discounts, channel)
-keyboard_bushe.add(okey, lenta, perik, karusel, pyatera, spar, polushka, prisma, lime, ulibka, krasnoe, dosta, domovoi, ikea, podr, letual, sephora, ozerki, discounts, channel)
-keyboard_domovoi.add(okey, lenta, perik, karusel, pyatera, spar, polushka, prisma, lime, ulibka, krasnoe, dosta, bushe, ikea, podr, letual, sephora, ozerki, discounts, channel)
-keyboard_ikea.add(okey, lenta, perik, karusel, pyatera, spar, polushka, prisma, lime, ulibka, krasnoe, dosta, bushe, domovoi, podr, letual, sephora, ozerki, discounts, channel)
-keyboard_podr.add(okey, lenta, perik, karusel, pyatera, spar, polushka, prisma, lime, ulibka, krasnoe, dosta, bushe, domovoi, ikea, letual, sephora, ozerki, discounts, channel)
-keyboard_letual.add(okey, lenta, perik, karusel, pyatera, spar, polushka, prisma, lime, ulibka, krasnoe, dosta, bushe, domovoi, ikea, podr, sephora, ozerki, discounts, channel)
-keyboard_sephora.add(okey, lenta, perik, karusel, pyatera, spar, polushka, prisma, lime, ulibka, krasnoe, dosta, bushe, domovoi, ikea, podr, letual, ozerki, discounts, channel)
-keyboard_ozerki.add(okey, lenta, perik, karusel, pyatera, spar, polushka, prisma, lime, ulibka, krasnoe, dosta, bushe, domovoi, ikea, podr, letual, sephora, discounts, channel)
+keyboard_prisma.add(okey, lenta, perik, karusel, pyatera, magnit, polushka, lime, ulibka, krasnoe, dosta, bushe, domovoi, ikea, podr, letual, sephora, ozerki, discounts, channel)
+keyboard_lime.add(okey, lenta, perik, karusel, pyatera, magnit, polushka, prisma, ulibka, krasnoe, dosta, bushe, domovoi, ikea, podr, letual, sephora, ozerki, discounts, channel)
+keyboard_ulibka.add(okey, lenta, perik, karusel, pyatera, magnit, polushka, prisma, lime, krasnoe, dosta, bushe, domovoi, ikea, podr, letual, sephora, ozerki, discounts, channel)
+keyboard_krasnoe.add(okey, lenta, perik, karusel, pyatera, magnit, polushka, prisma, lime, ulibka, dosta, bushe, domovoi, ikea, podr, letual, sephora, ozerki, discounts, channel)
+keyboard_dosta.add(okey, lenta, perik, karusel, pyatera, magnit, polushka, prisma, lime, ulibka, krasnoe, bushe, domovoi, ikea, podr, letual, sephora, ozerki, discounts, channel)
+keyboard_bushe.add(okey, lenta, perik, karusel, pyatera, magnit, polushka, prisma, lime, ulibka, krasnoe, dosta, domovoi, ikea, podr, letual, sephora, ozerki, discounts, channel)
+keyboard_domovoi.add(okey, lenta, perik, karusel, pyatera, magnit, polushka, prisma, lime, ulibka, krasnoe, dosta, bushe, ikea, podr, letual, sephora, ozerki, discounts, channel)
+keyboard_ikea.add(okey, lenta, perik, karusel, pyatera, magnit, polushka, prisma, lime, ulibka, krasnoe, dosta, bushe, domovoi, podr, letual, sephora, ozerki, discounts, channel)
+keyboard_podr.add(okey, lenta, perik, karusel, pyatera, magnit, polushka, prisma, lime, ulibka, krasnoe, dosta, bushe, domovoi, ikea, letual, sephora, ozerki, discounts, channel)
+keyboard_letual.add(okey, lenta, perik, karusel, pyatera, magnit, polushka, prisma, lime, ulibka, krasnoe, dosta, bushe, domovoi, ikea, podr, sephora, ozerki, discounts, channel)
+keyboard_sephora.add(okey, lenta, perik, karusel, pyatera, magnit, polushka, prisma, lime, ulibka, krasnoe, dosta, bushe, domovoi, ikea, podr, letual, ozerki, discounts, channel)
+keyboard_ozerki.add(okey, lenta, perik, karusel, pyatera, magnit, polushka, prisma, lime, ulibka, krasnoe, dosta, bushe, domovoi, ikea, podr, letual, sephora, discounts, channel)
 
 
 # # # # # # # # # # # Тело бота # # # # # # # # # # #
@@ -1319,9 +1319,9 @@ def callback_buttons(call):
             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
                                   text='💊 [Озерки](https://i.imgur.com/6bDnAK4.jpg)', parse_mode='Markdown',
                                   reply_markup=keyboard_ozerki)
-        elif call.data == 'spar':
+        elif call.data == 'magnit':
             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                                  text='🛒 [SPAR](https://i.imgur.com/pi3xSt3.jpg)', parse_mode='Markdown',
+                                  text='🛒 [Магнит](https://i.imgur.com/5mDVzB8.jpg)', parse_mode='Markdown',
                                   reply_markup=keyboard_spar)
         ########################
         elif call.data[0:4] == 'add_':
