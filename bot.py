@@ -104,7 +104,7 @@ lime = telebot.types.InlineKeyboardButton(text='Лайм 🛒', callback_data='l
 ulibka = telebot.types.InlineKeyboardButton(text='Улыбка 🌈', callback_data='ulibka')
 letual = telebot.types.InlineKeyboardButton(text='Л\'этуль 💛', callback_data='letual')
 ozerki = telebot.types.InlineKeyboardButton(text='Озерки 💊', callback_data='ozerki')
-magnit = telebot.types.InlineKeyboardButton(text='Магнит 🛒', callback_data='spar')
+magnit = telebot.types.InlineKeyboardButton(text='Магнит 🛒', callback_data='magnit')
 discounts = telebot.types.InlineKeyboardButton(text='Все скидки 💰', url='https://photos.app.goo.gl/Xu4UQWqhSTcBVwt27')
 channel = telebot.types.InlineKeyboardButton(text='Канал 💳', url='https://t.me/joinchat/AAAAAEk6NVud6BKc7YzZ2g')
 
