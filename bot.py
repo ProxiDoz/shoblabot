@@ -1,4 +1,4 @@
- #!/usr/bin/python3.5
+#!/usr/bin/python3.5
 # -*- coding: utf-8 -*-
 import vk  # Для использования VK API
 import os  # Для проверки на существование файла
@@ -801,7 +801,7 @@ def rapid(message):
         value = 'help' if size == 1 else data[1]
         
         # Ну тут почти без изменений, тока data[1] became value
-        response = urllib2.urlopen('https://https.tyamsha.keenetic.name/rapid?data=' + quote(value) + '&memberid=' + str(message.from_user.id))
+        response = urllib2.urlopen('https://bot.zhuykovkb.ru:81/rapid?data=' + quote(value) + '&memberid=' + str(message.from_user.id))
         answer = json.loads(str(response.read(), 'utf-8'))
         bot.send_message(secret.tg_chat_id, answer['message'], parse_mode='Markdown')
     except Exception as e:
