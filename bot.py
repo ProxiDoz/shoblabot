@@ -1321,7 +1321,7 @@ def callback_buttons(call):
                                   reply_markup=keyboard_ozerki)
         elif call.data == 'magnit':
             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                                  text='🛒 [Магнит](https://i.imgur.com/5mDVzB8.jpg)', parse_mode='Markdown',
+                                  text='🛒 [Магнит](https://i.imgur.com/Nmn5pTt.png)', parse_mode='Markdown',
                                   reply_markup=keyboard_magnit)
         ########################
         elif call.data[0:4] == 'add_':
