@@ -847,6 +847,7 @@ def send_text(message):
                 try:
                     bot.send_message(secret.tg_chat_id, message.text)
                     bot.send_message(secret.apple_id, '✅ Сообщение отправлено')
+                    bot.delete_message(secret.apple_id, message.reply_to_message.message_id)
                 except:
                     send_error(message, 13)
             # Запрос внесения опроса
@@ -879,6 +880,7 @@ def send_text(message):
                         keyboard.add(button[i])
                     bot.send_message(secret.tg_chat_id, opros, reply_markup=keyboard, parse_mode='Markdown')
                     bot.send_message(secret.tg_requests_chat_id, date, parse_mode='Markdown')
+                    bot.delete_message(secret.tg_chat_id, message.reply_to_message.message_id)
                 except:
                     bot.send_message(message.chat.id, constants.errors[14])
                     send_error(message, 14)
