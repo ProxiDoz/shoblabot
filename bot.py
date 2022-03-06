@@ -85,6 +85,7 @@ keyboard_ulibka = telebot.types.InlineKeyboardMarkup(row_width=2)
 keyboard_letual = telebot.types.InlineKeyboardMarkup(row_width=2)
 keyboard_ozerki = telebot.types.InlineKeyboardMarkup(row_width=2)
 keyboard_magnit = telebot.types.InlineKeyboardMarkup(row_width=2)
+keyboard_ashan = telebot.types.InlineKeyboardMarkup(row_width=2)
 
 okey = telebot.types.InlineKeyboardButton(text='О\'КЕЙ 🛒', callback_data='okey')
 bushe = telebot.types.InlineKeyboardButton(text='Буше 🥐', callback_data='bushe')
