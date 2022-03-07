@@ -1274,7 +1274,7 @@ def callback_buttons(call):
                                   reply_markup=keyboard_perik)
         elif call.data == 'lenta':
             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                                  text='🛒 [Лента](https://i.imgur.com/5p5NciO.png)', parse_mode='Markdown',
+                                  text='🛒 [Лента](https://i.imgur.com/PE9txx0.jpg)', parse_mode='Markdown',
                                   reply_markup=keyboard_lenta)
         elif call.data == 'domovoi':
             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
