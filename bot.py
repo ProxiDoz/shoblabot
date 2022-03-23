@@ -1405,10 +1405,10 @@ try:
 except Exception as e:
     bot.send_message(secret.apple_id, 'Ошибка в запуске встроенный функций:\nremove_webjook()\n\n' + str(e))
 
-try:
-    send_start_time()
-except Exception as e:
-    bot.send_message(secret.apple_id, 'Ошибка в запуске встроенный функций:\n\send_start_time()\n\n' + str(e))
+# try:
+#     send_start_time()
+# except Exception as e:
+#     bot.send_message(secret.apple_id, 'Ошибка в запуске встроенный функций:\n\send_start_time()\n\n' + str(e))
 
 try:
     sdr()
