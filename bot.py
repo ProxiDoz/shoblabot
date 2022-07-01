@@ -1382,6 +1382,8 @@ def sdr():
             return
         if dr == str(28.5):  # День Баяна в Шобле отмечается 28 мая
                 bot.send_message(secret.tg_chat_id, 'Шобла, поздравляю с Днём Баяна🪗!🕺💃🥳', parse_mode='Markdown')
+        if dr == str(25.7):  # День Рождения Себа
+            bot.send_message(secret.tg_chat_id, '[Seb](tg://user?id=959656923), HB!🥳🇲🇽\nFrom Shobla with love!', parse_mode='Markdown')
         for item in constants.tg_drs:
             if item == dr:
                 bot.send_message(secret.tg_chat_id,
