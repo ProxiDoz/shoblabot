@@ -28,7 +28,7 @@ git1 = ' гит'
 git2 = 'гит'
 
 # Для опроса
-enter_question = '✅ Введи тему опроса'
+enter_question = '❓ Введи тему опроса'
 who_will = {}
 who_will[0] = ['Апол',  # 0
                'Канат',  # 1
@@ -279,10 +279,6 @@ vk_names = ['Андрей Анашкин',
             'Таточка Узурпатор',
             'Telegram Chat']
 
-#  Ссылка для аторизации
-auth_link = 'https://oauth.vk.com/authorize?client_id=5514176&display=page&scope=photos,messages,docs,friends,offline&response_type=token'
-close_access = '⛔️ *Закрыть доступ:*\nhttps://vk.com/settings?act=apps\n\n@BotFather /revoke'
-
 # Тексты при start и help
 chat_name = 'Шобла - ReBorn'
 help_text_light = '‼️ Вы не участник чата *{0}* 💬'.format(chat_name)
@@ -305,11 +301,6 @@ help_text = '🤖 *Shobla Bot* используется для:\n\n' \
 
 # '1) 💬 отправки любых сообщений и вложений из ВКонтакте в чат {0}. ' \
 # 'Просто отправь сообщение этому профилю vk.com/shoblabot\n'
-
-
-help_text_apple = '👑  ⛔️Закрыть доступ\n/s    /close\n🆔 Получить id чата Telegram:\n/set\n' \
-                  '💬 Отправить от лица бота:\n/send &-1001126587083 &сообщение\n' \
-                  '🌐 Ссылка приложения:\n{0}'.format(auth_link)
 
 # Поиск фильма
 send_movie = '🎬 Напиши название фильма'
@@ -340,60 +331,3 @@ tmdb_errors = ['Ошибка при добавлении выбранного ф
                'Ошибка при добавлении выбранного фильма в wishlist',  # 4
                'Ошибка при предложении внести фильм в wishlist',  # 5
                'Ошибка при внесении в wishlist введенного фильма']  # 6
-
-# Ссылки на прокси
-fuckrkn = '*Телега, живи!*\nПодключай прокси, затем *Enable/Включить* и все готово, ты разблокировал Телегу и' \
-          ' нагнул РКН 😎.\n' \
-          'Есть вариант: заходи к боту @socks5\\_bot.\nТам тоже все делается в пару кликов подобным образом.\n\n' \
-          '*P.S.*: Если какая то прокси не будет работать и у тебя ничего в телеге не грузит, то сообщи ' \
-          '[Аполу](tg://user?id=740100) об этом, будь душкой 😘.'
-
-proxy = ['https://t.me/socks?server=bg1.proxy.veesecurity.com&port=80&user=PROXY_5AC7D3B8BC9BC&pass=ffe17eb2a2d6b37f',  #0
-         'https://t.me/socks?server=nl1.proxy.veesecurity.com&port=80&user=PROXY_5AC7D4154BEEC&pass=60c48577a0857d10',  # 1
-         'https://t.me/socks?server=nl1.proxy.veesecurity.com&port=80&user=PROXY_5AC7D40002198&pass=dd8b152a03709b12',  # 2
-         'https://t.me/socks?server=nl1.proxy.veesecurity.com&port=80&user=PROXY_5AC7D407AF932&pass=71c3bee6c4517694',  # 3
-         'https://t.me/socks?server=bg1.proxy.veesecurity.com&port=80&user=PROXY_5AC7DAD78487F&pass=b1f28891a18a8160',  # 4
-         'https://t.me/socks?server=nl2.proxy.veesecurity.com&port=80&user=PROXY_5AC7DAE3B1B39&pass=0fdcffba8bbc1a1c',  # 5
-         'https://t.me/socks?server=bg1.proxy.veesecurity.com&port=80&user=PROXY_5AC7DB0736BE9&pass=cedd4bb35e223b30',  # 6
-         'https://t.me/socks?server=nl2.proxy.veesecurity.com&port=80&user=PROXY_5AC7DB212D90C&pass=0e42d451211a5764',  # 7
-         'https://t.me/socks?server=bg1.proxy.veesecurity.com&port=80&user=PROXY_5AC7DB2978F15&pass=f5161b129a8ab732',  # 8
-         'https://t.me/socks?server=nl2.proxy.veesecurity.com&port=80&user=PROXY_5AC7DB317FC11&pass=19d0c06f04b692d6',  # 9
-         'https://t.me/socks?server=bg1.proxy.veesecurity.com&port=80&user=PROXY_5AC7DB3ABA0DE&pass=aa8d4eeeea86b8b4',  # 10
-         'https://t.me/socks?server=nl2.proxy.veesecurity.com&port=80&user=PROXY_5AC7DB4741F82&pass=499ed6696e186378',  # 11
-         'https://t.me/socks?server=nl1.proxy.veesecurity.com&port=80&user=PROXY_5AC7DB583525F&pass=9b29b515fde5c18a',  # 12
-         'https://t.me/socks?server=nl2.proxy.veesecurity.com&port=80&user=PROXY_5AC7DB64A8136&pass=b08bbf9fe8ab7d2b',  # 13
-         'https://t.me/socks?server=bg1.proxy.veesecurity.com&port=80&user=PROXY_5AC7DB6E9846A&pass=b7a434d42f192bc4',  # 14
-         'https://t.me/socks?server=nl2.proxy.veesecurity.com&port=80&user=PROXY_5AC7DB7AE066D&pass=467c4aab12e436fe',  # 15
-         'https://t.me/socks?server=nl2.proxy.veesecurity.com&port=80&user=PROXY_5AC7DB8A865F9&pass=0a2a607a46ad6a8b',  # 16
-         'https://t.me/socks?server=nl2.proxy.veesecurity.com&port=80&user=PROXY_5AC7DB92094E2&pass=e7639ea165ae942b',  # 17
-         'https://t.me/socks?server=nl1.proxy.veesecurity.com&port=80&user=PROXY_5AC7DB9A1449F&pass=a82f2c99c63a534f',  # 18
-         'https://t.me/socks?server=nl1.proxy.veesecurity.com&port=80&user=PROXY_5AC7DBA27EE14&pass=8403a9bf80e3539d',  # 19
-         'https://t.me/socks?server=nl1.proxy.veesecurity.com&port=80&user=PROXY_5AC7DBAD7F8DB&pass=e0c37962dd3b060a',  # 20
-         'https://t.me/socks?server=nl1.proxy.veesecurity.com&port=80&user=PROXY_5AC7DBCE29453&pass=961397ac2009956d',  # 21
-         'https://t.me/socks?server=nl1.proxy.veesecurity.com&port=80&user=PROXY_5AC7DBD460018&pass=fecec0b4987abb5d',  # 22
-         'https://t.me/socks?server=bg1.proxy.veesecurity.com&port=80&user=PROXY_5AC7DBDC63109&pass=e038774baf1ce029',  # 23
-         'https://t.me/socks?server=nl1.proxy.veesecurity.com&port=80&user=PROXY_5AC7DBE534C99&pass=cba573feafb30913',  # 24
-         'https://t.me/socks?server=par3.proxy.veesecurity.com&port=443&user=PROXY_5AD4F5F904A71&pass=868c70f062bd26d0',  # 25
-         'https://t.me/socks?server=par3.proxy.veesecurity.com&port=443&user=PROXY_5AD4F60379ABD&pass=010d864358bda0ea',  # 26
-         'https://t.me/socks?server=par3.proxy.veesecurity.com&port=443&user=PROXY_5AD4F61038904&pass=b2dfec995ed95e9d',  # 27
-         'https://t.me/socks?server=par3.proxy.veesecurity.com&port=443&user=PROXY_5AD4F61782A51&pass=80637b9eead1438b',  # 28
-         'https://t.me/socks?server=par3.proxy.veesecurity.com&port=443&user=PROXY_5AD4F621D8911&pass=ab653b5ac0017df8',  # 29
-         'https://t.me/socks?server=par1.proxy.veesecurity.com&port=443&user=PROXY_5AD4A59926E13&pass=33bdf1bb5def1757',  # 30
-         'https://t.me/socks?server=telegram.vpn99.net&port=55655',  # 31
-         'https://t.me/socks?server=ssocks.cf&port=1080',  # 32
-         'https://t.me/socks?server=91.121.84.121&port=3306&user=swcbbabh&pass=aYEbh6q5gQ',  # 33
-         'https://t.me/socks?server=185.36.188.185&port=3306&user=swcbbabh&pass=aYEbh6q5gQ',  # 34
-         'https://t.me/socks?server=95.216.19.250&port=433&user=proxyuser&pass=rjBrtr8AMZJ%24J9',  # 35
-         'https://t.me/socks?server=nl3.proxy.veesecurity.com&port=80&user=PROXY_5ACB81CDDADDD&pass=b4139d63916ed8ac',  # 36
-         'https://t.me/socks?server=tg.airpush.com&port=1883',  # 37
-         'https://t.me/socks?server=proxy.unlockgram.it&port=5061',  # 38
-         'https://t.me/socks?server=88.198.24.108&port=1080',  # 39
-         'https://t.me/socks?server=188.226.141.127&port=1080',  # 40
-         'https://t.me/socks?server=37.187.30.16&port=3128',  # 41
-         'https://t.me/socks?server=207.154.231.217&port=1080',  # 42
-         'https://t.me/socks?server=159.89.12.70&port=1080&user=telegram&pass=fuckrknfuck',  # 43
-         'https://t.me/socks?server=socks5.svoi-an.us&port=1080&user=privet&pass=roskomnadzor',  # 44
-         'https://t.me/proxy?server=mash.drproxy.pro&port=443&secret=dda5a7b5711e648c7bd534e4e87de2241b',  # 45
-         'https://t.me/proxy?server=russia.proxy.digitalresistance.dog&port=443&secret=d41d8cd98f00b204e9800998ecf8427e']  # 46
-
-
