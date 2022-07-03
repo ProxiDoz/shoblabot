@@ -23,18 +23,6 @@ from urllib.parse import quote
 import json
 from telebot import apihelper
 
-# https://t.me/socks?server=telegram.vpn99.net&port=55655
-# https://t.me/socks?server=159.89.12.70&port=1080&user=telegram&pass=fuckrknfuck
-# apihelper.proxy = {'https': 'socks5://swcbbabh:aYEbh6q5gQ@91.121.84.121:3306'}
-# apihelper.proxy = {'https': 'socks5://Piterix:tgproxy@tgproxy.piter-ix.ru:6660'}
-# apihelper.proxy = {'http': 'http://210b5a62-d786-469f-b97d-876cbdbbb54a.pub.cloud.scaleway.com:443'}
-# apihelper.proxy = {'https': 'socks5://740100:7f0wrAke@185.211.245.136:1080'}
-# tg://socks?server=tgproxy.piter-ix.ru&port=6660&user=Piterix&pass=tgproxy
-# 91.121.84.121&port=3306&user=swcbbabh&pass=aYEbh6q5gQ',  # 33
-# proxies = {
-#     'http': 'socks5://740100:7f0wrAke@185.211.245.136:1080',
-#     'https': 'socks5://740100:7f0wrAke@185.211.245.136:1080',
-# }
 # # # # # # # # # # # Инициализация # # # # # # # # # # #
 # Переменные для ВК
 session = vk.Session()
@@ -172,8 +160,6 @@ def handle_help(message):
             bot.send_message(message.chat.id, constants.help_text, disable_web_page_preview=True, parse_mode='Markdown')
         else:
             bot.send_message(message.chat.id, constants.help_text_light, parse_mode='Markdown')
-        if message.chat.id == secret.apple_id:
-            bot.send_message(secret.apple_id, constants.help_text_apple, disable_web_page_preview=True)
     except Exception as e:
         bot.send_message(secret.apple_id, 'Ошибка в команде /help:\n\n' + str(e))
 
