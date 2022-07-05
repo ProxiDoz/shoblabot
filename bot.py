@@ -246,7 +246,7 @@ def who_will(message):
                 force_reply = telebot.types.ForceReply(True)
                 bot.send_message(message.chat.id, constants.enter_question, reply_to_message_id=message.message_id,
                                  reply_markup=force_reply)
-                bot.delete_message(message.chat.id, message.message_id)
+                # bot.delete_message(message.chat.id, message.message_id)
         except:
             send_error(message, 2)
     except Exception as e:
@@ -308,7 +308,7 @@ def who_will_kinch(message):
             force_reply = telebot.types.ForceReply(True)
             bot.send_message(message.chat.id, constants.send_movie, reply_to_message_id=message.message_id,
                              reply_markup=force_reply)
-            bot.delete_message(message.chat.id, message.message_id)
+            # bot.delete_message(message.chat.id, message.message_id)
     except Exception as e:
         bot.send_message(secret.apple_id, 'Ошибка в функции who_will_kinch:\n\n' + str(e))
 
