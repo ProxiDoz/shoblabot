@@ -164,7 +164,7 @@ def handle_help(message):
         bot.send_message(secret.apple_id, 'Ошибка в команде /help:\n\n' + str(e))
 
 
-# # # # # # Служебные функции
+# # # # # # Служебные функции и команды
 # Функция отправки времени старта запуска бота
 def send_start_time():
     try:
@@ -190,23 +190,19 @@ def send_error(message, error_id):
     except Exception as e:
         bot.send_message(secret.apple_id, 'Ошибка в функции send_error:\n\n' + str(e))
 
-
-# # # # # # Служебные команды
+        
 # Вызов информации о сервере
 @bot.message_handler(commands=['s'])
 def server_info(message):
     try:
         if message.chat.id == secret.apple_id:
             try:
-                keyboard = telebot.types.InlineKeyboardMarkup(row_width=3)
-                restart_m = telebot.types.InlineKeyboardButton(text='🎬', callback_data='adm_rm')
-                restart_f = telebot.types.InlineKeyboardButton(text='⛽', callback_data='adm_rf')
-                restart_b = telebot.types.InlineKeyboardButton(text='📙', callback_data='adm_rb')
+                keyboard = telebot.types.InlineKeyboardMarkup(row_width=2)
                 server = telebot.types.InlineKeyboardButton(text='💾', callback_data='adm_si')
-                screen = telebot.types.InlineKeyboardButton(text='📑', callback_data='adm_sc')
+                # screen = telebot.types.InlineKeyboardButton(text='📑', callback_data='adm_sc')
                 text = telebot.types.InlineKeyboardButton(text='💬', callback_data='adm_sh')
-                keyboard.add(restart_m, restart_f, restart_b)
-                keyboard.add(text, screen, server)
+                # keyboard.add(restart_m, restart_f, restart_b)
+                keyboard.add(text, server)
                 bot.send_message(message.chat.id, '👑 Admin panel', reply_markup=keyboard)
             except:
                 send_error(message, 3)
@@ -862,49 +858,13 @@ def callback_buttons(call):
         # Вызов панели администратора
         if call.data[0:4] == 'adm_':
             command = call.data.split('_')[1]
-            if command == 'rm':
-                try:
-                    subprocess.Popen(["bash", "/root/router/start3"])
-                    bot.answer_callback_query(callback_query_id=call.id, show_alert=False,
-                                              text='🎬 Movies Bot запущен')
-                except:
-                    send_error(call.message, 18)
-            elif command == 'rf':
-                try:
-                    subprocess.Popen(["bash", "/root/router/startfuel"])
-                    bot.answer_callback_query(callback_query_id=call.id, show_alert=False,
-                                              text='⛽️ Fuel Bot запущен')
-                except:
-                    send_error(call.message, 19)
-            elif command == 'rb':
-                try:
-                    subprocess.Popen(["bash", "/root/router/startbooks"])
-                    bot.answer_callback_query(callback_query_id=call.id, show_alert=False,
-                                              text='📙 Books Bot запущен')
-                except:
-                    send_error(call.message, 20)
-            elif command == 'si':
+            if command == 'si':
                 try:
                     ram = psutil.virtual_memory()
                     bot.answer_callback_query(callback_query_id=call.id, show_alert=False,
                                               text='💽 RAM: {0}%'.format(ram[2]))
                 except:
                     send_error(call.message, 21)
-            elif command == 'sc':
-                try:
-                    global screen_id
-                    # movies = glob.glob('/var/run/screen/S-root/*.movies')
-                    # books = glob.glob('/var/run/screen/S-root/*.books')
-                    # fuel = glob.glob('/var/run/screen/S-root/*.fuel')
-                    # router = glob.glob('/var/run/screen/S-root/*.router')
-                    shoblabot = glob.glob('/var/run/screen/S-root/*.shobla')
-                    # screen_id = movies[0].split('t/')[1] + ' ' + books[0].split('t/')[1] + ' ' + fuel[0].split('t/')[
-                    #     1] + ' ' + router[0].split('t/')[1] + ' ' + shoblabot[0].split('t/')[1]
-                    # screen_id = movies[0].split('t/')[1] + ' ' + shoblabot[0].split('t/')[1]
-                    screen_id = shoblabot[0].split('t/')[1]
-                    bot.answer_callback_query(callback_query_id=call.id, show_alert=False, text='📑 ' + screen_id)
-                except:
-                    send_error(call.message, 22)
             elif command == 'sh':
                 try:
                     force_reply = telebot.types.ForceReply(True)
