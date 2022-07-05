@@ -192,51 +192,6 @@ def send_error(message, error_id):
 
 
 # # # # # # Служебные команды
-# Запрос информации о чате Telegram
-@bot.message_handler(commands=['set'])
-def set_chat_id(message):
-    try:
-        if message.from_user.id == secret.apple_id:
-            bot.send_message(secret.apple_id, '*Информация о чате:*\nUsername: {0}\nType: {1}\nTitle: {2}\n'
-                                                 'ID: {3}\nИмя: {4}\nФамилия: '
-                                                 '{5}'.format(str(message.chat.username), str(message.chat.type),
-                                                              str(message.chat.title), str(message.chat.id),
-                                                              str(message.chat.first_name), str(message.chat.last_name)),
-                             parse_mode='Markdown')
-        else:
-            send_error(message, 0)
-    except Exception as e:
-        bot.send_message(secret.apple_id, 'Ошибка в функции set_chat_id:\n\n' + str(e))
-
-
-# Отправка сообщения от лица бота
-@bot.message_handler(commands=['send'])
-def send_from_bot(message):
-    try:
-        if message.chat.id == secret.apple_id:
-            try:
-                text = message.text.split('&')
-                bot.send_message(text[1], text[2])
-            except:
-                bot.send_message(secret.apple_id, '❌ Ошибка при отправке сообщения')
-            else:
-                send_error(message, 1)
-    except Exception as e:
-        bot.send_message(secret.apple_id, 'Ошибка в функции send_from_bot:\n\n' + str(e))
-
-
-# Срочное закрытие доступа к ВК
-@bot.message_handler(commands=['close'])
-def close_access(message):
-    try:
-        if message.chat.id == secret.apple_id:
-            bot.send_message(message.chat.id, constants.close_access, parse_mode='Markdown')
-        else:
-            send_error(message, 2)
-    except Exception as e:
-        bot.send_message(secret.apple_id, 'Ошибка в функции close_access:\n\n' + str(e))
-
-
 # Вызов информации о сервере
 @bot.message_handler(commands=['s'])
 def server_info(message):
@@ -597,32 +552,6 @@ def new_friends():
 
 
 # # # # # # Общие команды
-# Функция вызова подключения прокси
-@bot.message_handler(commands=['fuckrkn'])
-def fuckrkn(message):
-    try:
-        try:
-            user_id = constants.tg_ids.index(message.from_user.id)
-            if user_id is not None:
-                keyboard = telebot.types.InlineKeyboardMarkup()
-                n_proxy = 46  # random.randint(0, len(constants.proxy) - 1)
-                proxy = telebot.types.InlineKeyboardButton(text='Подключить прокси 🚀', url=constants.proxy[n_proxy])
-                keyboard.add(proxy)
-                bot.send_message(message.chat.id, constants.fuckrkn, parse_mode='Markdown', reply_markup=keyboard)
-                bot.send_message(secret.tg_requests_chat_id, '🚀 */fuckrkn* от [{0}](tg://user?id={1})'
-                                                                '\n*Чат:* {2}\n*Прокси №{3}:* '
-                                                                '\n{4}'.format(constants.tg_names[user_id],
-                                                                               str(message.from_user.id),
-                                                                               str(message.chat.id), str(n_proxy),
-                                                                               constants.proxy[n_proxy].replace('_',
-                                                                                                                '\\_')),
-                                 parse_mode='Markdown', disable_web_page_preview=True)
-        except:
-            send_error(message, 29)
-    except Exception as e:
-        bot.send_message(secret.apple_id, 'Ошибка в функции fuckrkn:\n\n' + str(e))
-
-
 # Функция отправки опроса в чат
 @bot.message_handler(commands=['who'])
 def who_will(message):
@@ -702,14 +631,6 @@ def who_will_kinch(message):
     except Exception as e:
         bot.send_message(secret.apple_id, 'Ошибка в функции who_will_kinch:\n\n' + str(e))
 
-# Отправка стикера со статистикой про Коронавирус в шоблу
-# @bot.message_handler(commands=['corona'])
-# def corona(message):
-#     try:
-#         bot.send_sticker(secret.tg_chat_id, 'CAACAgIAAxkBAAJ7k16EtnmSM4Wzy5BjSryqZymDondiAAK3oAIAAZJlSgvdtGD02Ww35xgE')  # Мир
-#         bot.send_sticker(secret.tg_chat_id, 'CAACAgIAAxkBAAJ7jV6EthT3WNF6k-BA1cyMC4A395VyAAK4oAIAAZJlSgtYkgABa0Y4cncYBA')  # Россия
-#     except Exception as e:
-#         bot.send_message(secret.apple_id, 'Ошибка в функции corona:\n\n' + str(e))
 
 # # # # # # Обработка данных
 # Обработка девки за рулем
