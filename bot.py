@@ -242,7 +242,7 @@ def who_will(message):
                     bot.send_message(secret.tg_requests_chat_id, '✅ */who* от [{0}](tg://user?id={1})'.format(constants.tg_names[user_id],
                                                                                         str(message.from_user.id)), parse_mode='Markdown')
                     force_reply = telebot.types.ForceReply(True)
-                    bot.send_message(message.chat.id, constants.enter_question, reply_to_message_id=message.message_id,
+                    bot.send_message(message.chat.id, constants.enter_question_new, reply_to_message_id=message.message_id,
                                      reply_markup=force_reply)
             else:
                 bot.send_message(message.chat.id, 'Опрос создается только в Шобле')
@@ -440,6 +440,16 @@ def send_text(message):
                     bot.delete_message(secret.apple_id, message.reply_to_message.message_id)
                 except:
                     send_error(message, 13)
+            # Запрос внесения опроса (нового)
+            elif message.reply_to_message.text == constants.enter_question_new:
+                try:
+                    opros = 'Опрос: ' + message.text
+                    poll = bot.send_poll(secret.tg_chat_id, opros, constants.poll_options, is_anonymous=False, allows_multiple_answers=False)
+                    bot.delete_message(secret.tg_chat_id, message.reply_to_message.message_id)
+                    # bot.pin_chat_message(secret.tg_chat_id, poll.message_id, disable_notification=False)
+                except:
+                    bot.send_message(message.chat.id, constants.errors[14])
+                    send_error(message, 14)      
             # Запрос внесения опроса
             elif message.reply_to_message.text == constants.enter_question:
                 try:
