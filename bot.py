@@ -236,17 +236,16 @@ def backup_base_by_time():
 def who_will(message):
     try:
         try:
-            user_id = constants.tg_ids.index(message.from_user.id)
-            if user_id is not None:
-                bot.send_message(secret.tg_requests_chat_id, '✅ */who* от [{0}](tg://user?id={1})\n'
-                                                                '*Чат:* {2}'.format(constants.tg_names[user_id],
-                                                                                    str(message.from_user.id),
-                                                                                    str(message.chat.id)),
-                                 parse_mode='Markdown')
-                force_reply = telebot.types.ForceReply(True)
-                bot.send_message(message.chat.id, constants.enter_question, reply_to_message_id=message.message_id,
-                                 reply_markup=force_reply)
-                # bot.delete_message(message.chat.id, message.message_id)
+            if message.chat.id == secret.tg_chat_id:
+                user_id = constants.tg_ids.index(message.from_user.id)
+                if user_id is not None:
+                    bot.send_message(secret.tg_requests_chat_id, '✅ */who* от [{0}](tg://user?id={1})'.format(constants.tg_names[user_id],
+                                                                                        str(message.from_user.id)), parse_mode='Markdown')
+                    force_reply = telebot.types.ForceReply(True)
+                    bot.send_message(message.chat.id, constants.enter_question, reply_to_message_id=message.message_id,
+                                     reply_markup=force_reply)
+            else:
+                bot.send_message(message.chat.id, 'Опрос создается только в Шобле')
         except:
             send_error(message, 2)
     except Exception as e:
