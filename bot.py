@@ -446,7 +446,7 @@ def send_text(message):
                     if len(message.text) <= 293:
                         opros = 'Опрос: ' + message.text
                         poll = bot.send_poll(secret.tg_chat_id, opros, constants.poll_options, is_anonymous=False, allows_multiple_answers=False)
-                        stop_button = telebot.types.InlineKeyboardButton(text='Остановить опрос',
+                        stop_button = telebot.types.InlineKeyboardButton(text='Остановить опрос 🚫',
                                                                          callback_data='stop_{0}_{1}'.format(
                                                                              poll.message_id, message.from_user.id))
                         keyboard_opros_stop = telebot.types.InlineKeyboardMarkup(row_width=1)
@@ -582,6 +582,8 @@ def callback_buttons(call):
             try:
                 if call.from_user.id == user_id:
                     bot.stop_poll(secret.tg_chat_id, message_id)
+                else:
+                    bot.answer_callback_query(call.id, constants.wrong_stop, show_alert=True)
             except:
                 send_error(call.message, 31)
         elif call.data[0:2] == 'op':
