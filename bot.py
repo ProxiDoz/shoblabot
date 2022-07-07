@@ -446,8 +446,13 @@ def send_text(message):
                     if len(message.text) <= 293:
                         opros = 'Опрос: ' + message.text
                         poll = bot.send_poll(secret.tg_chat_id, opros, constants.poll_options, is_anonymous=False, allows_multiple_answers=False)
-                        # bot.send_message(secret.apple_id, '2')
+                        stop_button = telebot.types.InlineKeyboardButton(text='Остановить опрос',
+                                                                         callback_data='stop_{0}_{1}'.format(
+                                                                             poll.message_id, message.from_user.id))
+                        keyboard_opros_stop = telebot.types.InlineKeyboardMarkup(row_width=1)
+                        keyboard_opros_stop.add(stop_button)
                         bot.delete_message(secret.tg_chat_id, message.reply_to_message.message_id)
+                        bot.edit_message_reply_markup(secret.tg_chat_id, poll.message_id, reply_markup=keyboard_opros_stop)
                         # bot.pin_chat_message(secret.tg_chat_id, poll.message_id, disable_notification=False)
                     else:
                         force_reply = telebot.types.ForceReply(True)
@@ -571,6 +576,14 @@ def callback_buttons(call):
                     bot.send_message(secret.apple_id, '💬 Что написать в Шоблу?', reply_markup=force_reply)
                 except:
                     send_error(call.message, 23)
+        elif call.data[0:4] == 'stop':
+            message_id = int(call.data.split('_')[1])
+            user_id = int(call.data.split('_')[2])
+            try:
+                if call.from_user.id == user_id:
+                    bot.stop_poll(secret.tg_chat_id, message_id)
+            except:
+                send_error(call.message, 31)
         elif call.data[0:2] == 'op':
             user_id = int(call.data.split('_')[1])
             try:
