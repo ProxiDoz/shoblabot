@@ -443,12 +443,12 @@ def send_text(message):
             # Запрос внесения опроса (нового)
             elif message.reply_to_message.text == constants.enter_question_new or message.reply_to_message.text == constants.too_large_question:
                 try:
-                    if len(message.text) < 293:
+                    if len(message.text) <= 293:
                         opros = 'Опрос: ' + message.text
                         bot.send_message(secret.apple_id, '1')
-                        poll = bot.send_poll(secret.tg_chat_id, question=opros, constants.poll_options, is_anonymous=False, allows_multiple_answers=False)
+                        bot.send_poll(secret.tg_chat_id, opros, constants.poll_options, is_anonymous=False, allows_multiple_answers=False)
                         bot.send_message(secret.apple_id, '2')
-                        bot.delete_message(secret.tg_chat_id, message.reply_to_message.message_id)
+                        # bot.delete_message(secret.tg_chat_id, message.reply_to_message.message_id)
                         # bot.pin_chat_message(secret.tg_chat_id, poll.message_id, disable_notification=False)
                     else:
                         force_reply = telebot.types.ForceReply(True)
