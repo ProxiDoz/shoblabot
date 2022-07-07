@@ -242,8 +242,9 @@ def who_will(message):
                     bot.send_message(secret.tg_requests_chat_id, '✅ */who* от [{0}](tg://user?id={1})'.format(constants.tg_names[user_id],
                                                                                         str(message.from_user.id)), parse_mode='Markdown')
                     force_reply = telebot.types.ForceReply(True)
-                    bot.send_message(message.chat.id, constants.enter_question_new, reply_to_message_id=message.message_id,
+                    bot.send_message(secret.tg_chat_id, constants.enter_question_new, reply_to_message_id=message.message_id,
                                      reply_markup=force_reply)
+                    bot.delete_message(secret.tg_chat_id, message.message_id)
             else:
                 bot.send_message(message.chat.id, 'Опрос создается только в Шобле')
         except:
@@ -453,6 +454,7 @@ def send_text(message):
                         keyboard_opros_stop.add(stop_button)
                         bot.delete_message(secret.tg_chat_id, message.reply_to_message.message_id)
                         bot.edit_message_reply_markup(secret.tg_chat_id, poll.message_id, reply_markup=keyboard_opros_stop)
+                        bot.delete_message(secret.tg_chat_id, message.message_id)
                         # bot.pin_chat_message(secret.tg_chat_id, poll.message_id, disable_notification=False)
                     else:
                         force_reply = telebot.types.ForceReply(True)
