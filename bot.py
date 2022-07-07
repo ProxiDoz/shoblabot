@@ -211,7 +211,7 @@ def backup_base_by_time():
         threading.Timer(3600, backup_base_by_time).start()
         try:
             now_time = datetime.datetime.now()
-            if now_time.weekday() is not 6 or (now_time.hour + 7) is not 22:
+            if now_time.weekday() is not 6 or now_time.hour is not 23:
                 return
             date = time.time() + 10800
             file_name = 'backup_{0}.tar'.format(time.strftime('%d_%m_%y-%H_%M_%S', time.gmtime(date)))
@@ -932,8 +932,8 @@ def reboot_me():
     try:
         threading.Timer(3600, reboot_me).start()  # Каждые полчаса - 1800, каждые 10 мин - 600, каждый день - 86400
         now_time = datetime.datetime.now()
-        bot.send_message(secret.apple_id, str(now_time.hour + 8))
-        if (now_time.hour + 8) is not 23:
+        bot.send_message(secret.apple_id, str(now_time.hour))
+        if now_time.hour is not 23:
             return
         if os.path.isfile('/root/router/shoblabot/reboot_or_not'):
             with open('/root/router/shoblabot/reboot_or_not', 'r') as lang:
@@ -964,7 +964,7 @@ def sdr():
         now_time = datetime.datetime.now()
         dr = str(now_time.day) + '.' + str(now_time.month)
         i = 0
-        if (now_time.hour + 8) is not 10:
+        if now_time.hour is not 10:
             return
         if now_time.day == 1: # День для выкладывания фоток за месяц Месечная десятка челлендж
             bot.send_message(secret.tg_chat_id, 'Шоблятки, время для #10челлендж и выших фоточек за месяц!📸', parse_mode='Markdown')
