@@ -437,8 +437,8 @@ def send_voice(message):
 @bot.message_handler(content_types=['text'])
 def send_text(message):
     try:
-        if message.text == 'РА\nСИ\nЯ':
-            bot.send_voice(secret.tg_chat_id, 'AwACAgIAAxkBAAKMlGLGxZ2Opj4DbHf63Phm8ehAoAXKAALMFgACt004SkD33tliqUWQKQQ', '🫡')
+        if message.text == 'РА\nСИ\nЯ' and message.chat.id == secret.tg_chat_id:
+            bot.send_voice(secret.tg_chat_id, 'AwACAgIAAxkBAAJDIWLGyK15Ym3bMc0u5PU9YXtDDxHnAALtHAACbJI4SiCUtXmDfvoxKQQ', '🫡')
         # Если это реплай
         elif message.reply_to_message is not None and message.reply_to_message.from_user.id == secret.bot_id:
             if message.reply_to_message.text[0:23] == '💬 Что написать в Шоблу?':
