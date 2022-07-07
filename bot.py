@@ -427,7 +427,12 @@ def block(message):
     except Exception as e:
         bot.send_message(secret.apple_id, 'Ошибка в функции block:\n\n' + str(e))
         
-
+        
+@bot.message_handler(content_types=['voice'])
+def send_voice(message):
+    bot.send_message(secret.apple_id, message)
+    
+    
 # Обработчик текста
 @bot.message_handler(content_types=['text'])
 def send_text(message):
