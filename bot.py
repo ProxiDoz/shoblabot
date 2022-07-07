@@ -242,7 +242,7 @@ def who_will(message):
                     bot.send_message(secret.tg_requests_chat_id, '✅ */who* от [{0}](tg://user?id={1})'.format(constants.tg_names[user_id],
                                                                                         str(message.from_user.id)), parse_mode='Markdown')
                     force_reply = telebot.types.ForceReply(True)
-                    bot.send_message(message.chat.id, constants.enter_question, reply_to_message_id=message.message_id,
+                    bot.send_message(message.chat.id, constants.enter_question_new, reply_to_message_id=message.message_id,
                                      reply_markup=force_reply)
             else:
                 bot.send_message(message.chat.id, 'Опрос создается только в Шобле')
