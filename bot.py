@@ -432,8 +432,10 @@ def block(message):
 @bot.message_handler(content_types=['text'])
 def send_text(message):
     try:
+        if message.text == 'РА\nСИ\nЯ':
+            bot.send_voice(secret.tg_chat_id, 'AwACAgIAAxkBAAKMlGLGxZ2Opj4DbHf63Phm8ehAoAXKAALMFgACt004SkD33tliqUWQKQQ', '🫡')
         # Если это реплай
-        if message.reply_to_message is not None and message.reply_to_message.from_user.id == secret.bot_id:
+        elif message.reply_to_message is not None and message.reply_to_message.from_user.id == secret.bot_id:
             if message.reply_to_message.text[0:23] == '💬 Что написать в Шоблу?':
                 try:
                     bot.send_message(secret.tg_chat_id, message.text)
@@ -455,7 +457,7 @@ def send_text(message):
                         bot.delete_message(secret.tg_chat_id, message.reply_to_message.message_id)
                         bot.edit_message_reply_markup(secret.tg_chat_id, poll.message_id, reply_markup=keyboard_opros_stop)
                         bot.delete_message(secret.tg_chat_id, message.message_id)
-                        # bot.pin_chat_message(secret.tg_chat_id, poll.message_id, disable_notification=False)
+                        bot.pin_chat_message(secret.tg_chat_id, poll.message_id, disable_notification=False)
                     else:
                         force_reply = telebot.types.ForceReply(True)
                         bot.delete_message(secret.tg_chat_id, message.reply_to_message.message_id)
