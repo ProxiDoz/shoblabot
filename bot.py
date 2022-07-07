@@ -443,7 +443,7 @@ def send_text(message):
             # Запрос внесения опроса (нового)
             elif message.reply_to_message.text == constants.enter_question_new or message.reply_to_message.text == constants.too_large_question:
                 try:
-                    if len(message.text) < 293
+                    if len(message.text) < 293:
                         opros = 'Опрос: ' + message.text
                         bot.send_message(secret.apple_id, '1')
                         poll = bot.send_poll(secret.tg_chat_id, question=opros, constants.poll_options, is_anonymous=False, allows_multiple_answers=False)
