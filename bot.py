@@ -12,10 +12,8 @@ import datetime
 import constants
 import secret
 import threading
-import bitly_api
 import subprocess
 from io import BytesIO  # Для отправки фотографий из Telegram в Шоблу
-import tmdbsimple as tmdb
 from datetime import timedelta
 import urllib.request as urllib2  # Для отправки фотографий из Telegram в Шоблу
 from urllib.parse import quote
@@ -32,14 +30,6 @@ from telebot import apihelper
 # pp = apihelper.#(host='socks5://telegram.vpn99.net:55655')#127.0.0.1:1080')
 
 bot = telebot.TeleBot(secret.tg_token)
-
-# Инициализация переменных для Bitly
-bitly_token = secret.bitly_token
-bit = bitly_api.Connection(access_token=bitly_token)
-
-# Служебные переменные
-screen_id = None
-reboot_or_not = {}
 
 # Переменные для опроса
 who_opros = {}
@@ -203,31 +193,6 @@ def server_info(message):
             send_error(message, 2)
     except Exception as e:
         bot.send_message(secret.apple_id, 'Ошибка в функции server_info:\n\n' + str(e))
-
-
-# Функция бекапа всей базы по расписанию
-def backup_base_by_time():
-    try:
-        threading.Timer(3600, backup_base_by_time).start()
-        try:
-            now_time = datetime.datetime.now()
-            if now_time.weekday() is not 6 or now_time.hour is not 23:
-                return
-            date = time.time() + 10800
-            file_name = 'backup_{0}.tar'.format(time.strftime('%d_%m_%y-%H_%M_%S', time.gmtime(date)))
-            subprocess.Popen(['tar', 'cf', file_name, '/root/router'])
-            time.sleep(0.5)
-            file = open('/root/router/' + file_name, 'rb')
-            raw_bytes = BytesIO(file.read())
-            raw_bytes.name = file_name
-            bot.send_document(secret.apple_id, raw_bytes, caption='Файл бекапа за {0}\n'.format(
-                time.strftime('%d.%m.%y %H:%M:%S', time.gmtime(date))))
-            bashMove = "mv /root/router/{0} /root/backups".format(file_name)
-            subprocess.Popen(bashMove.split(), stdout=subprocess.PIPE)
-        except:
-            bot.send_message(secret.apple_id, constants.errors[30])
-    except Exception as e:
-        bot.send_message(secret.apple_id, 'Ошибка в функции backup_base_by_time:\n\n' + str(e))
 
 
 # # # # # # Общие команды
@@ -469,6 +434,7 @@ def send_text(message):
     except Exception as e:
         bot.send_message(secret.apple_id, 'Ошибка в обработчике текста send_text:\n\n' + str(e))
 
+        
 # Обработчик Call Back Data
 @bot.callback_query_handler(func=lambda call: True)
 def callback_buttons(call):
@@ -620,36 +586,6 @@ def callback_buttons(call):
         bot.send_message(secret.apple_id, 'Ошибка в обработчике Callback кнопок callback_buttons:\n\n' + str(e))
 
 
-# Отправка сообщения по перезагрузке бота
-def reboot_me():
-    try:
-        threading.Timer(3600, reboot_me).start()  # Каждые полчаса - 1800, каждые 10 мин - 600, каждый день - 86400
-        now_time = datetime.datetime.now()
-        bot.send_message(secret.apple_id, str(now_time.hour))
-        if now_time.hour is not 23:
-            return
-        if os.path.isfile('/root/router/shoblabot/reboot_or_not'):
-            with open('/root/router/shoblabot/reboot_or_not', 'r') as lang:
-                reboot_or_not = json.loads(lang.read())
-        bot.send_message(secret.apple_id, str(reboot_or_not['1']))
-        if reboot_or_not['1'] == 1:
-            # Перезагрузка бота
-            reboot_or_not['1'] = 0
-            with open('/root/router/shoblabot/reboot_or_not', 'w') as lang:
-                lang.write(json.dumps(reboot_or_not))
-            bot.send_message(secret.apple_id, "go to reboot")
-            # subprocess.Popen(["bash", "/root/router/start3"])
-            bot.send_message(secret.apple_id, "reboot is done")
-        elif reboot_or_not['1'] == 0:
-            reboot_or_not['1'] = 1
-            with open('/root/router/shoblabot/reboot_or_not', 'w') as lang:
-                lang.write(json.dumps(reboot_or_not))
-            bot.send_message(secret.apple_id, "reboot is not ready")
-    except Exception as e:
-        bot.send_message(secret.apple_id,
-                         'Ошибка в функции отправки сообщения по перезагрузке бота reboot_me():\n\n' + str(e))
-
-
 # Отправка поздравления с др в Шоблу
 def sdr():
     try:
@@ -677,12 +613,6 @@ def sdr():
 
 
 # Запуск функций
-# try:
-# eclair()
-# except Exception as e:
-# bot.send_message(secret.apple_id, 'Ошибка в запуске встроенный функций:\neclair()\n' + str(e))
-
-
 try:
     bot.remove_webhook()
 except Exception as e:
@@ -697,15 +627,6 @@ try:
     sdr()
 except Exception as e:
     bot.send_message(secret.apple_id, 'Ошибка в запуске встроенный функций:\n\sdr()\n\n' + str(e))
-
-# try:
-#     backup_base_by_time()
-# except Exception as e:
-#     bot.send_message(secret.apple_id, 'Ошибка в запуске встроенный функций:\n\backup_base_by_time()\n\n' + str(e))
-# try:
-#     reboot_me()
-# except Exception as e:
-#     bot.send_message(secret.apple_id, 'Ошибка в запуске встроенный функций:\nreboot_me()\n\n' + str(e))
 
 try:
     bot.polling()
