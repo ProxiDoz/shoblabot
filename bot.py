@@ -180,13 +180,14 @@ def server_info(message):
     try:
         if message.chat.id == secret.apple_id:
             try:
-                keyboard = telebot.types.InlineKeyboardMarkup(row_width=2)
-                server = telebot.types.InlineKeyboardButton(text='💾', callback_data='adm_si')
-                # screen = telebot.types.InlineKeyboardButton(text='📑', callback_data='adm_sc')
-                text = telebot.types.InlineKeyboardButton(text='💬', callback_data='adm_sh')
-                # keyboard.add(restart_m, restart_f, restart_b)
-                keyboard.add(text, server)
-                bot.send_message(message.chat.id, '👑 Admin panel', reply_markup=keyboard)
+                if message.text == '/s':
+                    keyboard = telebot.types.InlineKeyboardMarkup()
+                    server = telebot.types.InlineKeyboardButton(text='💾', callback_data='adm_si')
+                    keyboard.add(server)
+                    bot.send_message(message.chat.id, '👑 Admin panel', reply_markup=keyboard)
+                else:
+                    bot.send_message(secret.tg_chat_id, message.text[3:-1])
+                    bot.send_message(secret.apple_id, '✅ Сообщение отправлено')
             except:
                 send_error(message, 3)
         else:
@@ -360,17 +361,10 @@ def send_text(message):
     try:
         if message.text == 'РА\nСИ\nЯ' and message.chat.id == secret.tg_chat_id:
             bot.send_voice(secret.tg_chat_id, 'AwACAgIAAxkBAAJDIWLGyK15Ym3bMc0u5PU9YXtDDxHnAALtHAACbJI4SiCUtXmDfvoxKQQ', '🫡')
-        # Если это реплай
+        # Если это реплай на сообщение бота
         elif message.reply_to_message is not None and message.reply_to_message.from_user.id == secret.bot_id:
-            if message.reply_to_message.text[0:23] == '💬 Что написать в Шоблу?':
-                try:
-                    bot.send_message(secret.tg_chat_id, message.text)
-                    bot.send_message(secret.apple_id, '✅ Сообщение отправлено')
-                    bot.delete_message(secret.apple_id, message.reply_to_message.message_id)
-                except:
-                    send_error(message, 13)
             # Запрос внесения опроса (нового)
-            elif message.reply_to_message.text == constants.enter_question_new or message.reply_to_message.text == constants.too_large_question:
+            if message.reply_to_message.text == constants.enter_question_new or message.reply_to_message.text == constants.too_large_question:
                 try:
                     if len(message.text) <= 293:
                         opros = 'Опрос: ' + message.text
@@ -432,7 +426,7 @@ def send_text(message):
             bot.pin_chat_message(chat_id=secret.tg_chat_id, message_id=message.reply_to_message.message_id,
                                  disable_notification=False)
     except Exception as e:
-        bot.send_message(secret.apple_id, 'Ошибка в обработчике текста send_text:\n\n' + str(e))
+        bot.send_message(secret.apple_id, 'Ошибка в обработчике текста send_text:\n\n' + str(e) + '\n\n' + message.text)
 
         
 # Обработчик Call Back Data
@@ -440,21 +434,13 @@ def send_text(message):
 def callback_buttons(call):
     try:
         # Вызов панели администратора
-        if call.data[0:4] == 'adm_':
-            command = call.data.split('_')[1]
-            if command == 'si':
-                try:
-                    ram = psutil.virtual_memory()
-                    bot.answer_callback_query(callback_query_id=call.id, show_alert=False,
-                                              text='💽 RAM: {0}%'.format(ram[2]))
-                except:
-                    send_error(call.message, 21)
-            elif command == 'sh':
-                try:
-                    force_reply = telebot.types.ForceReply(True)
-                    bot.send_message(secret.apple_id, '💬 Что написать в Шоблу?', reply_markup=force_reply)
-                except:
-                    send_error(call.message, 23)
+        if call.data == 'adm_si':
+            try:
+                ram = psutil.virtual_memory()
+                bot.answer_callback_query(callback_query_id=call.id, show_alert=False,
+                                          text='💽 RAM: {0}%'.format(ram[2]))
+            except:
+                send_error(call.message, 21)
         elif call.data[0:4] == 'stop':
             message_id = int(call.data.split('_')[1])
             user_id = int(call.data.split('_')[2])
