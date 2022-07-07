@@ -242,7 +242,7 @@ def who_will(message):
                     bot.send_message(secret.tg_requests_chat_id, '✅ */who* от [{0}](tg://user?id={1})'.format(constants.tg_names[user_id],
                                                                                         str(message.from_user.id)), parse_mode='Markdown')
                     force_reply = telebot.types.ForceReply(True)
-                    bot.send_message(message.chat.id, constants.enter_question_new, reply_to_message_id=message.message_id,
+                    bot.send_message(message.chat.id, constants.enter_question, reply_to_message_id=message.message_id,
                                      reply_markup=force_reply)
             else:
                 bot.send_message(message.chat.id, 'Опрос создается только в Шобле')
@@ -445,17 +445,16 @@ def send_text(message):
                 try:
                     if len(message.text) <= 293:
                         opros = 'Опрос: ' + message.text
-                        bot.send_message(secret.apple_id, '1')
-                        bot.send_poll(secret.tg_chat_id, opros, constants.poll_options, is_anonymous=False, allows_multiple_answers=False)
-                        bot.send_message(secret.apple_id, '2')
-                        # bot.delete_message(secret.tg_chat_id, message.reply_to_message.message_id)
+                        poll = bot.send_poll(secret.tg_chat_id, opros, constants.poll_options, is_anonymous=False, allows_multiple_answers=False)
+                        # bot.send_message(secret.apple_id, '2')
+                        bot.delete_message(secret.tg_chat_id, message.reply_to_message.message_id)
                         # bot.pin_chat_message(secret.tg_chat_id, poll.message_id, disable_notification=False)
                     else:
                         force_reply = telebot.types.ForceReply(True)
                         bot.delete_message(secret.tg_chat_id, message.reply_to_message.message_id)
                         bot.send_message(message.chat.id, constants.too_large_question, reply_to_message_id=message.message_id, reply_markup=force_reply)                       
-                except:
-                    bot.send_message(message.chat.id, constants.errors[14])
+                except Exception as e:
+                    bot.send_message(message.chat.id, constants.errors[14] + '\nНовый опросник\n' + str(e))
                     send_error(message, 14)      
             # Запрос внесения опроса
             elif message.reply_to_message.text == constants.enter_question:
