@@ -266,7 +266,17 @@ def aaaa(message):
     except Exception as e:
         bot.send_message(secret.apple_id, 'Ошибка в функции aaaa:\n\n' + str(e))
 
+        
+# Обработка РАСИЯ
+@bot.message_handler(func=lambda
+        message: message.text and message.text.lower() in constants.russia and message.chat.id == secret.tg_chat_id)
+def russia(message):
+    try:
+        bot.send_voice(secret.tg_chat_id, 'AwACAgIAAxkBAAJDIWLGyK15Ym3bMc0u5PU9YXtDDxHnAALtHAACbJI4SiCUtXmDfvoxKQQ', '🫡')
+    except Exception as e:
+        bot.send_message(secret.apple_id, 'Ошибка в функции russia:\n\n' + str(e))
 
+        
 # Обработка врача
 @bot.message_handler(func=lambda
         message: message.text and message.text.lower() in constants.vracha and message.chat.id == secret.tg_chat_id)
@@ -359,10 +369,10 @@ def block(message):
 @bot.message_handler(content_types=['text'])
 def send_text(message):
     try:
-        if message.text == 'РА\nСИ\nЯ' and message.chat.id == secret.tg_chat_id:
-            bot.send_voice(secret.tg_chat_id, 'AwACAgIAAxkBAAJDIWLGyK15Ym3bMc0u5PU9YXtDDxHnAALtHAACbJI4SiCUtXmDfvoxKQQ', '🫡')
+        # if message.text == 'РА\nСИ\nЯ' and message.chat.id == secret.tg_chat_id:
+            # bot.send_voice(secret.tg_chat_id, 'AwACAgIAAxkBAAJDIWLGyK15Ym3bMc0u5PU9YXtDDxHnAALtHAACbJI4SiCUtXmDfvoxKQQ', '🫡')
         # Если это реплай на сообщение бота
-        elif message.reply_to_message is not None and message.reply_to_message.from_user.id == secret.bot_id:
+        if message.reply_to_message is not None and message.reply_to_message.from_user.id == secret.bot_id:
             # Запрос внесения опроса (нового)
             if message.reply_to_message.text == constants.enter_question_new or message.reply_to_message.text == constants.too_large_question:
                 try:
