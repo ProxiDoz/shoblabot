@@ -115,7 +115,7 @@ def handle_start(message):
         else:
             bot.send_message(message.chat.id, constants.help_text_light, parse_mode='Markdown')
     except Exception as e:
-        bot.send_message(secret.apple_id, 'Ошибка в команде /start:\n\n' + str(e))
+        send_error(message, 0, e)
 
 
 # Вызов справки
@@ -130,19 +130,16 @@ def handle_help(message):
                              parse_mode='Markdown')
             bot.send_message(message.chat.id, constants.help_text, reply_markup=constants.help_keyboard, parse_mode='Markdown')
     except Exception as e:
-        bot.send_message(secret.apple_id, 'Ошибка в команде /help:\n\n' + str(e))
+        send_error(message, 1, e)
 
 
 # # # # # # Служебные функции и команды
 # Функция отправки времени старта запуска бота
 def send_start_time():
     try:
-        date = time.time() + 10800
-        bot.send_message(secret.apple_id,
-                         '*Время запуска бота: *_{0}_'.format(time.strftime('%d.%m.%y %X', time.gmtime(date))),
-                         parse_mode='Markdown')
+        bot.send_message(secret.apple_id, '*Время запуска бота:* _{0}_'.format(time.ctime(time.time())), parse_mode='Markdown')
     except Exception as e:
-        bot.send_message(secret.apple_id, 'Ошибка в функции send_start_time:\n\n' + str(e))
+        send_error(message, 2, e)
 
 
 # Функция сбора статистики по командам и функциям
@@ -159,7 +156,7 @@ def update_activity(field):
         with open('/root/router/shoblabot/activity_count', 'w') as lang:
             lang.write(json.dumps(activity_count))
     except Exception as e:
-        bot.send_message(secret.apple_id, 'Ошибка в функции update_activity:\n\n' + str(e))
+        send_error(message, 3, e)
         
         
 # Вызов статистики
@@ -201,22 +198,21 @@ def statistics(message):
                                                        activity_count[cur_mnth]['rapid'])
         bot.send_message(secret.apple_id, month_statistics, parse_mode='Markdown')
     except Exception as e:
-        bot.send_message(secret.apple_id, 'Ошибка в команде /statistics:\n\n' + str(e))
+        send_error(message, 4, e)
 
         
 # Функция отправки ошибки
-def send_error(message, error_id):
+def send_error(message, error_id, error):
     try:
-        date = time.strftime('%d.%m.%y %X', time.gmtime(message.date + 10800))
         bot.send_message(secret.apple_id,
-                         '*{0}\nОт:* {1} {2}\n*Username:* {3}\n*Чат:* {4} {5} {6} id: {7}\n*Сообщение:* {8}\n'
-                         '*Время:* _{9}_'.format(constants.errors[error_id], str(message.from_user.first_name),
+                         '❌ *{0}\nОт:* {1} {2}\n*Username:* {3}\n*Чат:* {4} {5} {6}\n*id:* {7}\n*Сообщение:* {8}\n'
+                         '*Время:* _{9}_\n*Ошибка:* _{10}_'.format(constants.errors[error_id], str(message.from_user.first_name),
                                                  str(message.from_user.last_name), str(message.from_user.username),
                                                  str(message.chat.title), str(message.chat.first_name),
-                                                 str(message.chat.last_name), str(message.chat.id), message.text, date),
+                                                 str(message.chat.last_name), str(message.chat.id), message.text, time.ctime(time.time()), error),
                          parse_mode='Markdown')
     except Exception as e:
-        bot.send_message(secret.apple_id, 'Ошибка в функции send_error:\n\n' + str(e))
+        bot.send_message(secret.apple_id, '❌ Ошибка в функции send_error:\n*Сообщение: *{0}\n*Ошибка:*\n{1}'.format(message.text, e))
 
         
 # Вызов информации о сервере
@@ -233,12 +229,12 @@ def server_info(message):
                 else:
                     bot.send_message(secret.tg_chat_id, message.text[3:-1])
                     bot.send_message(secret.apple_id, '✅ Сообщение отправлено')
-            except:
-                send_error(message, 3)
+            except Exception as e:
+                send_error(message, 21, e)
         else:
-            send_error(message, 2)
+            send_error(message, 6, 'N/A')
     except Exception as e:
-        bot.send_message(secret.apple_id, 'Ошибка в функции server_info:\n\n' + str(e))
+        send_error(message, 5, e)
 
 
 # # # # # # Общие команды
@@ -246,22 +242,19 @@ def server_info(message):
 @bot.message_handler(commands=['who'])
 def who_will(message):
     try:
-        try:
-            update_activity('who')
-            if message.chat.id == secret.tg_chat_id:
-                bot.send_message(secret.tg_requests_chat_id,
-                                '✅ */who* от [{0}](tg://user?id={1})'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)],
-                                                                          str(message.from_user.id)),
-                                parse_mode='Markdown')
-                force_reply = telebot.types.ForceReply(True)
-                bot.send_message(secret.tg_chat_id, constants.enter_question_new, reply_to_message_id=message.message_id, reply_markup=force_reply)
-                bot.delete_message(secret.tg_chat_id, message.message_id)
-            else:
-                bot.send_message(message.chat.id, '❌ Опрос создается только в [Шобле](https://t.me/c/1126587083/)', parse_mode='Markdown')
-        except:
-            send_error(message, 2)
+        update_activity('who')
+        if message.chat.id == secret.tg_chat_id:
+            bot.send_message(secret.tg_requests_chat_id,
+                            '✅ */who* от [{0}](tg://user?id={1})'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)],
+                                                                      str(message.from_user.id)),
+                            parse_mode='Markdown')
+            force_reply = telebot.types.ForceReply(True)
+            bot.send_message(secret.tg_chat_id, constants.enter_question_new, reply_to_message_id=message.message_id, reply_markup=force_reply)
+            bot.delete_message(secret.tg_chat_id, message.message_id)
+        else:
+            bot.send_message(message.chat.id, '❌ Опрос создается только в [Шобле](https://t.me/c/1126587083/)', parse_mode='Markdown')
     except Exception as e:
-        bot.send_message(secret.apple_id, 'Ошибка в функции who_will:\n\n' + str(e))
+        send_error(message, 7, e)
 
 
 # Отправка скидок
@@ -273,7 +266,7 @@ def send_discount(message):
                                  parse_mode='Markdown')
             update_activity('discount')
     except Exception as e:
-        bot.send_message(secret.apple_id, 'Ошибка в функции send_discount:\n\n' + str(e))
+        send_error(message, 8, e)
 
 
 # # # # # # Обработка данных
@@ -285,7 +278,7 @@ def aaa(message):
         bot.send_message(secret.tg_chat_id, 'Двк з рлм')
         update_activity('devka')
     except Exception as e:
-        bot.send_message(secret.apple_id, 'Ошибка в функции aaa:\n\n' + str(e))
+        send_error(message, 9, e)
 
 
 @bot.message_handler(func=lambda
@@ -295,7 +288,7 @@ def aaaa(message):
         bot.send_message(secret.tg_chat_id, 'Девка за рулём')
         update_activity('devka')
     except Exception as e:
-        bot.send_message(secret.apple_id, 'Ошибка в функции aaaa:\n\n' + str(e))
+        send_error(message, 10, e)
 
         
 # Обработка РАСИЯ
@@ -306,7 +299,7 @@ def russia(message):
         bot.send_voice(secret.tg_chat_id, 'AwACAgIAAxkBAAJDIWLGyK15Ym3bMc0u5PU9YXtDDxHnAALtHAACbJI4SiCUtXmDfvoxKQQ', '🫡')
         update_activity('russia')
     except Exception as e:
-        bot.send_message(secret.apple_id, 'Ошибка в функции russia:\n\n' + str(e))
+        send_error(message, 11, e)
 
         
 # Обработка врача
@@ -317,7 +310,7 @@ def vracha(message):
         bot.send_document(secret.tg_chat_id, 'CgADAgADRgIAAkbDcEn-Ox-uqrgsHgI', caption='@oxy_genium')
         update_activity('vracha')
     except Exception as e:
-        bot.send_message(secret.apple_id, 'Ошибка в функции vracha:\n\n' + str(e))
+        send_error(message, 12, e)
 
 
 # Обработка гита
@@ -328,7 +321,7 @@ def git(message):
         bot.send_message(secret.tg_chat_id, 'Хуит')
         update_activity('git')
     except Exception as e:
-        bot.send_message(secret.apple_id, 'Ошибка в функции git:\n\n' + str(e))
+        send_error(message, 13, e)
 
         
 # Обработка @team
@@ -339,7 +332,7 @@ def team(message):
         bot.send_message(chat_id=secret.tg_chat_id, disable_notification=False, reply_to_message_id=message.message_id , text='⚠️ *Внимание, Шобла*\n\n[Тарс](t.me/shackoor), [Апол](t.me/apoll), [Ивановский](t.me/ivanovmm), [Конатик](t.me/KanatoF), [Кир](t.me/zhuykovkb), [Катя](tg://user?id=434756061), [Максон](t.me/MrGogu), [Носик](tg://user?id=51994109), [Окз](t.me/oxy_genium), [Паузеньк](t.me/Pausenk), [НТЩ](t.me/ntshch), [Толяновский](t.me/toliyansky), [Виктор](t.me/FrelVick), [Морго](t.me/margoiv_a), [Мишаня](t.me/Mich37), [Ксю](t.me/ksenia_boorda), [Ромолэ](t.me/Roman_Kazitskiy), [Эльтос](t.me/elvira_aes), [Аня](t.me/kebushka), [Деннис](tg://user?id=503404575)', disable_web_page_preview=True, parse_mode="MarkdownV2")
         update_activity('team')
     except Exception as e:
-        bot.send_message(secret.apple_id, 'Ошибка в функции team:\n\n' + str(e))
+        send_error(message, 14, e)
 
         
 # Обработка @rapid
@@ -365,7 +358,7 @@ def rapid(message):
             update_activity('rapid_new')
     except Exception as e:
         bot.send_message(secret.zhuykovkb_apple_id, 'Ошибка в функции rapid:\n\nДанные ' + quote(value) + '\n\nТекст ошибки ' + str(e))
-        bot.send_message(secret.apple_id, 'Ошибка в функции rapid:\n\nДанные ' + quote(value) + '\n\nТекст ошибки ' + str(e))
+        send_error(message, 15, e)
 
         
 # Обработка барсука
@@ -376,7 +369,7 @@ def barsuk(message):
         bot.send_message(secret.tg_chat_id, 'Барсук')
         update_activity('cyk')
     except Exception as e:
-        bot.send_message(secret.apple_id, 'Ошибка в функции barsuk:\n\n' + str(e))
+        send_error(message, 16, e)
         
 
 # Обработка барсюка
@@ -387,7 +380,7 @@ def barsyuk(message):
         bot.send_message(secret.tg_chat_id, 'Барсюк')
         update_activity('cyk')
     except Exception as e:
-        bot.send_message(secret.apple_id, 'Ошибка в функции barsyuk:\n\n' + str(e))
+        send_error(message, 17, e)
         
 
 # Обработка IPv6
@@ -397,7 +390,7 @@ def block(message):
     try:
         bot.send_message(secret.tg_chat_id, 'Значит так, - сразу нахуй!')
     except Exception as e:
-        bot.send_message(secret.apple_id, 'Ошибка в функции block:\n\n' + str(e))
+        send_error(message, 18, e)
 
     
 # Обработчик текста
@@ -427,8 +420,8 @@ def send_text(message):
                         bot.delete_message(secret.tg_chat_id, message.reply_to_message.message_id)
                         bot.send_message(message.chat.id, constants.too_large_question, reply_to_message_id=message.message_id, reply_markup=force_reply)                       
                 except Exception as e:
-                    bot.send_message(message.chat.id, constants.errors[14] + '\nНовый опросник\n' + str(e))
-                    send_error(message, 14)      
+                    # bot.send_message(message.chat.id, constants.errors[14] + '\nНовый опросник\n' + str(e))
+                    send_error(message, 19, e)      
             # Запрос внесения опроса
             elif message.reply_to_message.text == constants.enter_question:
                 try:
@@ -462,9 +455,9 @@ def send_text(message):
                     bot.delete_message(secret.tg_chat_id, message.reply_to_message.message_id)
                     bot.delete_message(secret.tg_chat_id, message.message_id)
                     update_activity('opros')
-                except:
-                    bot.send_message(message.chat.id, constants.errors[14])
-                    send_error(message, 14)
+                except Exception as e:
+                    # bot.send_message(message.chat.id, constants.errors[14])
+                    send_error(message, 19, e)
             elif message.text == '@shoblabot':
                 bot.pin_chat_message(chat_id=secret.tg_chat_id, message_id=message.reply_to_message.message_id,
                                      disable_notification=False)
@@ -474,7 +467,7 @@ def send_text(message):
                                  disable_notification=False)
             update_activity('pin')
     except Exception as e:
-        bot.send_message(secret.apple_id, 'Ошибка в обработчике текста send_text:\n\n' + str(e) + '\n\n' + message.text)
+        send_error(message, 20, e)
 
         
 # Обработчик Call Back Data
@@ -487,8 +480,8 @@ def callback_buttons(call):
                 ram = psutil.virtual_memory()
                 bot.answer_callback_query(callback_query_id=call.id, show_alert=False,
                                           text='💽 RAM: {0}%'.format(ram[2]))
-            except:
-                send_error(call.message, 21)
+            except Exception as e:
+                send_error(call.message, 21, e)
         elif call.data[0:4] == 'stop':
             message_id = int(call.data.split('_')[1])
             user_id = int(call.data.split('_')[2])
@@ -497,8 +490,8 @@ def callback_buttons(call):
                     bot.stop_poll(secret.tg_chat_id, message_id)
                 else:
                     bot.answer_callback_query(call.id, constants.wrong_stop, show_alert=True)
-            except:
-                send_error(call.message, 31)
+            except Exception as e:
+                send_error(call.message, 22, e)
         elif call.data[0:2] == 'op':
             user_id = int(call.data.split('_')[1])
             try:
@@ -532,10 +525,8 @@ def callback_buttons(call):
                     # Записываем данные в файл
                     with open('/root/router/shoblabot/who/{0}'.format(date), 'w') as lang:
                         lang.write(json.dumps(who_opros))
-            except:
-                send_error(call.message, 24)
-                bot.send_message(secret.apple_id, '*Ошибка от:* {0}'.format(constants.who_will[0][user_id]),
-                                 parse_mode='Markdown')
+            except Exception as e:
+                send_error(call.message, 23, e)
         elif call.data == 'okey':
             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
                                   text='🛒 [О\'кей](https://i.imgur.com/TZV4nCd.jpg)', parse_mode='Markdown',
@@ -617,7 +608,7 @@ def callback_buttons(call):
                                   text='🛒 [Ашан](https://i.imgur.com/iGsQ2Ds.jpg)', parse_mode='Markdown',
                                   reply_markup=keyboard_ashan)
     except Exception as e:
-        bot.send_message(secret.apple_id, 'Ошибка в обработчике Callback кнопок callback_buttons:\n\n' + str(e))
+        send_error(call.message, 24, e)
 
 
 # Отправка поздравления с др в Шоблу
@@ -680,30 +671,30 @@ def sdr():
                                  parse_mode='Markdown')
             i += 1
     except Exception as e:
-        bot.send_message(secret.apple_id,
-                         'Ошибка в функции отправки поздравления в Шоблу sdr():\n\n' + str(e))
+        send_error(call.message, 25, e)
 
 
 # Запуск функций
 try:
     bot.remove_webhook()
 except Exception as e:
-    bot.send_message(secret.apple_id, 'Ошибка в запуске встроенный функций:\nremove_webjook()\n\n' + str(e))
+    send_error(call.message, 26, e)
 
 # try:
 #     send_start_time()
 # except Exception as e:
-#     bot.send_message(secret.apple_id, 'Ошибка в запуске встроенный функций:\n\send_start_time()\n\n' + str(e))
+#     send_error(call.message, 27, e)
 
 try:
     sdr()
 except Exception as e:
-    bot.send_message(secret.apple_id, 'Ошибка в запуске встроенный функций:\n\sdr()\n\n' + str(e))
+    send_error(call.message, 28, e)
 
 try:
     bot.polling()
 except Exception as e:
-    bot.send_message(secret.apple_id, 'Ошибка при запуске bot.polling():\n\n' + str(e))
+    send_error(call.message, 29, e)
+    
 
 # class WebhookServer(object):
 # index равнозначно /, т.к. отсутствию части после ip-адреса (грубо говоря)
