@@ -409,8 +409,8 @@ def send_text(message):
             # Запрос внесения опроса (нового)
             if message.reply_to_message.text == constants.enter_question_new or message.reply_to_message.text == constants.too_large_question:
                 try:
-                    if len(message.text) <= 293:
-                        opros = 'Опрос: ' + message.text
+                    if len(message.text) <= 291:
+                        opros = constants.tg_names[constants.tg_ids.index(message.from_user.id)] + ': ' + message.text
                         poll = bot.send_poll(secret.tg_chat_id, opros, constants.poll_options, is_anonymous=False, allows_multiple_answers=False)
                         stop_button = telebot.types.InlineKeyboardButton(text='Остановить опрос 🚫',
                                                                          callback_data='stop_{0}_{1}'.format(
