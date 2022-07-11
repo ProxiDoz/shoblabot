@@ -208,17 +208,19 @@ def statistics(message):
                            'А так же отправлено следующих команд:\n\n' \
                            '/start: *{8} раз*\n' \
                            '/help: *{9} раз*\n' \
-                           '/who: *{10} раз*'.format(activity_count[cur_mnth]['opros'],
+                           '/who: *{10} раз*\n' \
+                           '/rapid: *{11} раз*'.format(activity_count[cur_mnth]['opros'],
                                                     activity_count[cur_mnth]['discount'],
                                                     activity_count[cur_mnth]['devka'],
                                                     activity_count[cur_mnth]['vracha'],
-                                                    activity_count[cur_mnth]['rapid'],
+                                                    activity_count[cur_mnth]['rapid_new'],
                                                     activity_count[cur_mnth]['cyk'],
                                                     activity_count[cur_mnth]['russia'],
                                                     activity_count[cur_mnth]['team'],
                                                     activity_count[cur_mnth]['start'],
                                                     activity_count[cur_mnth]['help'],
-                                                    activity_count[cur_mnth]['who'])
+                                                    activity_count[cur_mnth]['who'],
+                                                    activity_count[cur_mnth]['rapid'])
         bot.send_message(secret.apple_id, month_statistics, parse_mode='Markdown')
     except Exception as e:
         bot.send_message(secret.apple_id, 'Ошибка в команде /statistics:\n\n' + str(e))
@@ -474,6 +476,17 @@ def team(message):
         message: message.text and message.text.lower().startswith(constants.rapid) and message.chat.id == secret.tg_chat_id)
 def rapid(message):
     try:
+        # Сбор статистики по отправке команды
+        now_time = datetime.datetime.now()
+        cur_mnth = str(now_time.year) + '.' + str(now_time.month)
+        # Загружаем данные из файла activity_count
+        if os.path.isfile('/root/router/shoblabot/activity_count'):
+            with open('/root/router/shoblabot/activity_count', 'r') as lang:
+                activity_count = json.loads(lang.read())
+        activity_count[cur_mnth]['rapid'] += 1
+        # Записываем данные в файл activity_count
+        with open('/root/router/shoblabot/activity_count', 'w') as lang:
+            lang.write(json.dumps(activity_count))
         # Сплитуем строку выпилив предварительно ненужные пробелы по бокам
         data = message.text.lower().strip().split(" ")
     
@@ -495,12 +508,13 @@ def rapid(message):
             if os.path.isfile('/root/router/shoblabot/activity_count'):
                 with open('/root/router/shoblabot/activity_count', 'r') as lang:
                     activity_count = json.loads(lang.read())
-            activity_count[cur_mnth]['rapid'] += 1
+            activity_count[cur_mnth]['rapid_new'] += 1
             # Записываем данные в файл activity_count
             with open('/root/router/shoblabot/activity_count', 'w') as lang:
                 lang.write(json.dumps(activity_count))
     except Exception as e:
         bot.send_message(secret.zhuykovkb_apple_id, 'Ошибка в функции rapid:\n\nДанные ' + quote(value) + '\n\nТекст ошибки ' + str(e))
+        bot.send_message(secret.apple_id, 'Ошибка в функции rapid:\n\nДанные ' + quote(value) + '\n\nТекст ошибки ' + str(e))
 
 # Обработка барсука
 @bot.message_handler(func=lambda
