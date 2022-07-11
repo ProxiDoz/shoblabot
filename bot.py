@@ -203,13 +203,22 @@ def statistics(message):
                            '👩🏻‍⚕️ Врача вызывали: *{3} раз*\n' \
                            '✅️ Сохранено номеров Рапидов: *{4} шт*\n' \
                            '🦡 Отправлено барсуков: *{5} раз*\n' \
-                           '🫡🇷🇺 Спето российских гимнов: *{6} раз*\n'.format(activity_count[cur_mnth]['who'],
-                                                              activity_count[cur_mnth]['discount'],
-                                                              activity_count[cur_mnth]['devka'],
-                                                              activity_count[cur_mnth]['vracha'],
-                                                                                activity_count[cur_mnth]['rapid'],
-                                                                   activity_count[cur_mnth]['cyk'],
-                                                                        activity_count[cur_mnth]['russia'])
+                           '🫡🇷🇺 Спето российских гимнов: *{6} раз*\n' \
+                           '👥 Вызваны все участники Шоблы: *{7} раз*\n\n' \
+                           'А так же отправлено следующих команд:\n\n' \
+                           '/start: *{8} раз*\n' \
+                           '/help: *{9} раз*\n' \
+                           '/who: *{10} раз*'.format(activity_count[cur_mnth]['opros'],
+                                                    activity_count[cur_mnth]['discount'],
+                                                    activity_count[cur_mnth]['devka'],
+                                                    activity_count[cur_mnth]['vracha'],
+                                                    activity_count[cur_mnth]['rapid'],
+                                                    activity_count[cur_mnth]['cyk'],
+                                                    activity_count[cur_mnth]['russia'],
+                                                    activity_count[cur_mnth]['team'],
+                                                    activity_count[cur_mnth]['start'],
+                                                    activity_count[cur_mnth]['help'],
+                                                    activity_count[cur_mnth]['who'])
         bot.send_message(secret.apple_id, month_statistics, parse_mode='Markdown')
     except Exception as e:
         bot.send_message(secret.apple_id, 'Ошибка в команде /statistics:\n\n' + str(e))
@@ -267,6 +276,17 @@ def who_will(message):
                     bot.send_message(secret.tg_chat_id, constants.enter_question_new, reply_to_message_id=message.message_id,
                                      reply_markup=force_reply)
                     bot.delete_message(secret.tg_chat_id, message.message_id)
+                    # Сбор статистики по отправке команды
+                    now_time = datetime.datetime.now()
+                    cur_mnth = str(now_time.year) + '.' + str(now_time.month)
+                    # Загружаем данные из файла activity_count
+                    if os.path.isfile('/root/router/shoblabot/activity_count'):
+                        with open('/root/router/shoblabot/activity_count', 'r') as lang:
+                            activity_count = json.loads(lang.read())
+                    activity_count[cur_mnth]['who'] += 1
+                    # Записываем данные в файл activity_count
+                    with open('/root/router/shoblabot/activity_count', 'w') as lang:
+                        lang.write(json.dumps(activity_count))
             else:
                 bot.send_message(message.chat.id, '❌ Опрос создается только в Шобле')
         except:
@@ -281,6 +301,7 @@ def send_discount(message):
     try:
         user_id = constants.tg_ids.index(message.from_user.id)
         if user_id is not None:
+            # Отправка сообщения
             if user_id is 16:
                 bot.send_message(message.chat.id, '🛒 [Перекресток](https://i.imgur.com/my5Q8RF.jpg)',
                                  reply_markup=keyboard_perik,
@@ -292,6 +313,17 @@ def send_discount(message):
             else:
                 bot.send_message(message.chat.id, '🛒 [О\'КЕЙ](https://i.imgur.com/TZV4nCd.jpg)', reply_markup=keyboard_okey,
                                  parse_mode='Markdown')
+            # Сбор статистики по запуску команды
+            now_time = datetime.datetime.now()
+            cur_mnth = str(now_time.year) + '.' + str(now_time.month)
+            # Загружаем данные из файла activity_count
+            if os.path.isfile('/root/router/shoblabot/activity_count'):
+                with open('/root/router/shoblabot/activity_count', 'r') as lang:
+                    activity_count = json.loads(lang.read())
+            activity_count[cur_mnth]['discount'] += 1
+            # Записываем данные в файл activity_count
+            with open('/root/router/shoblabot/activity_count', 'w') as lang:
+                lang.write(json.dumps(activity_count))
     except Exception as e:
         bot.send_message(secret.apple_id, 'Ошибка в функции send_discount:\n\n' + str(e))
 
@@ -304,6 +336,17 @@ def send_discount(message):
 def aaa(message):
     try:
         bot.send_message(secret.tg_chat_id, 'Двк з рлм')
+        # Сбор статистики по отправке девки
+        now_time = datetime.datetime.now()
+        cur_mnth = str(now_time.year) + '.' + str(now_time.month)
+        # Загружаем данные из файла activity_count
+        if os.path.isfile('/root/router/shoblabot/activity_count'):
+            with open('/root/router/shoblabot/activity_count', 'r') as lang:
+                activity_count = json.loads(lang.read())
+        activity_count[cur_mnth]['devka'] += 1
+        # Записываем данные в файл activity_count
+        with open('/root/router/shoblabot/activity_count', 'w') as lang:
+            lang.write(json.dumps(activity_count))
     except Exception as e:
         bot.send_message(secret.apple_id, 'Ошибка в функции aaa:\n\n' + str(e))
 
@@ -317,8 +360,18 @@ def aaaa(message):
         #    bot.send_message(secret.tg_chat_id, 'Двк з рлм')
         #else:
         #    bot.send_message(secret.tg_chat_id, 'Девка за рулём')
-
         bot.send_message(secret.tg_chat_id, 'Девка за рулём')
+        # Сбор статистики по отправке девки
+        now_time = datetime.datetime.now()
+        cur_mnth = str(now_time.year) + '.' + str(now_time.month)
+        # Загружаем данные из файла activity_count
+        if os.path.isfile('/root/router/shoblabot/activity_count'):
+            with open('/root/router/shoblabot/activity_count', 'r') as lang:
+                activity_count = json.loads(lang.read())
+        activity_count[cur_mnth]['devka'] += 1
+        # Записываем данные в файл activity_count
+        with open('/root/router/shoblabot/activity_count', 'w') as lang:
+            lang.write(json.dumps(activity_count))
     except Exception as e:
         bot.send_message(secret.apple_id, 'Ошибка в функции aaaa:\n\n' + str(e))
 
@@ -329,6 +382,17 @@ def aaaa(message):
 def russia(message):
     try:
         bot.send_voice(secret.tg_chat_id, 'AwACAgIAAxkBAAJDIWLGyK15Ym3bMc0u5PU9YXtDDxHnAALtHAACbJI4SiCUtXmDfvoxKQQ', '🫡')
+        # Сбор статистики по отправке гимна
+        now_time = datetime.datetime.now()
+        cur_mnth = str(now_time.year) + '.' + str(now_time.month)
+        # Загружаем данные из файла activity_count
+        if os.path.isfile('/root/router/shoblabot/activity_count'):
+            with open('/root/router/shoblabot/activity_count', 'r') as lang:
+                activity_count = json.loads(lang.read())
+        activity_count[cur_mnth]['russia'] += 1
+        # Записываем данные в файл activity_count
+        with open('/root/router/shoblabot/activity_count', 'w') as lang:
+            lang.write(json.dumps(activity_count))
     except Exception as e:
         bot.send_message(secret.apple_id, 'Ошибка в функции russia:\n\n' + str(e))
 
@@ -339,6 +403,17 @@ def russia(message):
 def vracha(message):
     try:
         bot.send_document(secret.tg_chat_id, 'CgADAgADRgIAAkbDcEn-Ox-uqrgsHgI', caption='@oxy_genium')
+        # Сбор статистики по отправке ВРАЧААА
+        now_time = datetime.datetime.now()
+        cur_mnth = str(now_time.year) + '.' + str(now_time.month)
+        # Загружаем данные из файла activity_count
+        if os.path.isfile('/root/router/shoblabot/activity_count'):
+            with open('/root/router/shoblabot/activity_count', 'r') as lang:
+                activity_count = json.loads(lang.read())
+        activity_count[cur_mnth]['vracha'] += 1
+        # Записываем данные в файл activity_count
+        with open('/root/router/shoblabot/activity_count', 'w') as lang:
+            lang.write(json.dumps(activity_count))
     except Exception as e:
         bot.send_message(secret.apple_id, 'Ошибка в функции vracha:\n\n' + str(e))
 
@@ -358,6 +433,17 @@ def vracha(message):
 def git2(message):
     try:
         bot.send_message(secret.tg_chat_id, 'Хуит')
+        # Сбор статистики по отправке Гита
+        now_time = datetime.datetime.now()
+        cur_mnth = str(now_time.year) + '.' + str(now_time.month)
+        # Загружаем данные из файла activity_count
+        if os.path.isfile('/root/router/shoblabot/activity_count'):
+            with open('/root/router/shoblabot/activity_count', 'r') as lang:
+                activity_count = json.loads(lang.read())
+        activity_count[cur_mnth]['git'] += 1
+        # Записываем данные в файл activity_count
+        with open('/root/router/shoblabot/activity_count', 'w') as lang:
+            lang.write(json.dumps(activity_count))
     except Exception as e:
         bot.send_message(secret.apple_id, 'Ошибка в функции git2:\n\n' + str(e))
 
@@ -368,6 +454,17 @@ def git2(message):
 def team(message):
     try:
         bot.send_message(chat_id=secret.tg_chat_id, disable_notification=False, reply_to_message_id=message.message_id , text='⚠️ *Внимание, Шобла*\n\n[Тарс](t.me/shackoor), [Апол](t.me/apoll), [Ивановский](t.me/ivanovmm), [Конатик](t.me/KanatoF), [Кир](t.me/zhuykovkb), [Катя](tg://user?id=434756061), [Максон](t.me/MrGogu), [Носик](tg://user?id=51994109), [Окз](t.me/oxy_genium), [Паузеньк](t.me/Pausenk), [НТЩ](t.me/ntshch), [Толяновский](t.me/toliyansky), [Виктор](t.me/FrelVick), [Морго](t.me/margoiv_a), [Мишаня](t.me/Mich37), [Ксю](t.me/ksenia_boorda), [Ромолэ](t.me/Roman_Kazitskiy), [Эльтос](t.me/elvira_aes), [Аня](t.me/kebushka), [Деннис](tg://user?id=503404575)', disable_web_page_preview=True, parse_mode="MarkdownV2")
+        # Сбор статистики по отправке @team
+        now_time = datetime.datetime.now()
+        cur_mnth = str(now_time.year) + '.' + str(now_time.month)
+        # Загружаем данные из файла activity_count
+        if os.path.isfile('/root/router/shoblabot/activity_count'):
+            with open('/root/router/shoblabot/activity_count', 'r') as lang:
+                activity_count = json.loads(lang.read())
+        activity_count[cur_mnth]['team'] += 1
+        # Записываем данные в файл activity_count
+        with open('/root/router/shoblabot/activity_count', 'w') as lang:
+            lang.write(json.dumps(activity_count))
     except Exception as e:
         bot.send_message(secret.apple_id, 'Ошибка в функции team:\n\n' + str(e))
 
@@ -390,6 +487,18 @@ def rapid(message):
         response = urllib2.urlopen('https://bot.zhuykovkb.ru:81/rapid?data=' + quote(value) + '&memberid=' + str(message.from_user.id))
         answer = json.loads(str(response.read(), 'utf-8'))
         bot.send_message(secret.tg_chat_id, answer['message'], parse_mode='Markdown')
+        if answer['message'] == 'Номер успешно добавлен':
+            # Сбор статистики по отправке @team
+            now_time = datetime.datetime.now()
+            cur_mnth = str(now_time.year) + '.' + str(now_time.month)
+            # Загружаем данные из файла activity_count
+            if os.path.isfile('/root/router/shoblabot/activity_count'):
+                with open('/root/router/shoblabot/activity_count', 'r') as lang:
+                    activity_count = json.loads(lang.read())
+            activity_count[cur_mnth]['rapid'] += 1
+            # Записываем данные в файл activity_count
+            with open('/root/router/shoblabot/activity_count', 'w') as lang:
+                lang.write(json.dumps(activity_count))
     except Exception as e:
         bot.send_message(secret.zhuykovkb_apple_id, 'Ошибка в функции rapid:\n\nДанные ' + quote(value) + '\n\nТекст ошибки ' + str(e))
 
@@ -399,6 +508,17 @@ def rapid(message):
 def barsuk(message):
     try:
         bot.send_message(secret.tg_chat_id, 'Барсук')
+        # Сбор статистики по отправке Барсука
+        now_time = datetime.datetime.now()
+        cur_mnth = str(now_time.year) + '.' + str(now_time.month)
+        # Загружаем данные из файла activity_count
+        if os.path.isfile('/root/router/shoblabot/activity_count'):
+            with open('/root/router/shoblabot/activity_count', 'r') as lang:
+                activity_count = json.loads(lang.read())
+        activity_count[cur_mnth]['cyk'] += 1
+        # Записываем данные в файл activity_count
+        with open('/root/router/shoblabot/activity_count', 'w') as lang:
+            lang.write(json.dumps(activity_count))
     except Exception as e:
         bot.send_message(secret.apple_id, 'Ошибка в функции barsuk:\n\n' + str(e))
         
@@ -409,6 +529,17 @@ def barsuk(message):
 def barsyuk(message):
     try:
         bot.send_message(secret.tg_chat_id, 'Барсюк')
+        # Сбор статистики по отправке Барсука
+        now_time = datetime.datetime.now()
+        cur_mnth = str(now_time.year) + '.' + str(now_time.month)
+        # Загружаем данные из файла activity_count
+        if os.path.isfile('/root/router/shoblabot/activity_count'):
+            with open('/root/router/shoblabot/activity_count', 'r') as lang:
+                activity_count = json.loads(lang.read())
+        activity_count[cur_mnth]['cyk'] += 1
+        # Записываем данные в файл activity_count
+        with open('/root/router/shoblabot/activity_count', 'w') as lang:
+            lang.write(json.dumps(activity_count))
     except Exception as e:
         bot.send_message(secret.apple_id, 'Ошибка в функции barsyuk:\n\n' + str(e))
         
@@ -446,6 +577,17 @@ def send_text(message):
                         bot.edit_message_reply_markup(secret.tg_chat_id, poll.message_id, reply_markup=keyboard_opros_stop)
                         bot.delete_message(secret.tg_chat_id, message.message_id)
                         bot.pin_chat_message(secret.tg_chat_id, poll.message_id, disable_notification=False)
+                        # Сбор статистики по отправке опроса
+                        now_time = datetime.datetime.now()
+                        cur_mnth = str(now_time.year) + '.' + str(now_time.month)
+                        # Загружаем данные из файла activity_count
+                        if os.path.isfile('/root/router/shoblabot/activity_count'):
+                            with open('/root/router/shoblabot/activity_count', 'r') as lang:
+                                activity_count = json.loads(lang.read())
+                        activity_count[cur_mnth]['opros'] += 1
+                        # Записываем данные в файл activity_count
+                        with open('/root/router/shoblabot/activity_count', 'w') as lang:
+                            lang.write(json.dumps(activity_count))
                     else:
                         force_reply = telebot.types.ForceReply(True)
                         bot.delete_message(secret.tg_chat_id, message.reply_to_message.message_id)
