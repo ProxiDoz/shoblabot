@@ -805,7 +805,42 @@ def sdr():
         i = 0
         if now_time.hour is not 10:
             return
-        if now_time.day == 1: # День для выкладывания фоток за месяц Месечная десятка челлендж
+        if now_time.day == 1: # День для статистики по боту выкладывания фоток за месяц Месечная десятка челлендж
+            if now_time.month == 1:
+                cur_mnth = str(now_time.year-1) + '.12'
+            else:
+                cur_mnth = str(now_time.year) + '.' + str(now_time.month-1)
+            # Загружаем данные из файла activity_count
+            if os.path.isfile('/root/router/shoblabot/activity_count'):
+                with open('/root/router/shoblabot/activity_count', 'r') as lang:
+                    activity_count = json.loads(lang.read())
+            month_statistics = '🤖 Статистика по боту за прошлый месяц:\n\n' \
+                               '✅❌ Создано опросов: *{0} шт*\n' \
+                               '🛍  Запрошено скидок: *{1} раз*\n' \
+                               '💁‍♀️🚗 Обнаружено девок за рулём: *{2} шт*\n' \
+                               '👩🏻‍⚕️ Врача вызывали: *{3} раз*\n' \
+                               '✅️ Сохранено номеров Рапидов: *{4} шт*\n' \
+                               '🦡 Отправлено барсуков: *{5} раз*\n' \
+                               '🫡🇷🇺 Спето российских гимнов: *{6} раз*\n' \
+                               '👥 Вызваны все участники Шоблы: *{7} раз*\n\n' \
+                               'А так же отправлено следующих команд:\n\n' \
+                               '/start: *{8} раз*\n' \
+                               '/help: *{9} раз*\n' \
+                               '/who: *{10} раз*\n' \
+                               '/rapid: *{11} раз*'.format(activity_count[cur_mnth]['opros'],
+                                                           activity_count[cur_mnth]['discount'],
+                                                           activity_count[cur_mnth]['devka'],
+                                                           activity_count[cur_mnth]['vracha'],
+                                                           activity_count[cur_mnth]['rapid_new'],
+                                                           activity_count[cur_mnth]['cyk'],
+                                                           activity_count[cur_mnth]['russia'],
+                                                           activity_count[cur_mnth]['team'],
+                                                           activity_count[cur_mnth]['start'],
+                                                           activity_count[cur_mnth]['help'],
+                                                           activity_count[cur_mnth]['who'],
+                                                           activity_count[cur_mnth]['rapid'])
+            bot.send_message(secret.tg_chat_id, month_statistics, parse_mode='Markdown')
+            # Рассылка по 10челлендж
             bot.send_message(secret.tg_chat_id, 'Шоблятки, время для #10челлендж и выших фоточек за месяц!📸', parse_mode='Markdown')
         if dr == str(28.5):  # День Баяна в Шобле отмечается 28 мая
                 bot.send_message(secret.tg_chat_id, 'Шобла, поздравляю с Днём Баяна🪗!🕺💃🥳', parse_mode='Markdown')
