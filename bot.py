@@ -116,6 +116,18 @@ def handle_start(message):
             tg_user_id = constants.tg_ids.index(message.chat.id)
         except:
             tg_user_id = 0
+        # Сбор статистики по запуску команды
+        now_time = datetime.datetime.now()
+        cur_mnth = str(now_time.year) + '.' + str(now_time.month)
+        # Загружаем данные из файла activity_count
+        if os.path.isfile('/root/router/shoblabot/activity_count'):
+            with open('/root/router/shoblabot/activity_count', 'r') as lang:
+                activity_count = json.loads(lang.read())
+        activity_count[cur_mnth]['start'] += 1
+        # Записываем данные в файл activity_count
+        with open('/root/router/shoblabot/activity_count', 'w') as lang:
+            lang.write(json.dumps(activity_count))
+        # Отправка сообщения
         if message.chat.id == secret.tg_chat_id or message.chat.id == constants.tg_ids[tg_user_id]:
             bot.send_message(secret.tg_requests_chat_id, '🕹 */start* от [{0}](tg://user?id={1})\n'
                                                             '*Чат:* {2}'.format(constants.tg_names[tg_user_id],
@@ -137,6 +149,18 @@ def handle_help(message):
             tg_user_id = constants.tg_ids.index(message.from_user.id)
         except:
             tg_user_id = 0
+        # Сбор статистики по запуску команды
+        now_time = datetime.datetime.now()
+        cur_mnth = str(now_time.year) + '.' + str(now_time.month)
+        # Загружаем данные из файла activity_count
+        if os.path.isfile('/root/router/shoblabot/activity_count'):
+            with open('/root/router/shoblabot/activity_count', 'r') as lang:
+                activity_count = json.loads(lang.read())
+        activity_count[cur_mnth]['help'] += 1
+        # Записываем данные в файл activity_count
+        with open('/root/router/shoblabot/activity_count', 'w') as lang:
+            lang.write(json.dumps(activity_count))
+        # Отправка сообщения
         if message.chat.id == secret.tg_chat_id or message.chat.id == constants.tg_ids[tg_user_id]:
             bot.send_message(secret.tg_requests_chat_id, '❓ */help* от [{0}](tg://user?id={1})\n'
                                                             '*Чат:* {2}'.format(constants.tg_names[tg_user_id],
@@ -164,7 +188,7 @@ def send_start_time():
 
 # Вызов статистики
 @bot.message_handler(commands=['stat'])
-def statistics():
+def statistics(message):
     try:
         now_time = datetime.datetime.now()
         cur_mnth = str(now_time.year) + '.' + str(now_time.month)
