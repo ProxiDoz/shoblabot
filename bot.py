@@ -105,16 +105,11 @@ keyboard_stolichki.add(okey, lenta, perik, karusel, pyatera, magnit, diksi, pris
 @bot.message_handler(commands=['start'])
 def handle_start(message):
     try:
-        try:
-            tg_user_id = constants.tg_ids.index(message.chat.id)
-        except:
-            tg_user_id = 0
         update_activity('start')
-        if message.chat.id == secret.tg_chat_id or message.chat.id == constants.tg_ids[tg_user_id]:
-            bot.send_message(secret.tg_requests_chat_id, '🕹 */start* от [{0}](tg://user?id={1})\n'
-                                                            '*Чат:* {2}'.format(constants.tg_names[tg_user_id],
-                                                                                str(message.from_user.id),
-                                                                                str(message.chat.id)),
+        if message.chat.id == secret.tg_chat_id or message.from_user.id in constants.tg_ids:
+            bot.send_message(secret.tg_requests_chat_id, '🕹 */start* от [{0}](tg://user?id={1})\n*Чат:* {2}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)],
+                                                                                                                str(message.from_user.id),
+                                                                                                                str(message.chat.id)),
                              parse_mode='Markdown')
             bot.send_message(message.chat.id, constants.help_text, disable_web_page_preview=True, parse_mode='Markdown')
         else:
@@ -127,20 +122,13 @@ def handle_start(message):
 @bot.message_handler(commands=['help'])
 def handle_help(message):
     try:
-        try:
-            tg_user_id = constants.tg_ids.index(message.from_user.id)
-        except:
-            tg_user_id = 0
         update_activity('help')
-        if message.chat.id == secret.tg_chat_id or message.chat.id == constants.tg_ids[tg_user_id]:
-            bot.send_message(secret.tg_requests_chat_id, '❓ */help* от [{0}](tg://user?id={1})\n'
-                                                            '*Чат:* {2}'.format(constants.tg_names[tg_user_id],
-                                                                                str(message.from_user.id),
-                                                                                str(message.chat.id)),
+        if message.chat.id == secret.tg_chat_id or message.from_user.id in constants.tg_ids:
+            bot.send_message(secret.tg_requests_chat_id, '❓ */help* от [{0}](tg://user?id={1})\n*Чат:* {2}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)],
+                                                                                                                str(message.from_user.id),
+                                                                                                                str(message.chat.id)),
                              parse_mode='Markdown')
-            bot.send_message(message.chat.id, constants.help_text, disable_web_page_preview=True, parse_mode='Markdown')
-        else:
-            bot.send_message(message.chat.id, constants.help_text_light, parse_mode='Markdown')
+            bot.send_message(message.chat.id, constants.help_text, reply_markup=constants.help_keyboard, parse_mode='Markdown')
     except Exception as e:
         bot.send_message(secret.apple_id, 'Ошибка в команде /help:\n\n' + str(e))
 
@@ -259,16 +247,15 @@ def who_will(message):
         try:
             update_activity('who')
             if message.chat.id == secret.tg_chat_id:
-                user_id = constants.tg_ids.index(message.from_user.id)
-                if user_id is not None:
-                    bot.send_message(secret.tg_requests_chat_id, '✅ */who* от [{0}](tg://user?id={1})'.format(constants.tg_names[user_id],
-                                                                                        str(message.from_user.id)), parse_mode='Markdown')
-                    force_reply = telebot.types.ForceReply(True)
-                    bot.send_message(secret.tg_chat_id, constants.enter_question_new, reply_to_message_id=message.message_id,
-                                     reply_markup=force_reply)
-                    bot.delete_message(secret.tg_chat_id, message.message_id)
+                bot.send_message(secret.tg_requests_chat_id,
+                                '✅ */who* от [{0}](tg://user?id={1})'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)],
+                                                                          str(message.from_user.id)),
+                                parse_mode='Markdown')
+                force_reply = telebot.types.ForceReply(True)
+                bot.send_message(secret.tg_chat_id, constants.enter_question_new, reply_to_message_id=message.message_id, reply_markup=force_reply)
+                bot.delete_message(secret.tg_chat_id, message.message_id)
             else:
-                bot.send_message(message.chat.id, '❌ Опрос создается только в Шобле')
+                bot.send_message(message.chat.id, '❌ Опрос создается только в [Шобле](https://t.me/c/1126587083/)', parse_mode='Markdown')
         except:
             send_error(message, 2)
     except Exception as e:
