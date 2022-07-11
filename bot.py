@@ -177,26 +177,28 @@ def statistics(message):
                            '🛍  Запрошено скидок: *{1} раз*\n' \
                            '💁‍♀️🚗 Обнаружено девок за рулём: *{2} шт*\n' \
                            '👩🏻‍⚕️ Врача вызывали: *{3} раз*\n' \
-                           '✅️ Сохранено номеров Рапидов: *{4} шт*\n' \
-                           '🦡 Отправлено барсуков: *{5} раз*\n' \
-                           '🫡🇷🇺 Спето российских гимнов: *{6} раз*\n' \
-                           '👥 Вызваны все участники Шоблы: *{7} раз*\n\n' \
+                           '📌 Запинено сообщений: *{4} шт*\n' \
+                           '✅️ Сохранено номеров Рапидов: *{5} шт*\n' \
+                           '🦡 Отправлено барсуков: *{6} раз*\n' \
+                           '🫡🇷🇺 Спето российских гимнов: *{7} раз*\n' \
+                           '👥 Вызваны все участники Шоблы: *{8} раз*\n\n' \
                            'А так же отправлено следующих команд:\n\n' \
-                           '/start: *{8} раз*\n' \
-                           '/help: *{9} раз*\n' \
-                           '/who: *{10} раз*\n' \
-                           '/rapid: *{11} раз*'.format(activity_count[cur_mnth]['opros'],
-                                                    activity_count[cur_mnth]['discount'],
-                                                    activity_count[cur_mnth]['devka'],
-                                                    activity_count[cur_mnth]['vracha'],
-                                                    activity_count[cur_mnth]['rapid_new'],
-                                                    activity_count[cur_mnth]['cyk'],
-                                                    activity_count[cur_mnth]['russia'],
-                                                    activity_count[cur_mnth]['team'],
-                                                    activity_count[cur_mnth]['start'],
-                                                    activity_count[cur_mnth]['help'],
-                                                    activity_count[cur_mnth]['who'],
-                                                    activity_count[cur_mnth]['rapid'])
+                           '/start: *{9} раз*\n' \
+                           '/help: *{10} раз*\n' \
+                           '/who: *{11} раз*\n' \
+                           '/rapid: *{12} раз*'.format(activity_count[cur_mnth]['opros'],
+                                                       activity_count[cur_mnth]['discount'],
+                                                       activity_count[cur_mnth]['devka'],
+                                                       activity_count[cur_mnth]['vracha'],
+                                                       activity_count[cur_mnth]['pin'],
+                                                       activity_count[cur_mnth]['rapid_new'],
+                                                       activity_count[cur_mnth]['cyk'],
+                                                       activity_count[cur_mnth]['russia'],
+                                                       activity_count[cur_mnth]['team'],
+                                                       activity_count[cur_mnth]['start'],
+                                                       activity_count[cur_mnth]['help'],
+                                                       activity_count[cur_mnth]['who'],
+                                                       activity_count[cur_mnth]['rapid'])
         bot.send_message(secret.apple_id, month_statistics, parse_mode='Markdown')
     except Exception as e:
         bot.send_message(secret.apple_id, 'Ошибка в команде /statistics:\n\n' + str(e))
@@ -466,9 +468,11 @@ def send_text(message):
             elif message.text == '@shoblabot':
                 bot.pin_chat_message(chat_id=secret.tg_chat_id, message_id=message.reply_to_message.message_id,
                                      disable_notification=False)
+                update_activity('pin')
         elif message.reply_to_message is not None and message.text == '@shoblabot':
             bot.pin_chat_message(chat_id=secret.tg_chat_id, message_id=message.reply_to_message.message_id,
                                  disable_notification=False)
+            update_activity('pin')
     except Exception as e:
         bot.send_message(secret.apple_id, 'Ошибка в обработчике текста send_text:\n\n' + str(e) + '\n\n' + message.text)
 
@@ -639,18 +643,20 @@ def sdr():
                                '🛍  Запрошено скидок: *{1} раз*\n' \
                                '💁‍♀️🚗 Обнаружено девок за рулём: *{2} шт*\n' \
                                '👩🏻‍⚕️ Врача вызывали: *{3} раз*\n' \
-                               '✅️ Сохранено номеров Рапидов: *{4} шт*\n' \
-                               '🦡 Отправлено барсуков: *{5} раз*\n' \
-                               '🫡🇷🇺 Спето российских гимнов: *{6} раз*\n' \
-                               '👥 Вызваны все участники Шоблы: *{7} раз*\n\n' \
+                               '📌 Запинено сообщений: *{4} шт*\n' \
+                               '✅️ Сохранено номеров Рапидов: *{5} шт*\n' \
+                               '🦡 Отправлено барсуков: *{6} раз*\n' \
+                               '🫡🇷🇺 Спето российских гимнов: *{7} раз*\n' \
+                               '👥 Вызваны все участники Шоблы: *{8} раз*\n\n' \
                                'А так же отправлено следующих команд:\n\n' \
-                               '/start: *{8} раз*\n' \
-                               '/help: *{9} раз*\n' \
-                               '/who: *{10} раз*\n' \
-                               '/rapid: *{11} раз*'.format(activity_count[cur_mnth]['opros'],
+                               '/start: *{9} раз*\n' \
+                               '/help: *{10} раз*\n' \
+                               '/who: *{11} раз*\n' \
+                               '/rapid: *{12} раз*'.format(activity_count[cur_mnth]['opros'],
                                                            activity_count[cur_mnth]['discount'],
                                                            activity_count[cur_mnth]['devka'],
                                                            activity_count[cur_mnth]['vracha'],
+                                                           activity_count[cur_mnth]['pin'],
                                                            activity_count[cur_mnth]['rapid_new'],
                                                            activity_count[cur_mnth]['cyk'],
                                                            activity_count[cur_mnth]['russia'],
