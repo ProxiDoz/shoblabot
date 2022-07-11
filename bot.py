@@ -2,23 +2,17 @@
 # -*- coding: utf-8 -*-
 import os  # Для проверки на существование файла
 import json  # Представляет словарь в строку
-import glob
 import time  # Для представления времени в читаемом формате
 import psutil
-import random
 import telebot
-import cherrypy
 import datetime
 import constants
 import secret
 import threading
 import subprocess
-from io import BytesIO  # Для отправки фотографий из Telegram в Шоблу
-from datetime import timedelta
 import urllib.request as urllib2  # Для отправки фотографий из Telegram в Шоблу
 from urllib.parse import quote
-import json
-from telebot import apihelper
+
 
 # # # # # # # # # # # Инициализация # # # # # # # # # # #
 # Token бота
@@ -137,7 +131,7 @@ def handle_help(message):
 # Функция отправки времени старта запуска бота
 def send_start_time():
     try:
-        bot.send_message(secret.apple_id, '*Время запуска бота:* _{0}_'.format(time.ctime(time.time())), parse_mode='Markdown')
+        bot.send_message(secret.apple_id, '⏳ *Время запуска бота:* _{0}_'.format(time.ctime(time.time())), parse_mode='Markdown')
     except Exception as e:
         bot.send_message(secret.apple_id, '❌ Ошибка в функции send_start_time:\n*Ошибка:*\n' + str(e))
 
@@ -246,7 +240,7 @@ def who_will(message):
         update_activity('who')
         if message.chat.id == secret.tg_chat_id:
             bot.send_message(secret.tg_requests_chat_id,
-                            '✅ */who* от [{0}](tg://user?id={1})'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)],
+                            '✅❌ */who* от [{0}](tg://user?id={1})'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)],
                                                                       str(message.from_user.id)),
                             parse_mode='Markdown')
             force_reply = telebot.types.ForceReply(True)
@@ -330,7 +324,7 @@ def git(message):
         message: message.text and constants.team in message.text.lower() and message.chat.id == secret.tg_chat_id)
 def team(message):
     try:
-        bot.send_message(chat_id=secret.tg_chat_id, disable_notification=False, reply_to_message_id=message.message_id , text='⚠️ *Внимание, Шобла*\n\n[Тарс](t.me/shackoor), [Апол](t.me/apoll), [Ивановский](t.me/ivanovmm), [Конатик](t.me/KanatoF), [Кир](t.me/zhuykovkb), [Катя](tg://user?id=434756061), [Максон](t.me/MrGogu), [Носик](tg://user?id=51994109), [Окз](t.me/oxy_genium), [Паузеньк](t.me/Pausenk), [НТЩ](t.me/ntshch), [Толяновский](t.me/toliyansky), [Виктор](t.me/FrelVick), [Морго](t.me/margoiv_a), [Мишаня](t.me/Mich37), [Ксю](t.me/ksenia_boorda), [Ромолэ](t.me/Roman_Kazitskiy), [Эльтос](t.me/elvira_aes), [Аня](t.me/kebushka), [Деннис](tg://user?id=503404575)', disable_web_page_preview=True, parse_mode="MarkdownV2")
+        bot.send_message(chat_id=secret.tg_chat_id, disable_notification=False, reply_to_message_id=message.message_id, text='⚠️ *Внимание, Шобла*\n\n[Тарс](t.me/shackoor), [Апол](t.me/apoll), [Ивановский](t.me/ivanovmm), [Конатик](t.me/KanatoF), [Кир](t.me/zhuykovkb), [Катя](tg://user?id=434756061), [Максон](t.me/MrGogu), [Носик](tg://user?id=51994109), [Окз](t.me/oxy_genium), [Паузеньк](t.me/Pausenk), [НТЩ](t.me/ntshch), [Толяновский](t.me/toliyansky), [Виктор](t.me/FrelVick), [Морго](t.me/margoiv_a), [Мишаня](t.me/Mich37), [Ксю](t.me/ksenia_boorda), [Ромолэ](t.me/Roman_Kazitskiy), [Эльтос](t.me/elvira_aes), [Аня](t.me/kebushka), [Деннис](tg://user?id=503404575)', disable_web_page_preview=True, parse_mode="MarkdownV2")
         update_activity('team')
     except Exception as e:
         send_error(message, 14, e)
@@ -389,7 +383,7 @@ def barsyuk(message):
         message: message.text and message.text.lower() in constants.ip_block and message.chat.id == secret.tg_chat_id)
 def block(message):
     try:
-        bot.send_message(secret.tg_chat_id, 'Значит так, - сразу нахуй!')
+        bot.send_message(secret.tg_chat_id, '*Значит так, - сразу нахуй!*', parse_mode='Markdown')
     except Exception as e:
         send_error(message, 18, e)
 
@@ -662,7 +656,7 @@ def sdr():
             challenge = bot.send_message(secret.tg_chat_id, 'Шоблятки, время для #10челлендж и выших фоточек за месяц!📸', parse_mode='Markdown')
             bot.pin_chat_message(secret.tg_chat_id, challenge.message_id, disable_notification=False)
         if dr == str(28.5):  # День Баяна в Шобле отмечается 28 мая
-            bot.send_message(secret.tg_chat_id, 'Шобла, поздравляю с Днём Баяна🪗!🕺💃🥳', parse_mode='Markdown')
+            bot.send_message(secret.tg_chat_id, '🪗 Шобла, поздравляю с Днём Баяна!', parse_mode='Markdown')
         if dr == str(25.7):  # День Рождения Себа
             bot.send_message(secret.tg_chat_id, '[Seb](tg://user?id=959656923), HB!🥳🇲🇽\nFrom Shobla with love!', parse_mode='Markdown')
         for item in constants.tg_drs:
@@ -679,22 +673,22 @@ def sdr():
 try:
     bot.remove_webhook()
 except Exception as e:
-    bot.send_message(secret.apple_id, 'Ошибка в запуске bot.remove_webhook\n\n' + str(e))
+    bot.send_message(secret.apple_id, '❌ Ошибка в запуске bot.remove_webhook\n\n' + str(e))
 
 # try:
 #     send_start_time()
 # except Exception as e:
-#     bot.send_message(secret.apple_id, 'Ошибка в запуске send_start_time()\n\n' + str(e))
+#     bot.send_message(secret.apple_id, '❌ Ошибка в запуске send_start_time()\n\n' + str(e))
 
 try:
     sdr()
 except Exception as e:
-    bot.send_message(secret.apple_id, 'Ошибка в запуске sdr()\n\n' + str(e))
+    bot.send_message(secret.apple_id, '❌ Ошибка в запуске sdr()\n\n' + str(e))
 
 try:
     bot.polling()
 except Exception as e:
-    bot.send_message(secret.apple_id, 'Ошибка при запуске bot.polling():\n\n' + str(e))
+    bot.send_message(secret.apple_id, '❌ Ошибка при запуске bot.polling():\n\n' + str(e))
     
 
 # class WebhookServer(object):
