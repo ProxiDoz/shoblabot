@@ -8,6 +8,7 @@ import telebot
 import datetime
 import constants
 import secret
+import cherry
 import threading
 import subprocess
 import urllib.request as urllib2  # Для отправки фотографий из Telegram в Шоблу
@@ -101,10 +102,7 @@ def handle_start(message):
     try:
         update_activity('start')
         if message.chat.id == secret.tg_chat_id or message.from_user.id in constants.tg_ids:
-            bot.send_message(secret.tg_requests_chat_id, '🕹 */start* от [{0}](tg://user?id={1})\n*Чат:* {2}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)],
-                                                                                                                str(message.from_user.id),
-                                                                                                                str(message.chat.id)),
-                             parse_mode='Markdown')
+            bot.send_message(secret.tg_requests_chat_id, '🕹 [start](tg://user?id={0})'.format(str(message.from_user.id)), parse_mode='Markdown')
             bot.send_message(message.chat.id, constants.help_text, disable_web_page_preview=True, parse_mode='Markdown')
         else:
             bot.send_message(message.chat.id, constants.help_text_light, parse_mode='Markdown')
@@ -118,10 +116,7 @@ def handle_help(message):
     try:
         update_activity('help')
         if message.chat.id == secret.tg_chat_id or message.from_user.id in constants.tg_ids:
-            bot.send_message(secret.tg_requests_chat_id, '❓ */help* от [{0}](tg://user?id={1})\n*Чат:* {2}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)],
-                                                                                                                str(message.from_user.id),
-                                                                                                                str(message.chat.id)),
-                             parse_mode='Markdown')
+            bot.send_message(secret.tg_requests_chat_id, '❓ [help](tg://user?id={0})'.format(str(message.from_user.id), parse_mode='Markdown')
             bot.send_message(message.chat.id, constants.help_text, reply_markup=constants.help_keyboard, parse_mode='Markdown')
     except Exception as e:
         send_error(message, 1, e)
@@ -178,19 +173,12 @@ def statistics(message):
                            '/start: *{9} раз*\n' \
                            '/help: *{10} раз*\n' \
                            '/who: *{11} раз*\n' \
-                           '/rapid: *{12} раз*'.format(activity_count[cur_mnth]['opros'],
-                                                       activity_count[cur_mnth]['discount'],
-                                                       activity_count[cur_mnth]['devka'],
-                                                       activity_count[cur_mnth]['vracha'],
-                                                       activity_count[cur_mnth]['pin'],
-                                                       activity_count[cur_mnth]['rapid_new'],
-                                                       activity_count[cur_mnth]['cyk'],
-                                                       activity_count[cur_mnth]['russia'],
-                                                       activity_count[cur_mnth]['team'],
-                                                       activity_count[cur_mnth]['start'],
-                                                       activity_count[cur_mnth]['help'],
-                                                       activity_count[cur_mnth]['who'],
-                                                       activity_count[cur_mnth]['rapid'])
+                           '/rapid: *{12} раз*'.format(activity_count[cur_mnth]['opros'], activity_count[cur_mnth]['discount'],
+                                                       activity_count[cur_mnth]['devka'], activity_count[cur_mnth]['vracha'],
+                                                       activity_count[cur_mnth]['pin'], activity_count[cur_mnth]['rapid_new'],
+                                                       activity_count[cur_mnth]['cyk'], activity_count[cur_mnth]['russia'],
+                                                       activity_count[cur_mnth]['team'], activity_count[cur_mnth]['start'],
+                                                       activity_count[cur_mnth]['help'], activity_count[cur_mnth]['who'], activity_count[cur_mnth]['rapid'])
         bot.send_message(secret.apple_id, month_statistics, parse_mode='Markdown')
     except Exception as e:
         send_error(message, 4, e)
@@ -237,14 +225,11 @@ def who_will(message):
     try:
         update_activity('who')
         if message.chat.id == secret.tg_chat_id:
-            bot.send_message(secret.tg_requests_chat_id,
-                            '✅❌ */who* от [{0}](tg://user?id={1})'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)],
-                                                                      str(message.from_user.id)),
-                            parse_mode='Markdown')
+            bot.send_message(secret.tg_requests_chat_id, '✅❌ [who](tg://user?id={0})'.format(str(message.from_user.id)), parse_mode='Markdown')
             force_reply = telebot.types.ForceReply(True)
             bot.send_message(secret.tg_chat_id, constants.enter_question_new, reply_to_message_id=message.message_id, reply_markup=force_reply)
             bot.delete_message(secret.tg_chat_id, message.message_id)
-        else:
+        elif message.chat.id in constants.tg_ids:
             bot.send_message(message.chat.id, '❌ Опрос создается только в [Шобле](https://t.me/c/1126587083/)', parse_mode='Markdown')
     except Exception as e:
         send_error(message, 7, e)
@@ -630,32 +615,24 @@ def sdr():
                                '/start: *{9} раз*\n' \
                                '/help: *{10} раз*\n' \
                                '/who: *{11} раз*\n' \
-                               '/rapid: *{12} раз*'.format(activity_count[cur_mnth]['opros'],
-                                                           activity_count[cur_mnth]['discount'],
-                                                           activity_count[cur_mnth]['devka'],
-                                                           activity_count[cur_mnth]['vracha'],
-                                                           activity_count[cur_mnth]['pin'],
-                                                           activity_count[cur_mnth]['rapid_new'],
-                                                           activity_count[cur_mnth]['cyk'],
-                                                           activity_count[cur_mnth]['russia'],
-                                                           activity_count[cur_mnth]['team'],
-                                                           activity_count[cur_mnth]['start'],
-                                                           activity_count[cur_mnth]['help'],
-                                                           activity_count[cur_mnth]['who'],
-                                                           activity_count[cur_mnth]['rapid'])
+                               '/rapid: *{12} раз*'.format(activity_count[cur_mnth]['opros'], activity_count[cur_mnth]['discount'],
+                                                           activity_count[cur_mnth]['devka'], activity_count[cur_mnth]['vracha'],
+                                                           activity_count[cur_mnth]['pin'], activity_count[cur_mnth]['rapid_new'],
+                                                           activity_count[cur_mnth]['cyk'], activity_count[cur_mnth]['russia'],
+                                                           activity_count[cur_mnth]['team'], activity_count[cur_mnth]['start'],
+                                                           activity_count[cur_mnth]['help'], activity_count[cur_mnth]['who'], activity_count[cur_mnth]['rapid'])
             bot.send_message(secret.tg_chat_id, month_statistics, parse_mode='Markdown')
             # Рассылка по 10челлендж
             challenge = bot.send_message(secret.tg_chat_id, 'Шоблятки, время для #10челлендж и выших фоточек за месяц!📸', parse_mode='Markdown')
             bot.pin_chat_message(secret.tg_chat_id, challenge.message_id, disable_notification=False)
         if dr == str(28.5):  # День Баяна в Шобле отмечается 28 мая
-            bot.send_message(secret.tg_chat_id, '🪗 Шобла, поздравляю с Днём Баяна!', parse_mode='Markdown')
+            bot.send_message(secret.tg_chat_id, '🪗 Шобла, поздравляю с Днём Баяна!')
         if dr == str(25.7):  # День Рождения Себа
             bot.send_message(secret.tg_chat_id, '[Seb](tg://user?id=959656923), HB!🥳🇲🇽\nFrom Shobla with love!', parse_mode='Markdown')
         for item in constants.tg_drs:
             if item == dr:
                 bot.send_message(secret.tg_chat_id,
-                                 '[{0}](tg://user?id={1}), с др!'.format(constants.tg_names[i], constants.tg_ids[i]),
-                                 parse_mode='Markdown')
+                                 '[{0}](tg://user?id={1}), с др!🥳'.format(constants.tg_names[i], constants.tg_ids[i]), parse_mode='Markdown')
             i += 1
     except Exception as e:
         send_error(call.message, 25, e)
