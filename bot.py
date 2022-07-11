@@ -139,7 +139,8 @@ def send_start_time():
     try:
         bot.send_message(secret.apple_id, '*Время запуска бота:* _{0}_'.format(time.ctime(time.time())), parse_mode='Markdown')
     except Exception as e:
-        send_error(message, 2, e)
+        bot.send_message(secret.apple_id, '❌ Ошибка в функции send_start_time:\n*Ошибка:*\n' + str(e))
+
 
 
 # Функция сбора статистики по командам и функциям
@@ -156,7 +157,7 @@ def update_activity(field):
         with open('/root/router/shoblabot/activity_count', 'w') as lang:
             lang.write(json.dumps(activity_count))
     except Exception as e:
-        send_error(message, 3, e)
+        bot.send_message(secret.apple_id, '❌ Ошибка в функции udate_activity:\n*Поле: *{0}\n*Ошибка:*\n{1}'.format(field, e))
         
         
 # Вызов статистики
