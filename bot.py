@@ -841,9 +841,10 @@ def sdr():
                                                            activity_count[cur_mnth]['rapid'])
             bot.send_message(secret.tg_chat_id, month_statistics, parse_mode='Markdown')
             # Рассылка по 10челлендж
-            bot.send_message(secret.tg_chat_id, 'Шоблятки, время для #10челлендж и выших фоточек за месяц!📸', parse_mode='Markdown')
+            challenge = bot.send_message(secret.tg_chat_id, 'Шоблятки, время для #10челлендж и выших фоточек за месяц!📸', parse_mode='Markdown')
+            bot.pin_chat_message(secret.tg_chat_id, challenge.message_id, disable_notification=False)
         if dr == str(28.5):  # День Баяна в Шобле отмечается 28 мая
-                bot.send_message(secret.tg_chat_id, 'Шобла, поздравляю с Днём Баяна🪗!🕺💃🥳', parse_mode='Markdown')
+            bot.send_message(secret.tg_chat_id, 'Шобла, поздравляю с Днём Баяна🪗!🕺💃🥳', parse_mode='Markdown')
         if dr == str(25.7):  # День Рождения Себа
             bot.send_message(secret.tg_chat_id, '[Seb](tg://user?id=959656923), HB!🥳🇲🇽\nFrom Shobla with love!', parse_mode='Markdown')
         for item in constants.tg_drs:
