@@ -116,7 +116,7 @@ def handle_help(message):
     try:
         update_activity('help')
         if message.chat.id == secret.tg_chat_id or message.from_user.id in constants.tg_ids:
-            bot.send_message(secret.tg_requests_chat_id, '❓ [help](tg://user?id={0})'.format(str(message.from_user.id), parse_mode='Markdown')
+            bot.send_message(secret.tg_requests_chat_id, '❓ [help](tg://user?id={0})'.format(str(message.from_user.id)), parse_mode='Markdown')
             bot.send_message(message.chat.id, constants.help_text, reply_markup=constants.help_keyboard, parse_mode='Markdown')
     except Exception as e:
         send_error(message, 1, e)
