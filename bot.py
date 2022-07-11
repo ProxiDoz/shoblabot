@@ -217,10 +217,8 @@ def server_info(message):
         if message.chat.id == secret.apple_id:
             try:
                 if message.text == '/s':
-                    keyboard = telebot.types.InlineKeyboardMarkup()
-                    server = telebot.types.InlineKeyboardButton(text='💾', callback_data='adm_si')
-                    keyboard.add(server)
-                    bot.send_message(message.chat.id, '👑 Admin panel', reply_markup=keyboard)
+                    ram = psutil.virtual_memory()
+                    bot.send_message(message.chat.id, '💾 Free RAM: {0}%'.format(ram[2]))
                 else:
                     bot.send_message(secret.tg_chat_id, message.text[3:-1])
                     bot.send_message(secret.apple_id, '✅ Сообщение отправлено')
@@ -469,15 +467,8 @@ def send_text(message):
 @bot.callback_query_handler(func=lambda call: True)
 def callback_buttons(call):
     try:
-        # Вызов панели администратора
-        if call.data == 'adm_si':
-            try:
-                ram = psutil.virtual_memory()
-                bot.answer_callback_query(callback_query_id=call.id, show_alert=False,
-                                          text='💽 RAM: {0}%'.format(ram[2]))
-            except Exception as e:
-                send_error(call.message, 21, e)
-        elif call.data[0:4] == 'stop':
+        # Кнопка остановки опроса
+        if call.data[0:4] == 'stop':
             message_id = int(call.data.split('_')[1])
             user_id = int(call.data.split('_')[2])
             try:
@@ -487,6 +478,7 @@ def callback_buttons(call):
                     bot.answer_callback_query(call.id, constants.wrong_stop, show_alert=True)
             except Exception as e:
                 send_error(call.message, 22, e)
+        # Обработка кнопок опроса (старого)
         elif call.data[0:2] == 'op':
             user_id = int(call.data.split('_')[1])
             try:
