@@ -36,6 +36,9 @@ who_opros = {}
 who_count = len(constants.who_will[0])
 who_odd = who_count % 2
 
+# Переменная для сбора статистики по командам
+activity_count = {}
+
 # Клавиатуры для скидок
 keyboard_okey = telebot.types.InlineKeyboardMarkup(row_width=2)
 keyboard_bushe = telebot.types.InlineKeyboardMarkup(row_width=2)
@@ -159,6 +162,35 @@ def send_start_time():
         bot.send_message(secret.apple_id, 'Ошибка в функции send_start_time:\n\n' + str(e))
 
 
+# Вызов статистики
+@bot.message_handler(commands=['stat'])
+def statistics():
+    try:
+        now_time = datetime.datetime.now()
+        cur_mnth = str(now_time.year) + '.' + str(now_time.month)
+        # Загружаем данные из файла activity_count
+        if os.path.isfile('/root/router/shoblabot/activity_count'):
+            with open('/root/router/shoblabot/activity_count', 'r') as lang:
+                activity_count = json.loads(lang.read())
+        month_statistics = '🤖 Статистика по боту за прошлый месяц:\n\n' \
+                           '✅❌ Создано опросов: *{0} шт*\n' \
+                           '🛍  Запрошено скидок: *{1} раз*\n' \
+                           '💁‍♀️🚗 Обнаружено девок за рулём: *{2} шт*\n' \
+                           '👩🏻‍⚕️ Врача вызывали: *{3} раз*\n' \
+                           '✅️ Сохранено номеров Рапидов: *{4} шт*\n' \
+                           '🦡 Отправлено барсуков: *{5} раз*\n' \
+                           '🫡🇷🇺 Спето российских гимнов: *{6} раз*\n'.format(activity_count[cur_mnth]['who'],
+                                                              activity_count[cur_mnth]['discount'],
+                                                              activity_count[cur_mnth]['devka'],
+                                                              activity_count[cur_mnth]['vracha'],
+                                                                                activity_count[cur_mnth]['rapid'],
+                                                                   activity_count[cur_mnth]['cyk'],
+                                                                        activity_count[cur_mnth]['russia'])
+        bot.send_message(secret.apple_id, month_statistics, parse_mode='Markdown')
+    except Exception as e:
+        bot.send_message(secret.apple_id, 'Ошибка в команде /statistics:\n\n' + str(e))
+
+        
 # Функция отправки ошибки
 def send_error(message, error_id):
     try:
@@ -212,7 +244,7 @@ def who_will(message):
                                      reply_markup=force_reply)
                     bot.delete_message(secret.tg_chat_id, message.message_id)
             else:
-                bot.send_message(message.chat.id, 'Опрос создается только в Шобле')
+                bot.send_message(message.chat.id, '❌ Опрос создается только в Шобле')
         except:
             send_error(message, 2)
     except Exception as e:
@@ -305,6 +337,7 @@ def git2(message):
     except Exception as e:
         bot.send_message(secret.apple_id, 'Ошибка в функции git2:\n\n' + str(e))
 
+        
 # Обработка @team
 @bot.message_handler(func=lambda
         message: message.text and constants.team in message.text.lower() and message.chat.id == secret.tg_chat_id)
@@ -314,6 +347,7 @@ def team(message):
     except Exception as e:
         bot.send_message(secret.apple_id, 'Ошибка в функции team:\n\n' + str(e))
 
+        
 # Обработка @rapid
 @bot.message_handler(func=lambda
         message: message.text and message.text.lower().startswith(constants.rapid) and message.chat.id == secret.tg_chat_id)
