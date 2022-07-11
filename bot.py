@@ -679,22 +679,22 @@ def sdr():
 try:
     bot.remove_webhook()
 except Exception as e:
-    send_error(call.message, 26, e)
+    bot.send_message(secret.apple_id, 'Ошибка в запуске bot.remove_webhook\n\n' + str(e))
 
 # try:
 #     send_start_time()
 # except Exception as e:
-#     send_error(call.message, 27, e)
+#     bot.send_message(secret.apple_id, 'Ошибка в запуске send_start_time()\n\n' + str(e))
 
 try:
     sdr()
 except Exception as e:
-    send_error(call.message, 28, e)
+    bot.send_message(secret.apple_id, 'Ошибка в запуске sdr()\n\n' + str(e))
 
 try:
     bot.polling()
 except Exception as e:
-    send_error(call.message, 29, e)
+    bot.send_message(secret.apple_id, 'Ошибка при запуске bot.polling():\n\n' + str(e))
     
 
 # class WebhookServer(object):
