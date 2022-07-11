@@ -8,7 +8,7 @@ import telebot
 import datetime
 import constants
 import secret
-import cherry
+# import cherry
 import threading
 import subprocess
 import urllib.request as urllib2  # Для отправки фотографий из Telegram в Шоблу
