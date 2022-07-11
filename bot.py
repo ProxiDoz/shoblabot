@@ -22,13 +22,6 @@ from telebot import apihelper
 
 # # # # # # # # # # # Инициализация # # # # # # # # # # #
 # Token бота
-# pp = telegram.utils.request.Request(proxy_url='socks5://127.0.0.1:1080')
-# bot = telegram.Bot(token=my_token, request=pp)
-#
-# updater = Updater(token='YOUR_TOKEN', request_kwargs={'proxy_url': 'socks5://127.0.0.1:1080/'})
-#
-# pp = apihelper.#(host='socks5://telegram.vpn99.net:55655')#127.0.0.1:1080')
-
 bot = telebot.TeleBot(secret.tg_token)
 
 # Переменные для опроса
@@ -175,7 +168,7 @@ def update_activity(field):
                 activity_count = json.loads(lang.read())
         activity_count[cur_mnth][field] += 1
         # Записываем данные в файл activity_count
-        with open('root/router/shoblabot/activity_count', 'w') as lang:
+        with open('/root/router/shoblabot/activity_count', 'w') as lang:
             lang.write(json.dumps(activity_count))
     except Exception as e:
         bot.send_message(secret.apple_id, 'Ошибка в функции update_activity:\n\n' + str(e))
@@ -286,19 +279,8 @@ def who_will(message):
 @bot.message_handler(commands=['discount'])
 def send_discount(message):
     try:
-        user_id = constants.tg_ids.index(message.from_user.id)
-        if user_id is not None:
-            # Отправка сообщения
-            if user_id is 16:
-                bot.send_message(message.chat.id, '🛒 [Перекресток](https://i.imgur.com/my5Q8RF.jpg)',
-                                 reply_markup=keyboard_perik,
-                                 parse_mode='Markdown')
-            elif user_id is 18:
-                bot.send_message(message.chat.id, '🛒 [Перекресток](https://i.imgur.com/my5Q8RF.jpg)',
-                                 reply_markup=keyboard_perik,
-                                 parse_mode='Markdown')
-            else:
-                bot.send_message(message.chat.id, '🛒 [О\'КЕЙ](https://i.imgur.com/TZV4nCd.jpg)', reply_markup=keyboard_okey,
+        if message.from_user.id in constants.tg_ids:
+            bot.send_message(message.chat.id, '🛒 [О\'КЕЙ](https://i.imgur.com/TZV4nCd.jpg)', reply_markup=keyboard_okey,
                                  parse_mode='Markdown')
             update_activity('discount')
     except Exception as e:
@@ -307,7 +289,6 @@ def send_discount(message):
 
 # # # # # # Обработка данных
 # Обработка девки за рулем
-# TODO: deprecated. Need delete if function below will be approved
 @bot.message_handler(func=lambda
         message: message.text and message.text.lower() in constants.dvk and message.chat.id == secret.tg_chat_id)
 def aaa(message):
@@ -351,23 +332,14 @@ def vracha(message):
 
 
 # Обработка гита
-# @bot.message_handler(func=lambda
-#         message: constants.git1 in message.text.lower() and message.chat.id == secret.tg_chat_id)
-# def git1(message):
-#     try:
-#         bot.send_message(secret.tg_chat_id, 'Хуит')
-#     except Exception as e:
-#         bot.send_message(secret.apple_id, 'Ошибка в функции git1:\n\n' + str(e))
-
-
 @bot.message_handler(func=lambda
         message: message.text and message.text.lower() in constants.git2 and message.chat.id == secret.tg_chat_id)
-def git2(message):
+def git(message):
     try:
         bot.send_message(secret.tg_chat_id, 'Хуит')
         update_activity('git')
     except Exception as e:
-        bot.send_message(secret.apple_id, 'Ошибка в функции git2:\n\n' + str(e))
+        bot.send_message(secret.apple_id, 'Ошибка в функции git:\n\n' + str(e))
 
         
 # Обработка @team
@@ -443,8 +415,6 @@ def block(message):
 @bot.message_handler(content_types=['text'])
 def send_text(message):
     try:
-        # if message.text == 'РА\nСИ\nЯ' and message.chat.id == secret.tg_chat_id:
-            # bot.send_voice(secret.tg_chat_id, 'AwACAgIAAxkBAAJDIWLGyK15Ym3bMc0u5PU9YXtDDxHnAALtHAACbJI4SiCUtXmDfvoxKQQ', '🫡')
         # Если это реплай на сообщение бота
         if message.reply_to_message is not None and message.reply_to_message.from_user.id == secret.bot_id:
             # Запрос внесения опроса (нового)
@@ -501,6 +471,8 @@ def send_text(message):
                     bot.send_message(secret.tg_chat_id, opros, reply_markup=keyboard, parse_mode='Markdown')
                     bot.send_message(secret.tg_requests_chat_id, date, parse_mode='Markdown')
                     bot.delete_message(secret.tg_chat_id, message.reply_to_message.message_id)
+                    bot.delete_message(secret.tg_chat_id, message.message_id)
+                    update_activity('opros')
                 except:
                     bot.send_message(message.chat.id, constants.errors[14])
                     send_error(message, 14)
@@ -725,10 +697,10 @@ try:
 except Exception as e:
     bot.send_message(secret.apple_id, 'Ошибка в запуске встроенный функций:\nremove_webjook()\n\n' + str(e))
 
-try:
-    send_start_time()
-except Exception as e:
-    bot.send_message(secret.apple_id, 'Ошибка в запуске встроенный функций:\n\send_start_time()\n\n' + str(e))
+# try:
+#     send_start_time()
+# except Exception as e:
+#     bot.send_message(secret.apple_id, 'Ошибка в запуске встроенный функций:\n\send_start_time()\n\n' + str(e))
 
 try:
     sdr()
