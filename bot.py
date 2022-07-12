@@ -104,12 +104,7 @@ def server_info(message):
     try:
         if message.chat.id == secret.apple_id:
             try:
-                if message.text == '/s':
-                    ram = psutil.virtual_memory()
-                    bot.send_message(message.chat.id, '💾 Free RAM: {0}%'.format(ram[2]))
-                else:
-                    bot.send_message(secret.tg_chat_id, message.text[3:len(message.text)])
-                    bot.send_message(secret.apple_id, '✅ Сообщение отправлено')
+                bot.send_message(message.chat.id, '💾 Free RAM: {0}%'.format(psutil.virtual_memory()[2])) if message.text == '/s' else bot.send_message(secret.tg_chat_id, message.text[3:len(message.text)])
             except Exception as e:
                 send_error(message, 21, e)
         else:
@@ -318,10 +313,7 @@ def callback_buttons(call):
             message_id = int(call.data.split('_')[1])
             user_id = int(call.data.split('_')[2])
             try:
-                if call.from_user.id == user_id:
-                    bot.stop_poll(secret.tg_chat_id, message_id)
-                else:
-                    bot.answer_callback_query(call.id, constants.wrong_stop, show_alert=True)
+                bot.stop_poll(secret.tg_chat_id, message_id) if call.from_user.id == user_id else bot.answer_callback_query(call.id, constants.wrong_stop, show_alert=True)
             except Exception as e:
                 send_error(call.message, 22, e)
         # Обработка запроса скидок
@@ -353,10 +345,7 @@ def sdr():
         if now_time.hour is not 10:
             return
         if now_time.day == 1: # День для статистики по боту выкладывания фоток за месяц Месечная десятка челлендж
-            if now_time.month == 1:
-                cur_mnth = str(now_time.year-1) + '.12'
-            else:
-                cur_mnth = str(now_time.year) + '.' + str(now_time.month-1)
+            cur_mnth = str(now_time.year - 1) + '.12' if now_time.month == 1 else str(now_time.year) + '.' + str(now_time.month - 1)
             # Загружаем данные из файла activity_count
             if os.path.isfile('/root/router/shoblabot/activity_count'):
                 with open('/root/router/shoblabot/activity_count', 'r') as lang:
