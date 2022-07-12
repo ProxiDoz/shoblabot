@@ -16,15 +16,9 @@ from urllib.parse import quote
 
 
 # # # # # # # # # # # Инициализация # # # # # # # # # # #
-# Token бота
-bot = telebot.TeleBot(secret.tg_token)
-# Переменная для сбора статистики по командам
-activity_count = {}
+bot = telebot.TeleBot(secret.tg_token)  # Token бота
+activity_count = {}  # Переменная для сбора статистики по командам
 
-# Переменные для опроса
-who_opros = {}
-who_count = len(constants.who_will[0])
-who_odd = who_count % 2
 
 # # # # # # # # # # # Тело бота # # # # # # # # # # #
 # Начальное сообщение
@@ -302,41 +296,7 @@ def send_text(message):
                 except Exception as e:
                     # bot.send_message(message.chat.id, constants.errors[14] + '\nНовый опросник\n' + str(e))
                     send_error(message, 19, e)      
-            # Запрос внесения опроса
-            elif message.reply_to_message.text == constants.enter_question:
-                try:
-                    date = str(time.time() + 10800)
-                    date = date.split('.')[0]
-                    # Копирование пустого опроса в who
-                    bashCopy = "cp /root/router/shoblabot/opros /root/router/shoblabot/who"
-                    processC = subprocess.Popen(bashCopy.split(), stdout=subprocess.PIPE)
-                    time.sleep(1)
-                    # Переименование опроса в date
-                    bashRename = 'mv /root/router/shoblabot/who/opros /root/router/shoblabot/who/{0}'.format(date)
-                    processR = subprocess.Popen(bashRename.split(), stdout=subprocess.PIPE)
-                    opros = '*Опрос:* ' + message.text
-                    keyboard = telebot.types.InlineKeyboardMarkup(row_width=2)
-                    # button = [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
-                    button = [None] * who_count
-                    i = 0
-                    while i < who_count - 1:
-                        button[i] = telebot.types.InlineKeyboardButton(text=constants.who_will[0][i],
-                                                                       callback_data='opr_' + str(i) + '_' + date)
-                        button[i + 1] = telebot.types.InlineKeyboardButton(text=constants.who_will[0][i + 1],
-                                                                           callback_data='opr_' + str(i + 1) + '_' + date)
-                        keyboard.add(button[i], button[i + 1])
-                        i += 2
-                    if 1 == who_count % 2:
-                        button[i] = telebot.types.InlineKeyboardButton(text=constants.who_will[0][i],
-                                                                       callback_data='opr_' + str(i) + '_' + date)
-                        keyboard.add(button[i])
-                    bot.send_message(secret.tg_chat_id, opros, reply_markup=keyboard, parse_mode='Markdown')
-                    bot.send_message(secret.tg_requests_chat_id, date, parse_mode='Markdown')
-                    bot.delete_message(secret.tg_chat_id, message.reply_to_message.message_id)
-                    bot.delete_message(secret.tg_chat_id, message.message_id)
-                    update_activity('opros')
-                except Exception as e:
-                    send_error(message, 19, e)
+            # Если это попытка запинить сообщение
             elif message.text == '@shoblabot':
                 bot.pin_chat_message(chat_id=secret.tg_chat_id, message_id=message.reply_to_message.message_id,
                                      disable_notification=False)
@@ -364,42 +324,6 @@ def callback_buttons(call):
                     bot.answer_callback_query(call.id, constants.wrong_stop, show_alert=True)
             except Exception as e:
                 send_error(call.message, 22, e)
-        # Обработка кнопок опроса (старого)
-        elif call.data[0:2] == 'op':
-            user_id = int(call.data.split('_')[1])
-            try:
-                date = call.data.split('_')[2]
-                if call.from_user.id == constants.who_will_ids[user_id]:
-                    # Загружаем данные из файла date
-                    if os.path.isfile('/root/router/shoblabot/who/{0}'.format(date)):
-                        with open('/root/router/shoblabot/who/{0}'.format(date), 'r') as lang:
-                            who_opros = json.loads(lang.read())
-                    who_opros[str(call.from_user.id)] = (who_opros[str(call.from_user.id)] + 1) % 3 + 1
-                    # button = [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
-                    button = [None] * who_count
-                    keyboard = telebot.types.InlineKeyboardMarkup(row_width=2)
-                    i = 0
-                    while i < who_count - 1:
-                        button[i] = telebot.types.InlineKeyboardButton(text=constants.who_will[who_opros[str(constants.who_will_ids[i])]][i],callback_data='opr_' + str(i) + '_' + date)
-                        button[i + 1] = telebot.types.InlineKeyboardButton(text=constants.who_will[who_opros[str(constants.who_will_ids[i + 1])]][i + 1],callback_data='opr_' + str(i + 1) + '_' + date)
-                        keyboard.add(button[i], button[i + 1])
-                        i += 2
-                    if 1 == who_count % 2:
-                        button[i] = telebot.types.InlineKeyboardButton(
-                            text=constants.who_will[who_opros[str(constants.who_will_ids[i])]][i],
-                            callback_data='opr_' + str(i) + '_' + date)
-                        keyboard.add(button[i])
-                    bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                                                  reply_markup=keyboard)
-                    if who_opros[str(1)] == 0:
-                        who_opros[str(1)] = 1
-                        bot.pin_chat_message(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                                             disable_notification=False)
-                    # Записываем данные в файл
-                    with open('/root/router/shoblabot/who/{0}'.format(date), 'w') as lang:
-                        lang.write(json.dumps(who_opros))
-            except Exception as e:
-                send_error(call.message, 2, e)
         # Обработка запроса скидок
         elif call.data[0:4] == 'disc':
             discount_id = int(call.data.split('_')[1])
@@ -449,8 +373,6 @@ def sdr():
             bot.pin_chat_message(secret.tg_chat_id, challenge.message_id, disable_notification=False)
         if dr == str(28.5):  # День Баяна в Шобле отмечается 28 мая
             bot.send_message(secret.tg_chat_id, '🪗 Шобла, поздравляю с Днём Баяна!')
-        if dr == str(25.7):  # День Рождения Себа
-            bot.send_message(secret.tg_chat_id, '🥳 [Seb](tg://user?id=959656923), HB! 🇲🇽', parse_mode='Markdown')
         for item in constants.tg_drs:
             if item == dr:
                 bot.send_message(secret.tg_chat_id,
