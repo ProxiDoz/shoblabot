@@ -38,6 +38,8 @@ month_statistics = '🤖 Статистика по боту за прошлый 
                    '/rapid: *{12} раз*'
 
 # Данные для команды /discount
+discounts = telebot.types.InlineKeyboardButton(text='Все скидки 💰', url='https://photos.app.goo.gl/Xu4UQWqhSTcBVwt27')
+channel = telebot.types.InlineKeyboardButton(text='Канал 💳', url='https://t.me/joinchat/AAAAAEk6NVud6BKc7YzZ2g')
 buttons = {}
 buttons[0] = ['О\'КЕЙ 🛒',  # 0
 	      'Лента 🛒',  # 1
