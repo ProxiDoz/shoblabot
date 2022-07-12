@@ -28,70 +28,74 @@ who_odd = who_count % 2
 activity_count = {}
 
 # Клавиатуры для скидок
-keyboard_okey = telebot.types.InlineKeyboardMarkup(row_width=2)
-keyboard_bushe = telebot.types.InlineKeyboardMarkup(row_width=2)
-keyboard_dosta = telebot.types.InlineKeyboardMarkup(row_width=2)
-keyboard_pyatera = telebot.types.InlineKeyboardMarkup(row_width=2)
-keyboard_perik = telebot.types.InlineKeyboardMarkup(row_width=2)
-keyboard_lenta = telebot.types.InlineKeyboardMarkup(row_width=2)
-keyboard_domovoi = telebot.types.InlineKeyboardMarkup(row_width=2)
-keyboard_ikea = telebot.types.InlineKeyboardMarkup(row_width=2)
-keyboard_diksi = telebot.types.InlineKeyboardMarkup(row_width=2)
-keyboard_karusel = telebot.types.InlineKeyboardMarkup(row_width=2)
-keyboard_stolichki = telebot.types.InlineKeyboardMarkup(row_width=2)
-keyboard_podr = telebot.types.InlineKeyboardMarkup(row_width=2)
-keyboard_sephora = telebot.types.InlineKeyboardMarkup(row_width=2)
-keyboard_prisma = telebot.types.InlineKeyboardMarkup(row_width=2)
-keyboard_lime = telebot.types.InlineKeyboardMarkup(row_width=2)
-keyboard_ulibka = telebot.types.InlineKeyboardMarkup(row_width=2)
-keyboard_letual = telebot.types.InlineKeyboardMarkup(row_width=2)
-keyboard_ozerki = telebot.types.InlineKeyboardMarkup(row_width=2)
-keyboard_magnit = telebot.types.InlineKeyboardMarkup(row_width=2)
-keyboard_ashan = telebot.types.InlineKeyboardMarkup(row_width=2)
-
-okey = telebot.types.InlineKeyboardButton(text='О\'КЕЙ 🛒', callback_data='okey')
-bushe = telebot.types.InlineKeyboardButton(text='Буше 🥐', callback_data='bushe')
-dosta = telebot.types.InlineKeyboardButton(text='Достаевский 🍕', callback_data='dosta')
-pyatera = telebot.types.InlineKeyboardButton(text='Пятерочка 🛒', callback_data='pyatera')
-perik = telebot.types.InlineKeyboardButton(text='Перекресток 🛒', callback_data='perik')
-lenta = telebot.types.InlineKeyboardButton(text='Лента 🛒', callback_data='lenta')
-domovoi = telebot.types.InlineKeyboardButton(text='Домовой 🛠', callback_data='domovoi')
-ikea = telebot.types.InlineKeyboardButton(text='Икеа 🛋', callback_data='ikea')
-diksi = telebot.types.InlineKeyboardButton(text='Дикси 🛒', callback_data='diksi')
-stolichki = telebot.types.InlineKeyboardButton(text='Столички 💊', callback_data='stolichki')
-karusel = telebot.types.InlineKeyboardButton(text='Карусель 🛒', callback_data='karusel')
-podr = telebot.types.InlineKeyboardButton(text='Подружка 💅', callback_data='podr')
-sephora = telebot.types.InlineKeyboardButton(text='Sephora 🖤', callback_data='sephora')
-prisma = telebot.types.InlineKeyboardButton(text='Prisma 🛒', callback_data='prisma')
-lime = telebot.types.InlineKeyboardButton(text='Лайм 🛒', callback_data='lime')
-ulibka = telebot.types.InlineKeyboardButton(text='Улыбка 🌈', callback_data='ulibka')
-letual = telebot.types.InlineKeyboardButton(text='Л\'этуль 💛', callback_data='letual')
-ozerki = telebot.types.InlineKeyboardButton(text='Озерки 💊', callback_data='ozerki')
-magnit = telebot.types.InlineKeyboardButton(text='Магнит 🛒', callback_data='magnit')
-ashan =  telebot.types.InlineKeyboardButton(text='Ашан 🛒', callback_data='ashan')
+disc_count = len(constants.buttons[0])
 discounts = telebot.types.InlineKeyboardButton(text='Все скидки 💰', url='https://photos.app.goo.gl/Xu4UQWqhSTcBVwt27')
 channel = telebot.types.InlineKeyboardButton(text='Канал 💳', url='https://t.me/joinchat/AAAAAEk6NVud6BKc7YzZ2g')
 
+# keyboard_okey = telebot.types.InlineKeyboardMarkup(row_width=2)
+# keyboard_bushe = telebot.types.InlineKeyboardMarkup(row_width=2)
+# keyboard_dosta = telebot.types.InlineKeyboardMarkup(row_width=2)
+# keyboard_pyatera = telebot.types.InlineKeyboardMarkup(row_width=2)
+# keyboard_perik = telebot.types.InlineKeyboardMarkup(row_width=2)
+# keyboard_lenta = telebot.types.InlineKeyboardMarkup(row_width=2)
+# keyboard_domovoi = telebot.types.InlineKeyboardMarkup(row_width=2)
+# keyboard_ikea = telebot.types.InlineKeyboardMarkup(row_width=2)
+# keyboard_diksi = telebot.types.InlineKeyboardMarkup(row_width=2)
+# keyboard_karusel = telebot.types.InlineKeyboardMarkup(row_width=2)
+# keyboard_stolichki = telebot.types.InlineKeyboardMarkup(row_width=2)
+# keyboard_podr = telebot.types.InlineKeyboardMarkup(row_width=2)
+# keyboard_sephora = telebot.types.InlineKeyboardMarkup(row_width=2)
+# keyboard_prisma = telebot.types.InlineKeyboardMarkup(row_width=2)
+# keyboard_lime = telebot.types.InlineKeyboardMarkup(row_width=2)
+# keyboard_ulibka = telebot.types.InlineKeyboardMarkup(row_width=2)
+# keyboard_letual = telebot.types.InlineKeyboardMarkup(row_width=2)
+# keyboard_ozerki = telebot.types.InlineKeyboardMarkup(row_width=2)
+# keyboard_magnit = telebot.types.InlineKeyboardMarkup(row_width=2)
+# keyboard_ashan = telebot.types.InlineKeyboardMarkup(row_width=2)
+
+# okey = telebot.types.InlineKeyboardButton(text='О\'КЕЙ 🛒', callback_data='okey')
+# bushe = telebot.types.InlineKeyboardButton(text='Буше 🥐', callback_data='bushe')
+# dosta = telebot.types.InlineKeyboardButton(text='Достаевский 🍕', callback_data='dosta')
+# pyatera = telebot.types.InlineKeyboardButton(text='Пятерочка 🛒', callback_data='pyatera')
+# perik = telebot.types.InlineKeyboardButton(text='Перекресток 🛒', callback_data='perik')
+# lenta = telebot.types.InlineKeyboardButton(text='Лента 🛒', callback_data='lenta')
+# domovoi = telebot.types.InlineKeyboardButton(text='Домовой 🛠', callback_data='domovoi')
+# ikea = telebot.types.InlineKeyboardButton(text='Икеа 🛋', callback_data='ikea')
+# diksi = telebot.types.InlineKeyboardButton(text='Дикси 🛒', callback_data='diksi')
+# stolichki = telebot.types.InlineKeyboardButton(text='Столички 💊', callback_data='stolichki')
+# karusel = telebot.types.InlineKeyboardButton(text='Карусель 🛒', callback_data='karusel')
+# podr = telebot.types.InlineKeyboardButton(text='Подружка 💅', callback_data='podr')
+# sephora = telebot.types.InlineKeyboardButton(text='Sephora 🖤', callback_data='sephora')
+# prisma = telebot.types.InlineKeyboardButton(text='Prisma 🛒', callback_data='prisma')
+# lime = telebot.types.InlineKeyboardButton(text='Лайм 🛒', callback_data='lime')
+# ulibka = telebot.types.InlineKeyboardButton(text='Улыбка 🌈', callback_data='ulibka')
+# letual = telebot.types.InlineKeyboardButton(text='Л\'этуль 💛', callback_data='letual')
+# ozerki = telebot.types.InlineKeyboardButton(text='Озерки 💊', callback_data='ozerki')
+# magnit = telebot.types.InlineKeyboardButton(text='Магнит 🛒', callback_data='magnit')
+# ashan =  telebot.types.InlineKeyboardButton(text='Ашан 🛒', callback_data='ashan')
+# discounts = telebot.types.InlineKeyboardButton(text='Все скидки 💰', url='https://photos.app.goo.gl/Xu4UQWqhSTcBVwt27')
+# channel = telebot.types.InlineKeyboardButton(text='Канал 💳', url='https://t.me/joinchat/AAAAAEk6NVud6BKc7YzZ2g')
+
 # okey, lenta, perik, karusel, pyatera, polushka, prisma, lime, ulibka, krasnoe, dosta, bushe, domovoi, ikea, podr, letual, sephora, discounts
-keyboard_okey.add(lenta, perik, karusel, pyatera, magnit, diksi, prisma, lime, ashan, ulibka, dosta, bushe, domovoi, podr, letual, sephora, ozerki, stolichki, discounts, channel)
-keyboard_lenta.add(okey, perik, karusel, pyatera, magnit, diksi, prisma, lime, ashan, ulibka, dosta, bushe, domovoi, podr, letual, sephora, ozerki, stolichki, discounts, channel)
-keyboard_perik.add(okey, lenta, karusel, pyatera, magnit, diksi, prisma, lime, ashan, ulibka, dosta, bushe, domovoi, podr, letual, sephora, ozerki, stolichki, discounts, channel)
-keyboard_karusel.add(okey, lenta, perik, pyatera, magnit, diksi, prisma, lime, ashan, ulibka, dosta, bushe, domovoi, podr, letual, sephora, ozerki, stolichki, discounts, channel)
-keyboard_pyatera.add(okey, lenta, perik, karusel, magnit, diksi, prisma, lime, ashan, ulibka, dosta, bushe, domovoi, podr, letual, sephora, ozerki, stolichki, discounts, channel)
-keyboard_magnit.add(okey, lenta, perik, karusel, pyatera, diksi, prisma, lime, ashan, ulibka, dosta, bushe, domovoi, podr, letual, sephora, ozerki, stolichki, discounts, channel)
-keyboard_diksi.add(okey, lenta, perik, karusel, pyatera, magnit, prisma, lime, ashan, ulibka, dosta, bushe, domovoi, podr, letual, sephora, ozerki, stolichki, discounts, channel)
-keyboard_prisma.add(okey, lenta, perik, karusel, pyatera, magnit, diksi, lime, ashan, ulibka, dosta, bushe, domovoi, podr, letual, sephora, ozerki, stolichki, discounts, channel)
-keyboard_lime.add(okey, lenta, perik, karusel, pyatera, magnit, diksi, prisma, ashan, ulibka, dosta, bushe, domovoi, podr, letual, sephora, ozerki, stolichki, discounts, channel)
-keyboard_ashan.add(okey, lenta, perik, karusel, pyatera, magnit, diksi, prisma, ulibka, dosta, bushe, domovoi, podr, letual, sephora, ozerki, stolichki, discounts, channel)
-keyboard_ulibka.add(okey, lenta, perik, karusel, pyatera, magnit, diksi, prisma, lime, ashan, dosta, bushe, domovoi, podr, letual, sephora, ozerki, stolichki, discounts, channel)
-keyboard_dosta.add(okey, lenta, perik, karusel, pyatera, magnit, diksi, prisma, lime, ashan, ulibka, bushe, domovoi, podr, letual, sephora, ozerki, stolichki, discounts, channel)
-keyboard_bushe.add(okey, lenta, perik, karusel, pyatera, magnit, diksi, prisma, lime, ashan, ulibka, dosta, domovoi, podr, letual, sephora, ozerki, stolichki, discounts, channel)
-keyboard_domovoi.add(okey, lenta, perik, karusel, pyatera, magnit, diksi, prisma, lime, ashan, ulibka, dosta, bushe, podr, letual, sephora, ozerki, stolichki, discounts, channel)
-keyboard_podr.add(okey, lenta, perik, karusel, pyatera, magnit, diksi, prisma, lime, ashan, ulibka, dosta, bushe, domovoi, letual, sephora, ozerki, stolichki, discounts, channel)
-keyboard_letual.add(okey, lenta, perik, karusel, pyatera, magnit, diksi, prisma, lime, ashan, ulibka, dosta, bushe, domovoi, podr, sephora, ozerki, stolichki, discounts, channel)
-keyboard_sephora.add(okey, lenta, perik, karusel, pyatera, magnit, diksi, prisma, lime, ashan, ulibka, dosta, bushe, domovoi, podr, letual, ozerki, stolichki, discounts, channel)
-keyboard_ozerki.add(okey, lenta, perik, karusel, pyatera, magnit, diksi, prisma, lime, ashan, ulibka, dosta, bushe, domovoi, podr, letual, sephora, stolichki, discounts, channel)
-keyboard_stolichki.add(okey, lenta, perik, karusel, pyatera, magnit, diksi, prisma, lime, ashan, ulibka, dosta, bushe, domovoi, podr, letual, sephora, ozerki, discounts, channel)
+# keyboard_okey.add(lenta, perik, karusel, pyatera, magnit, diksi, prisma, lime, ashan, ulibka, dosta, bushe, domovoi, podr, letual, sephora, ozerki, stolichki, discounts, channel)
+# keyboard_lenta.add(okey, perik, karusel, pyatera, magnit, diksi, prisma, lime, ashan, ulibka, dosta, bushe, domovoi, podr, letual, sephora, ozerki, stolichki, discounts, channel)
+# keyboard_perik.add(okey, lenta, karusel, pyatera, magnit, diksi, prisma, lime, ashan, ulibka, dosta, bushe, domovoi, podr, letual, sephora, ozerki, stolichki, discounts, channel)
+# keyboard_karusel.add(okey, lenta, perik, pyatera, magnit, diksi, prisma, lime, ashan, ulibka, dosta, bushe, domovoi, podr, letual, sephora, ozerki, stolichki, discounts, channel)
+# keyboard_pyatera.add(okey, lenta, perik, karusel, magnit, diksi, prisma, lime, ashan, ulibka, dosta, bushe, domovoi, podr, letual, sephora, ozerki, stolichki, discounts, channel)
+# keyboard_magnit.add(okey, lenta, perik, karusel, pyatera, diksi, prisma, lime, ashan, ulibka, dosta, bushe, domovoi, podr, letual, sephora, ozerki, stolichki, discounts, channel)
+# keyboard_diksi.add(okey, lenta, perik, karusel, pyatera, magnit, prisma, lime, ashan, ulibka, dosta, bushe, domovoi, podr, letual, sephora, ozerki, stolichki, discounts, channel)
+# keyboard_prisma.add(okey, lenta, perik, karusel, pyatera, magnit, diksi, lime, ashan, ulibka, dosta, bushe, domovoi, podr, letual, sephora, ozerki, stolichki, discounts, channel)
+# keyboard_lime.add(okey, lenta, perik, karusel, pyatera, magnit, diksi, prisma, ashan, ulibka, dosta, bushe, domovoi, podr, letual, sephora, ozerki, stolichki, discounts, channel)
+# keyboard_ashan.add(okey, lenta, perik, karusel, pyatera, magnit, diksi, prisma, ulibka, dosta, bushe, domovoi, podr, letual, sephora, ozerki, stolichki, discounts, channel)
+# keyboard_ulibka.add(okey, lenta, perik, karusel, pyatera, magnit, diksi, prisma, lime, ashan, dosta, bushe, domovoi, podr, letual, sephora, ozerki, stolichki, discounts, channel)
+# keyboard_dosta.add(okey, lenta, perik, karusel, pyatera, magnit, diksi, prisma, lime, ashan, ulibka, bushe, domovoi, podr, letual, sephora, ozerki, stolichki, discounts, channel)
+# keyboard_bushe.add(okey, lenta, perik, karusel, pyatera, magnit, diksi, prisma, lime, ashan, ulibka, dosta, domovoi, podr, letual, sephora, ozerki, stolichki, discounts, channel)
+# keyboard_domovoi.add(okey, lenta, perik, karusel, pyatera, magnit, diksi, prisma, lime, ashan, ulibka, dosta, bushe, podr, letual, sephora, ozerki, stolichki, discounts, channel)
+# keyboard_podr.add(okey, lenta, perik, karusel, pyatera, magnit, diksi, prisma, lime, ashan, ulibka, dosta, bushe, domovoi, letual, sephora, ozerki, stolichki, discounts, channel)
+# keyboard_letual.add(okey, lenta, perik, karusel, pyatera, magnit, diksi, prisma, lime, ashan, ulibka, dosta, bushe, domovoi, podr, sephora, ozerki, stolichki, discounts, channel)
+# keyboard_sephora.add(okey, lenta, perik, karusel, pyatera, magnit, diksi, prisma, lime, ashan, ulibka, dosta, bushe, domovoi, podr, letual, ozerki, stolichki, discounts, channel)
+# keyboard_ozerki.add(okey, lenta, perik, karusel, pyatera, magnit, diksi, prisma, lime, ashan, ulibka, dosta, bushe, domovoi, podr, letual, sephora, stolichki, discounts, channel)
+# keyboard_stolichki.add(okey, lenta, perik, karusel, pyatera, magnit, diksi, prisma, lime, ashan, ulibka, dosta, bushe, domovoi, podr, letual, sephora, ozerki, discounts, channel)
 # keyboard_ikea.add(okey, lenta, perik, karusel, pyatera, magnit, diksi, prisma, lime, ashan, ulibka, dosta, bushe, domovoi, podr, letual, sephora, ozerki, stolichki, discounts, channel)
 
 
@@ -208,7 +212,7 @@ def server_info(message):
                     ram = psutil.virtual_memory()
                     bot.send_message(message.chat.id, '💾 Free RAM: {0}%'.format(ram[2]))
                 else:
-                    bot.send_message(secret.tg_chat_id, message.text[3:-1])
+                    bot.send_message(secret.tg_chat_id, message.text[3:len(message.text)])
                     bot.send_message(secret.apple_id, '✅ Сообщение отправлено')
             except Exception as e:
                 send_error(message, 21, e)
@@ -240,8 +244,16 @@ def who_will(message):
 def send_discount(message):
     try:
         if message.from_user.id in constants.tg_ids:
-            bot.send_message(message.chat.id, '🛒 [О\'КЕЙ](https://i.imgur.com/TZV4nCd.jpg)', reply_markup=keyboard_okey,
-                                 parse_mode='Markdown')
+#             bot.send_message(message.chat.id, '🛒 [О\'КЕЙ](https://i.imgur.com/TZV4nCd.jpg)', reply_markup=keyboard_okey,
+#                                  parse_mode='Markdown')
+            i = 0
+            keyboard_start = telebot.types.InlineKeyboardMarkup(row_width=2)
+            while i < disc_count - 1:
+                keyboard_start.add(telebot.types.InlineKeyboardButton(text=constants.buttons[0][i+1], callback_data=constants.buttons[1][i+1]),
+                                   telebot.types.InlineKeyboardButton(text=constants.buttons[0][i+2], callback_data=constants.buttons[1][i+2]))
+                i += 2
+            keyboard_start.add(discounts, channel)
+            bot.send_message(message.chat.id, constants.buttons[2][0], reply_markup=keyboard_start, parse_mode='Markdown')
             update_activity('discount')
     except Exception as e:
         send_error(message, 8, e)
@@ -499,86 +511,100 @@ def callback_buttons(call):
                         lang.write(json.dumps(who_opros))
             except Exception as e:
                 send_error(call.message, 23, e)
-        elif call.data == 'okey':
+#         elif call.data == 'okey':
+#             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
+#                                   text='🛒 [О\'кей](https://i.imgur.com/TZV4nCd.jpg)', parse_mode='Markdown',
+#                                   reply_markup=keyboard_okey)
+#         elif call.data == 'bushe':
+#             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
+#                                   text='🥐 [Буше](https://i.imgur.com/H6ins0K.jpg)', parse_mode='Markdown',
+#                                   reply_markup=keyboard_bushe)
+#         elif call.data == 'dosta':
+#             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
+#                                   text='🍕 [Достаевский](https://i.imgur.com/LTx5ztX.jpg)\n*ТОЛЬКО ПРИ ЗАКАЗЕ ПО ТЕЛЕФОНУ*',
+#                                   parse_mode='Markdown', reply_markup=keyboard_dosta)
+#         elif call.data == 'pyatera':
+#             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
+#                                   text='🛒 [Пятерочка](https://i.imgur.com/yTuhGWH.jpg)', parse_mode='Markdown',
+#                                   reply_markup=keyboard_pyatera)
+#         elif call.data == 'perik':
+#             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
+#                                   text='🛒 [Перекресток](https://i.imgur.com/my5Q8RF.jpg)', parse_mode='Markdown',
+#                                   reply_markup=keyboard_perik)
+#         elif call.data == 'lenta':
+#             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
+#                                   text='🛒 [Лента](https://i.imgur.com/PE9txx0.jpg)', parse_mode='Markdown',
+#                                   reply_markup=keyboard_lenta)
+#         elif call.data == 'domovoi':
+#             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
+#                                   text='🛠 [Домовой](https://i.imgur.com/Tnn5WTG.jpg)', parse_mode='Markdown',
+#                                   reply_markup=keyboard_domovoi)
+#         elif call.data == 'ikea':
+#             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
+#                                   text='🛋 [Икеа](https://i.imgur.com/ThL03zt.jpg)', parse_mode='Markdown',
+#                                   reply_markup=keyboard_ikea)
+#         elif call.data == 'diksi':
+#             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
+#                                   text='🛒 [Дикси](https://i.imgur.com/FIQdWAh.png)', parse_mode='Markdown',
+#                                   reply_markup=keyboard_diksi)
+#         elif call.data == 'karusel':
+#             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
+#                                   text='🛒 [Карусель](https://i.imgur.com/vwY6SB3.jpg)', parse_mode='Markdown',
+#                                   reply_markup=keyboard_karusel)
+#         elif call.data == 'stolichki':
+#             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
+#                                   text='💊 [Столички](https://i.imgur.com/dhWmZdf.jpg)', parse_mode='Markdown',
+#                                   reply_markup=keyboard_stolichki)
+#         elif call.data == 'podr':
+#             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
+#                                   text='💅 [Подружка](https://i.imgur.com/0NGsUpZ.jpg)', parse_mode='Markdown',
+#                                   reply_markup=keyboard_podr)
+#         elif call.data == 'sephora':
+#             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
+#                                   text='🖤 [Sephora](https://i.imgur.com/qm2RlMr.jpg)', parse_mode='Markdown',
+#                                   reply_markup=keyboard_sephora)
+#         elif call.data == 'prisma':
+#             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
+#                                   text='🛒 [Prisma](https://i.imgur.com/tcFfgho.jpg)', parse_mode='Markdown',
+#                                   reply_markup=keyboard_prisma)
+#         elif call.data == 'lime':
+#             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
+#                                   text='🛒 [Лайм](https://i.imgur.com/hq39niT.jpg)', parse_mode='Markdown',
+#                                   reply_markup=keyboard_lime)
+#         elif call.data == 'ulibka':
+#             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
+#                                   text='[Улыбка](https://i.imgur.com/bpcYZ2v.jpg) 🌈', parse_mode='Markdown',
+#                                   reply_markup=keyboard_ulibka)
+#         elif call.data == 'letual':
+#             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
+#                                   text='💛 [Л\'этуль](https://i.imgur.com/CqWU2vj.jpg)', parse_mode='Markdown',
+#                                   reply_markup=keyboard_letual)
+#         elif call.data == 'ozerki':
+#             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
+#                                   text='💊 [Озерки](https://i.imgur.com/6bDnAK4.jpg)', parse_mode='Markdown',
+#                                   reply_markup=keyboard_ozerki)
+#         elif call.data == 'magnit':
+#             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
+#                                   text='🛒 [Магнит](https://i.imgur.com/Nmn5pTt.png)', parse_mode='Markdown',
+#                                   reply_markup=keyboard_magnit)
+#         elif call.data == 'ashan':
+#             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
+#                                   text='🛒 [Ашан](https://i.imgur.com/iGsQ2Ds.jpg)', parse_mode='Markdown',
+#                                   reply_markup=keyboard_ashan)
+        elif call.data[0:4] == 'disc':
+            discount_id = int(call.data.split('_')[1])
+            buttons_text = constants.buttons[0][0:discount_id] + constants.buttons[0][discount_id+1:len(constants.buttons[0])]
+            buttons_callback_data = constants.buttons[1][0:discount_id] + constants.buttons[1][discount_id+1:len(constants.buttons[1])]
+            keyboard_update = telebot.types.InlineKeyboardMarkup(row_width=2)
+            i = 0
+            while i < disc_count-2:
+                keyboard_update.add(telebot.types.InlineKeyboardButton(text=buttons_text[i], callback_data=buttons_callback_data[i]),
+                                    telebot.types.InlineKeyboardButton(text=buttons_text[i+1], callback_data=buttons_callback_data[i+1]))
+                i += 2
+            keyboard_update.add(discounts, channel)
             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                                  text='🛒 [О\'кей](https://i.imgur.com/TZV4nCd.jpg)', parse_mode='Markdown',
-                                  reply_markup=keyboard_okey)
-        elif call.data == 'bushe':
-            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                                  text='🥐 [Буше](https://i.imgur.com/H6ins0K.jpg)', parse_mode='Markdown',
-                                  reply_markup=keyboard_bushe)
-        elif call.data == 'dosta':
-            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                                  text='🍕 [Достаевский](https://i.imgur.com/LTx5ztX.jpg)\n*ТОЛЬКО ПРИ ЗАКАЗЕ ПО ТЕЛЕФОНУ*',
-                                  parse_mode='Markdown', reply_markup=keyboard_dosta)
-        elif call.data == 'pyatera':
-            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                                  text='🛒 [Пятерочка](https://i.imgur.com/yTuhGWH.jpg)', parse_mode='Markdown',
-                                  reply_markup=keyboard_pyatera)
-        elif call.data == 'perik':
-            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                                  text='🛒 [Перекресток](https://i.imgur.com/my5Q8RF.jpg)', parse_mode='Markdown',
-                                  reply_markup=keyboard_perik)
-        elif call.data == 'lenta':
-            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                                  text='🛒 [Лента](https://i.imgur.com/PE9txx0.jpg)', parse_mode='Markdown',
-                                  reply_markup=keyboard_lenta)
-        elif call.data == 'domovoi':
-            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                                  text='🛠 [Домовой](https://i.imgur.com/Tnn5WTG.jpg)', parse_mode='Markdown',
-                                  reply_markup=keyboard_domovoi)
-        elif call.data == 'ikea':
-            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                                  text='🛋 [Икеа](https://i.imgur.com/ThL03zt.jpg)', parse_mode='Markdown',
-                                  reply_markup=keyboard_ikea)
-        elif call.data == 'diksi':
-            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                                  text='🛒 [Дикси](https://i.imgur.com/FIQdWAh.png)', parse_mode='Markdown',
-                                  reply_markup=keyboard_diksi)
-        elif call.data == 'karusel':
-            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                                  text='🛒 [Карусель](https://i.imgur.com/vwY6SB3.jpg)', parse_mode='Markdown',
-                                  reply_markup=keyboard_karusel)
-        elif call.data == 'stolichki':
-            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                                  text='💊 [Столички](https://i.imgur.com/dhWmZdf.jpg)', parse_mode='Markdown',
-                                  reply_markup=keyboard_stolichki)
-        elif call.data == 'podr':
-            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                                  text='💅 [Подружка](https://i.imgur.com/0NGsUpZ.jpg)', parse_mode='Markdown',
-                                  reply_markup=keyboard_podr)
-        elif call.data == 'sephora':
-            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                                  text='🖤 [Sephora](https://i.imgur.com/qm2RlMr.jpg)', parse_mode='Markdown',
-                                  reply_markup=keyboard_sephora)
-        elif call.data == 'prisma':
-            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                                  text='🛒 [Prisma](https://i.imgur.com/tcFfgho.jpg)', parse_mode='Markdown',
-                                  reply_markup=keyboard_prisma)
-        elif call.data == 'lime':
-            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                                  text='🛒 [Лайм](https://i.imgur.com/hq39niT.jpg)', parse_mode='Markdown',
-                                  reply_markup=keyboard_lime)
-        elif call.data == 'ulibka':
-            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                                  text='[Улыбка](https://i.imgur.com/bpcYZ2v.jpg) 🌈', parse_mode='Markdown',
-                                  reply_markup=keyboard_ulibka)
-        elif call.data == 'letual':
-            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                                  text='💛 [Л\'этуль](https://i.imgur.com/CqWU2vj.jpg)', parse_mode='Markdown',
-                                  reply_markup=keyboard_letual)
-        elif call.data == 'ozerki':
-            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                                  text='💊 [Озерки](https://i.imgur.com/6bDnAK4.jpg)', parse_mode='Markdown',
-                                  reply_markup=keyboard_ozerki)
-        elif call.data == 'magnit':
-            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                                  text='🛒 [Магнит](https://i.imgur.com/Nmn5pTt.png)', parse_mode='Markdown',
-                                  reply_markup=keyboard_magnit)
-        elif call.data == 'ashan':
-            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                                  text='🛒 [Ашан](https://i.imgur.com/iGsQ2Ds.jpg)', parse_mode='Markdown',
-                                  reply_markup=keyboard_ashan)
+                                  text=constants.buttons[2][discount_id], parse_mode='Markdown',
+                                  reply_markup=keyboard_update)
     except Exception as e:
         send_error(call.message, 24, e)
 
