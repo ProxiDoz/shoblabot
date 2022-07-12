@@ -62,11 +62,11 @@ def handle_help(message):
 
 # # # # # # Служебные функции и команды
 # Функция отправки времени старта запуска бота
-def send_start_time():
-    try:
-        bot.send_message(secret.apple_id, '⏳ *Время запуска бота:* _{0}_'.format(time.ctime(time.time())), parse_mode='Markdown')
-    except Exception as e:
-        bot.send_message(secret.apple_id, '❌ Ошибка в функции send_start_time:\n*Ошибка:*\n' + str(e))
+# def send_start_time():
+#     try:
+#         bot.send_message(secret.apple_id, '⏳ *Время запуска бота:* _{0}_'.format(time.ctime(time.time())), parse_mode='Markdown')
+#     except Exception as e:
+#         bot.send_message(secret.apple_id, '❌ Ошибка в функции send_start_time:\n*Ошибка:*\n' + str(e))
 
 
 # Функция сбора статистики по командам и функциям
@@ -85,6 +85,20 @@ def update_activity(field):
     except Exception as e:
         bot.send_message(secret.apple_id, '❌ Ошибка в функции udate_activity:\n*Поле: *{0}\n*Ошибка:*\n{1}'.format(field, e))
         
+
+# Функция отправки ошибки
+def send_error(message, error_id, error):
+    try:
+        bot.send_message(secret.apple_id,
+                         '❌ *{0}\nОт:* {1} {2}\n*Username:* {3}\n*Чат:* {4} {5} {6}\n*id:* {7}\n*Сообщение:* {8}\n'
+                         '*Время:* _{9}_\n*Ошибка:* _{10}_'.format(constants.errors[error_id], str(message.from_user.first_name),
+                                                 str(message.from_user.last_name), str(message.from_user.username),
+                                                 str(message.chat.title), str(message.chat.first_name),
+                                                 str(message.chat.last_name), str(message.chat.id), message.text, time.ctime(time.time()), error),
+                         parse_mode='Markdown')
+    except Exception as e:
+        bot.send_message(secret.apple_id, '❌ Ошибка в функции send_error:\n*Сообщение: *{0}\n*Ошибка:*\n{1}'.format(message.text, e))
+
         
 # Вызов статистики
 @bot.message_handler(commands=['stat'])
@@ -96,7 +110,7 @@ def statistics(message):
         if os.path.isfile('/root/router/shoblabot/activity_count'):
             with open('/root/router/shoblabot/activity_count', 'r') as lang:
                 activity_count = json.loads(lang.read())
-        month_statistics = '🤖 Статистика по боту за прошлый месяц:\n\n' \
+        month_statistics = '🤖 Статистика по боту за текущий месяц:\n\n' \
                            '✅❌ Создано опросов: *{0} шт*\n' \
                            '🛍  Запрошено скидок: *{1} раз*\n' \
                            '💁‍♀️🚗 Обнаружено девок за рулём: *{2} шт*\n' \
@@ -120,21 +134,7 @@ def statistics(message):
     except Exception as e:
         send_error(message, 4, e)
 
-        
-# Функция отправки ошибки
-def send_error(message, error_id, error):
-    try:
-        bot.send_message(secret.apple_id,
-                         '❌ *{0}\nОт:* {1} {2}\n*Username:* {3}\n*Чат:* {4} {5} {6}\n*id:* {7}\n*Сообщение:* {8}\n'
-                         '*Время:* _{9}_\n*Ошибка:* _{10}_'.format(constants.errors[error_id], str(message.from_user.first_name),
-                                                 str(message.from_user.last_name), str(message.from_user.username),
-                                                 str(message.chat.title), str(message.chat.first_name),
-                                                 str(message.chat.last_name), str(message.chat.id), message.text, time.ctime(time.time()), error),
-                         parse_mode='Markdown')
-    except Exception as e:
-        bot.send_message(secret.apple_id, '❌ Ошибка в функции send_error:\n*Сообщение: *{0}\n*Ошибка:*\n{1}'.format(message.text, e))
-
-        
+          
 # Вызов информации о сервере
 @bot.message_handler(commands=['s'])
 def server_info(message):
@@ -192,8 +192,7 @@ def send_discount(message):
 
 # # # # # # Обработка данных
 # Обработка девки за рулем
-@bot.message_handler(func=lambda
-        message: message.text and message.text.lower() in constants.dvk and message.chat.id == secret.tg_chat_id)
+@bot.message_handler(func=lambda message: message.text and message.text.lower() in constants.dvk and message.chat.id == secret.tg_chat_id)
 def aaa(message):
     try:
         bot.send_message(secret.tg_chat_id, 'Двк з рлм')
@@ -202,8 +201,7 @@ def aaa(message):
         send_error(message, 9, e)
 
 
-@bot.message_handler(func=lambda
-        message: message.text and message.text.lower() in constants.devka and message.chat.id == secret.tg_chat_id)
+@bot.message_handler(func=lambda message: message.text and message.text.lower() in constants.devka and message.chat.id == secret.tg_chat_id)
 def aaaa(message):
     try:
         bot.send_message(secret.tg_chat_id, 'Девка за рулём')
@@ -213,8 +211,7 @@ def aaaa(message):
 
         
 # Обработка РАСИЯ
-@bot.message_handler(func=lambda
-        message: message.text and message.text.lower() in constants.russia and message.chat.id == secret.tg_chat_id)
+@bot.message_handler(func=lambda message: message.text and message.text.lower() in constants.russia and message.chat.id == secret.tg_chat_id)
 def russia(message):
     try:
         bot.send_voice(secret.tg_chat_id, 'AwACAgIAAxkBAAJDIWLGyK15Ym3bMc0u5PU9YXtDDxHnAALtHAACbJI4SiCUtXmDfvoxKQQ', '🫡')
@@ -224,8 +221,7 @@ def russia(message):
 
         
 # Обработка врача
-@bot.message_handler(func=lambda
-        message: message.text and message.text.lower() in constants.vracha and message.chat.id == secret.tg_chat_id)
+@bot.message_handler(func=lambda message: message.text and message.text.lower() in constants.vracha and message.chat.id == secret.tg_chat_id)
 def vracha(message):
     try:
         bot.send_document(secret.tg_chat_id, 'CgADAgADRgIAAkbDcEn-Ox-uqrgsHgI', caption='@oxy_genium')
@@ -235,8 +231,7 @@ def vracha(message):
 
 
 # Обработка гита
-@bot.message_handler(func=lambda
-        message: message.text and message.text.lower() in constants.git2 and message.chat.id == secret.tg_chat_id)
+@bot.message_handler(func=lambda message: message.text and message.text.lower() in constants.git2 and message.chat.id == secret.tg_chat_id)
 def git(message):
     try:
         bot.send_message(secret.tg_chat_id, 'Хуит')
@@ -246,8 +241,7 @@ def git(message):
 
         
 # Обработка @team
-@bot.message_handler(func=lambda
-        message: message.text and constants.team in message.text.lower() and message.chat.id == secret.tg_chat_id)
+@bot.message_handler(func=lambda message: message.text and constants.team in message.text.lower() and message.chat.id == secret.tg_chat_id)
 def team(message):
     try:
         bot.send_message(chat_id=secret.tg_chat_id, disable_notification=False, reply_to_message_id=message.message_id, text='⚠️ *Внимание, Шобла*\n\n[Тарс](t.me/shackoor), [Апол](t.me/apoll), [Ивановский](t.me/ivanovmm), [Конатик](t.me/KanatoF), [Кир](t.me/zhuykovkb), [Катя](tg://user?id=434756061), [Максон](t.me/MrGogu), [Носик](tg://user?id=51994109), [Окз](t.me/oxy_genium), [Паузеньк](t.me/Pausenk), [НТЩ](t.me/ntshch), [Толяновский](t.me/toliyansky), [Виктор](t.me/FrelVick), [Морго](t.me/margoiv_a), [Мишаня](t.me/Mich37), [Ксю](t.me/ksenia_boorda), [Ромолэ](t.me/Roman_Kazitskiy), [Эльтос](t.me/elvira_aes), [Аня](t.me/kebushka), [Деннис](tg://user?id=503404575)', disable_web_page_preview=True, parse_mode="MarkdownV2")
@@ -257,8 +251,7 @@ def team(message):
 
         
 # Обработка @rapid
-@bot.message_handler(func=lambda
-        message: message.text and message.text.lower().startswith(constants.rapid) and message.chat.id == secret.tg_chat_id)
+@bot.message_handler(func=lambda message: message.text and message.text.lower().startswith(constants.rapid) and message.chat.id == secret.tg_chat_id)
 def rapid(message):
     try:
         update_activity('rapid')
@@ -283,8 +276,7 @@ def rapid(message):
 
         
 # Обработка барсука
-@bot.message_handler(func=lambda
-        message: message.text and message.text.lower() in constants.suk and message.chat.id == secret.tg_chat_id)
+@bot.message_handler(func=lambda message: message.text and message.text.lower() in constants.suk and message.chat.id == secret.tg_chat_id)
 def barsuk(message):
     try:
         bot.send_message(secret.tg_chat_id, 'Барсук')
@@ -294,8 +286,7 @@ def barsuk(message):
         
 
 # Обработка барсюка
-@bot.message_handler(func=lambda
-        message: message.text and message.text.lower() in constants.syuk and message.chat.id == secret.tg_chat_id)
+@bot.message_handler(func=lambda message: message.text and message.text.lower() in constants.syuk and message.chat.id == secret.tg_chat_id)
 def barsyuk(message):
     try:
         bot.send_message(secret.tg_chat_id, 'Барсюк')
@@ -305,8 +296,7 @@ def barsyuk(message):
         
 
 # Обработка IPv6
-@bot.message_handler(func=lambda
-        message: message.text and message.text.lower() in constants.ip_block and message.chat.id == secret.tg_chat_id)
+@bot.message_handler(func=lambda message: message.text and message.text.lower() in constants.ip_block and message.chat.id == secret.tg_chat_id)
 def block(message):
     try:
         bot.send_message(secret.tg_chat_id, '*Значит так, - сразу нахуй!*', parse_mode='Markdown')
@@ -518,22 +508,22 @@ def sdr():
 try:
     bot.remove_webhook()
 except Exception as e:
-    bot.send_message(secret.apple_id, '❌ Ошибка в запуске bot.remove_webhook\n\n' + str(e))
+    bot.send_message(secret.apple_id, '❌ Ошибка в функции bot.remove_webhook():\n*Ошибка:*\n' + str(e))
 
 # try:
-#     send_start_time()
+#     bot.send_message(secret.apple_id, '⏳ *Время запуска бота:* _{0}_'.format(time.ctime(time.time())), parse_mode='Markdown')
 # except Exception as e:
-#     bot.send_message(secret.apple_id, '❌ Ошибка в запуске send_start_time()\n\n' + str(e))
+#     bot.send_message(secret.apple_id, '❌ Ошибка в функции send_start_time:\n*Ошибка:*\n' + str(e))
 
 try:
     sdr()
 except Exception as e:
-    bot.send_message(secret.apple_id, '❌ Ошибка в запуске sdr()\n\n' + str(e))
+    bot.send_message(secret.apple_id, '❌ Ошибка в запуске sdr():\n*Ошибка:*\n' + str(e))
 
 try:
     bot.polling()
 except Exception as e:
-    bot.send_message(secret.apple_id, '❌ Ошибка при запуске bot.polling():\n\n' + str(e))
+    bot.send_message(secret.apple_id, '❌ Ошибка при запуске bot.polling():\n*Ошибка:*\n' + str(e))
     
 # class WebhookServer(object):
 # index равнозначно /, т.к. отсутствию части после ip-адреса (грубо говоря)
