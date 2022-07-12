@@ -110,21 +110,7 @@ def statistics(message):
         if os.path.isfile('/root/router/shoblabot/activity_count'):
             with open('/root/router/shoblabot/activity_count', 'r') as lang:
                 activity_count = json.loads(lang.read())
-        month_statistics = '🤖 Статистика по боту за текущий месяц:\n\n' \
-                           '✅❌ Создано опросов: *{0} шт*\n' \
-                           '🛍  Запрошено скидок: *{1} раз*\n' \
-                           '💁‍♀️🚗 Обнаружено девок за рулём: *{2} шт*\n' \
-                           '👩🏻‍⚕️ Врача вызывали: *{3} раз*\n' \
-                           '📌 Запинено сообщений: *{4} шт*\n' \
-                           '✅️ Сохранено номеров Рапидов: *{5} шт*\n' \
-                           '🦡 Отправлено барсуков: *{6} раз*\n' \
-                           '🫡🇷🇺 Спето российских гимнов: *{7} раз*\n' \
-                           '👥 Вызваны все участники Шоблы: *{8} раз*\n\n' \
-                           'А так же отправлено следующих команд:\n\n' \
-                           '/start: *{9} раз*\n' \
-                           '/help: *{10} раз*\n' \
-                           '/who: *{11} раз*\n' \
-                           '/rapid: *{12} раз*'.format(activity_count[cur_mnth]['opros'], activity_count[cur_mnth]['discount'],
+        month_statistics = constants.month_statistics.format(activity_count[cur_mnth]['opros'], activity_count[cur_mnth]['discount'],
                                                        activity_count[cur_mnth]['devka'], activity_count[cur_mnth]['vracha'],
                                                        activity_count[cur_mnth]['pin'], activity_count[cur_mnth]['rapid_new'],
                                                        activity_count[cur_mnth]['cyk'], activity_count[cur_mnth]['russia'],
@@ -430,7 +416,7 @@ def callback_buttons(call):
                     with open('/root/router/shoblabot/who/{0}'.format(date), 'w') as lang:
                         lang.write(json.dumps(who_opros))
             except Exception as e:
-                send_error(call.message, 23, e)
+                send_error(call.message, 2, e)
         # Обработка запроса скидок
         elif call.data[0:4] == 'disc':
             discount_id = int(call.data.split('_')[1])
@@ -447,7 +433,7 @@ def callback_buttons(call):
                                   text=constants.buttons[2][discount_id], parse_mode='Markdown',
                                   reply_markup=keyboard_update)
     except Exception as e:
-        send_error(call.message, 24, e)
+        send_error(call.message, 3, e)
 
 
 # Отправка поздравления с др в Шоблу
@@ -468,21 +454,7 @@ def sdr():
             if os.path.isfile('/root/router/shoblabot/activity_count'):
                 with open('/root/router/shoblabot/activity_count', 'r') as lang:
                     activity_count = json.loads(lang.read())
-            month_statistics = '🤖 Статистика по боту за прошлый месяц:\n\n' \
-                               '✅❌ Создано опросов: *{0} шт*\n' \
-                               '🛍  Запрошено скидок: *{1} раз*\n' \
-                               '💁‍♀️🚗 Обнаружено девок за рулём: *{2} шт*\n' \
-                               '👩🏻‍⚕️ Врача вызывали: *{3} раз*\n' \
-                               '📌 Запинено сообщений: *{4} шт*\n' \
-                               '✅️ Сохранено номеров Рапидов: *{5} шт*\n' \
-                               '🦡 Отправлено барсуков: *{6} раз*\n' \
-                               '🫡🇷🇺 Спето российских гимнов: *{7} раз*\n' \
-                               '👥 Вызваны все участники Шоблы: *{8} раз*\n\n' \
-                               'А так же отправлено следующих команд:\n\n' \
-                               '/start: *{9} раз*\n' \
-                               '/help: *{10} раз*\n' \
-                               '/who: *{11} раз*\n' \
-                               '/rapid: *{12} раз*'.format(activity_count[cur_mnth]['opros'], activity_count[cur_mnth]['discount'],
+            month_statistics = constants.month_statistics.format(activity_count[cur_mnth]['opros'], activity_count[cur_mnth]['discount'],
                                                            activity_count[cur_mnth]['devka'], activity_count[cur_mnth]['vracha'],
                                                            activity_count[cur_mnth]['pin'], activity_count[cur_mnth]['rapid_new'],
                                                            activity_count[cur_mnth]['cyk'], activity_count[cur_mnth]['russia'],
@@ -502,7 +474,8 @@ def sdr():
                                  '[{0}](tg://user?id={1}), с др!🥳'.format(constants.tg_names[i], constants.tg_ids[i]), parse_mode='Markdown')
             i += 1
     except Exception as e:
-        send_error(call.message, 25, e)
+       bot.send_message(secret.apple_id, '❌ ООшибка в функции отправки поздравления в Шоблу sdr():\n*Ошибка:*\n' + str(e))
+
 
 # Запуск функций
 try:
