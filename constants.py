@@ -22,6 +22,30 @@ film_photo = telebot.types.InlineKeyboardButton(text='Шобла в плёнке
 help_keyboard = telebot.types.InlineKeyboardMarkup(row_width=1)
 help_keyboard.add(cool_guys, signal_link, film_photo)
 
+# Данные для команды /discount
+buttons = {}
+buttons[0] = ['О\'КЕЙ 🛒', 'Лента 🛒', 'Перекресток 🛒', 'Карусель 🛒', 'Пятерочка 🛒', 'Магнит 🛒', 'Дикси 🛒', 'Prisma 🛒', 'Ашан 🛒',
+              'Улыбка 🌈', 'Достаевский 🍕', 'Буше 🥐', 'Домовой 🛠', 'Подружка 💅', 'Л\'этуль 💛', 'Озерки 💊', 'Столички 💊']
+
+buttons[1] = ['disc_0', 'disc_1', 'disc_2', 'disc_3', 'disc_4', 'disc_5', 'disc_6', 'disc_7', 'disc_8', 'disc_9', 'disc_10', 'disc_11', 'disc_12', 'disc_13', 'disc_14', 'disc_15', 'disc_16']
+
+buttons[2] = ['🛒 [О\'кей](https://i.imgur.com/TZV4nCd.jpg)',
+              '🛒 [Лента](https://i.imgur.com/PE9txx0.jpg)',
+              '🛒 [Перекресток](https://i.imgur.com/my5Q8RF.jpg)',
+              '🛒 [Карусель](https://i.imgur.com/vwY6SB3.jpg)',
+              '🛒 [Пятерочка](https://i.imgur.com/yTuhGWH.jpg)',
+              '🛒 [Магнит](https://i.imgur.com/Nmn5pTt.png)',
+              '🛒 [Дикси](https://i.imgur.com/FIQdWAh.png)',
+              '🛒 [Prisma](https://i.imgur.com/tcFfgho.jpg)',
+              '🛒 [Ашан](https://i.imgur.com/iGsQ2Ds.jpg)',
+              '🌈 [Улыбка](https://i.imgur.com/bpcYZ2v.jpg)',
+              '🍕 [Достаевский](https://i.imgur.com/LTx5ztX.jpg)\n*ТОЛЬКО ПРИ ЗАКАЗЕ ПО ТЕЛЕФОНУ*',
+              '🥐 [Буше](https://i.imgur.com/H6ins0K.jpg)',
+              '🛠 [Домовой](https://i.imgur.com/Tnn5WTG.jpg)',
+              '💅 [Подружка](https://i.imgur.com/0NGsUpZ.jpg)',
+              '💛 [Л\'этуль](https://i.imgur.com/CqWU2vj.jpg)',
+              '💊 [Озерки](https://i.imgur.com/6bDnAK4.jpg)',
+              '💊 [Столички](https://i.imgur.com/dhWmZdf.jpg)']
 # Девка
 dvk = ['а', 'аа', 'a', 'aa']
 devka = ['aaa', 'aaaa', 'aaaaa', 'aaaaaa', 'aaaaaaa', 'aaaaaaaa', 'aaaaaaaaa', 'aaaaaaaaaa', 'aaaaaaaaaaa', 'aaaaaaaaaaaa',
