@@ -18,30 +18,23 @@ from urllib.parse import quote
 # # # # # # # # # # # Инициализация # # # # # # # # # # #
 # Token бота
 bot = telebot.TeleBot(secret.tg_token)
+# Переменная для сбора статистики по командам
+activity_count = {}
 
 # Переменные для опроса
 who_opros = {}
 who_count = len(constants.who_will[0])
 who_odd = who_count % 2
 
-# Переменная для сбора статистики по командам
-activity_count = {}
-
-# Клавиатуры для скидок
-disc_count = len(constants.buttons[0])
-discounts = telebot.types.InlineKeyboardButton(text='Все скидки 💰', url='https://photos.app.goo.gl/Xu4UQWqhSTcBVwt27')
-channel = telebot.types.InlineKeyboardButton(text='Канал 💳', url='https://t.me/joinchat/AAAAAEk6NVud6BKc7YzZ2g')
-
-
 # # # # # # # # # # # Тело бота # # # # # # # # # # #
 # Начальное сообщение
 @bot.message_handler(commands=['start'])
 def handle_start(message):
     try:
-        update_activity('start')
         if message.chat.id == secret.tg_chat_id or message.from_user.id in constants.tg_ids:
             bot.send_message(secret.tg_requests_chat_id, '🕹 [start](tg://user?id={0})'.format(str(message.from_user.id)), parse_mode='Markdown')
             bot.send_message(message.chat.id, constants.help_text, disable_web_page_preview=True, parse_mode='Markdown')
+            update_activity('start')
         else:
             bot.send_message(message.chat.id, constants.help_text_light, parse_mode='Markdown')
     except Exception as e:
@@ -52,21 +45,12 @@ def handle_start(message):
 @bot.message_handler(commands=['help'])
 def handle_help(message):
     try:
-        update_activity('help')
         if message.chat.id == secret.tg_chat_id or message.from_user.id in constants.tg_ids:
             bot.send_message(secret.tg_requests_chat_id, '❓ [help](tg://user?id={0})'.format(str(message.from_user.id)), parse_mode='Markdown')
             bot.send_message(message.chat.id, constants.help_text, reply_markup=constants.help_keyboard, parse_mode='Markdown')
+            update_activity('help')
     except Exception as e:
         send_error(message, 1, e)
-
-
-# # # # # # Служебные функции и команды
-# Функция отправки времени старта запуска бота
-# def send_start_time():
-#     try:
-#         bot.send_message(secret.apple_id, '⏳ *Время запуска бота:* _{0}_'.format(time.ctime(time.time())), parse_mode='Markdown')
-#     except Exception as e:
-#         bot.send_message(secret.apple_id, '❌ Ошибка в функции send_start_time:\n*Ошибка:*\n' + str(e))
 
 
 # Функция сбора статистики по командам и функциям
@@ -110,12 +94,11 @@ def statistics(message):
         if os.path.isfile('/root/router/shoblabot/activity_count'):
             with open('/root/router/shoblabot/activity_count', 'r') as lang:
                 activity_count = json.loads(lang.read())
-        month_statistics = constants.month_statistics.format(activity_count[cur_mnth]['opros'], activity_count[cur_mnth]['discount'],
-                                                       activity_count[cur_mnth]['devka'], activity_count[cur_mnth]['vracha'],
-                                                       activity_count[cur_mnth]['pin'], activity_count[cur_mnth]['rapid_new'],
-                                                       activity_count[cur_mnth]['cyk'], activity_count[cur_mnth]['russia'],
-                                                       activity_count[cur_mnth]['team'], activity_count[cur_mnth]['start'],
-                                                       activity_count[cur_mnth]['help'], activity_count[cur_mnth]['who'], activity_count[cur_mnth]['rapid'])
+        month_statistics = constants.month_statistics.format(activity_count[cur_mnth]['opros'], activity_count[cur_mnth]['discount'], activity_count[cur_mnth]['devka'],
+                                                             activity_count[cur_mnth]['vracha'], activity_count[cur_mnth]['pin'], activity_count[cur_mnth]['rapid_new'],
+                                                             activity_count[cur_mnth]['cyk'], activity_count[cur_mnth]['russia'], activity_count[cur_mnth]['team'],
+                                                             activity_count[cur_mnth]['start'], activity_count[cur_mnth]['help'], activity_count[cur_mnth]['who'],
+                                                             activity_count[cur_mnth]['rapid'])
         bot.send_message(secret.apple_id, month_statistics, parse_mode='Markdown')
     except Exception as e:
         send_error(message, 4, e)
@@ -165,11 +148,11 @@ def send_discount(message):
         if message.from_user.id in constants.tg_ids:
             i = 0
             keyboard_start = telebot.types.InlineKeyboardMarkup(row_width=2)
-            while i < disc_count - 1:
+            while i < len(constants.buttons[0]) - 1:
                 keyboard_start.add(telebot.types.InlineKeyboardButton(text=constants.buttons[0][i+1], callback_data=constants.buttons[1][i+1]),
                                    telebot.types.InlineKeyboardButton(text=constants.buttons[0][i+2], callback_data=constants.buttons[1][i+2]))
                 i += 2
-            keyboard_start.add(discounts, channel)
+            keyboard_start.add(constants.discounts, constants.channel)
             bot.send_message(message.chat.id, constants.buttons[2][0], reply_markup=keyboard_start, parse_mode='Markdown')
             update_activity('discount')
     except Exception as e:
@@ -424,11 +407,11 @@ def callback_buttons(call):
             buttons_callback_data = constants.buttons[1][0:discount_id] + constants.buttons[1][discount_id+1:len(constants.buttons[1])]
             keyboard_update = telebot.types.InlineKeyboardMarkup(row_width=2)
             i = 0
-            while i < disc_count-2:
+            while i < len(constants.buttons[0]) - 2:
                 keyboard_update.add(telebot.types.InlineKeyboardButton(text=buttons_text[i], callback_data=buttons_callback_data[i]),
                                     telebot.types.InlineKeyboardButton(text=buttons_text[i+1], callback_data=buttons_callback_data[i+1]))
                 i += 2
-            keyboard_update.add(discounts, channel)
+            keyboard_update.add(constants.discounts, constants.channel)
             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
                                   text=constants.buttons[2][discount_id], parse_mode='Markdown',
                                   reply_markup=keyboard_update)
