@@ -200,7 +200,7 @@ def vracha(message):
 
 
 # Обработка гита
-@bot.message_handler(func=lambda message: message.text and message.text.lower() in constants.git2 and message.chat.id == secret.tg_chat_id)
+@bot.message_handler(func=lambda message: message.text and message.text.lower() in constants.git and message.chat.id == secret.tg_chat_id)
 def git(message):
     try:
         bot.send_message(secret.tg_chat_id, 'Хуит')
@@ -445,19 +445,19 @@ def sdr():
                                                            activity_count[cur_mnth]['help'], activity_count[cur_mnth]['who'], activity_count[cur_mnth]['rapid'])
             bot.send_message(secret.tg_chat_id, month_statistics, parse_mode='Markdown')
             # Рассылка по 10челлендж
-            challenge = bot.send_message(secret.tg_chat_id, 'Шоблятки, время для #10челлендж и выших фоточек за месяц!📸', parse_mode='Markdown')
+            challenge = bot.send_message(secret.tg_chat_id, '📸 Шоблятки, время для #10челлендж и выших фоточек за месяц!', parse_mode='Markdown')
             bot.pin_chat_message(secret.tg_chat_id, challenge.message_id, disable_notification=False)
         if dr == str(28.5):  # День Баяна в Шобле отмечается 28 мая
             bot.send_message(secret.tg_chat_id, '🪗 Шобла, поздравляю с Днём Баяна!')
         if dr == str(25.7):  # День Рождения Себа
-            bot.send_message(secret.tg_chat_id, '[Seb](tg://user?id=959656923), HB!🥳🇲🇽\nFrom Shobla with love!', parse_mode='Markdown')
+            bot.send_message(secret.tg_chat_id, '🥳 [Seb](tg://user?id=959656923), HB! 🇲🇽', parse_mode='Markdown')
         for item in constants.tg_drs:
             if item == dr:
                 bot.send_message(secret.tg_chat_id,
-                                 '[{0}](tg://user?id={1}), с др!🥳'.format(constants.tg_names[i], constants.tg_ids[i]), parse_mode='Markdown')
+                                 '🥳 [{0}](tg://user?id={1}), с др!'.format(constants.tg_names[i], constants.tg_ids[i]), parse_mode='Markdown')
             i += 1
     except Exception as e:
-       bot.send_message(secret.apple_id, '❌ ООшибка в функции отправки поздравления в Шоблу sdr():\n*Ошибка:*\n' + str(e))
+       bot.send_message(secret.apple_id, '❌ Ошибка в функции отправки поздравления в Шоблу sdr():\n*Ошибка:*\n' + str(e))
 
 
 # Запуск функций
@@ -465,11 +465,6 @@ try:
     bot.remove_webhook()
 except Exception as e:
     bot.send_message(secret.apple_id, '❌ Ошибка в функции bot.remove_webhook():\n*Ошибка:*\n' + str(e))
-
-# try:
-#     bot.send_message(secret.apple_id, '⏳ *Время запуска бота:* _{0}_'.format(time.ctime(time.time())), parse_mode='Markdown')
-# except Exception as e:
-#     bot.send_message(secret.apple_id, '❌ Ошибка в функции send_start_time:\n*Ошибка:*\n' + str(e))
 
 try:
     sdr()
@@ -481,20 +476,7 @@ try:
 except Exception as e:
     bot.send_message(secret.apple_id, '❌ Ошибка при запуске bot.polling():\n*Ошибка:*\n' + str(e))
     
-# class WebhookServer(object):
-# index равнозначно /, т.к. отсутствию части после ip-адреса (грубо говоря)
-#    @cherrypy.expose
-#    def index(self):
-#        length = int(cherrypy.request.headers['content-length'])
-#        json_string = cherrypy.request.body.read(length).decode("utf-8")
-#        update = telebot.types.Update.de_json(json_string)
-#        bot.process_new_updates([update])
-#        return ''
-
-# if __name__ == '__main__':
-#    cherrypy.config.update({
-#        'server.socket_host': '127.0.0.1',
-#        'server.socket_port': 7771,
-#        'engine.autoreload.on': False
-#    })
-#    cherrypy.quickstart(WebhookServer(), '/', {'/': {}})
+# try:
+#     bot.send_message(secret.apple_id, '⏳ *Время запуска бота:* _{0}_'.format(time.ctime(time.time())), parse_mode='Markdown')
+# except Exception as e:
+#     bot.send_message(secret.apple_id, '❌ Ошибка в функции send_start_time:\n*Ошибка:*\n' + str(e))
