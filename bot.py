@@ -26,6 +26,8 @@ def handle_start(message):
     try:
         if message.chat.id == secret.tg_chat_id or message.from_user.id in constants.tg_ids:
             bot.send_message(secret.tg_requests_chat_id, '🕹 [start](tg://user?id={0})'.format(str(message.from_user.id)), parse_mode='Markdown')
+            if message.from_user.is_premium:
+                bot.send_message(message.chat.id, '🤡 Ебать ты команду выбрал, псина премиумная')
             bot.send_message(message.chat.id, constants.help_text, disable_web_page_preview=True, parse_mode='Markdown')
             update_activity('start')
         else:
@@ -40,6 +42,8 @@ def handle_help(message):
     try:
         if message.chat.id == secret.tg_chat_id or message.from_user.id in constants.tg_ids:
             bot.send_message(secret.tg_requests_chat_id, '❓ [help](tg://user?id={0})'.format(str(message.from_user.id)), parse_mode='Markdown')
+            if message.from_user.is_premium:
+                bot.send_message(message.chat.id, '🤡 Тебе ничего не поможет, псина премиумная')
             bot.send_message(message.chat.id, constants.help_text, reply_markup=constants.help_keyboard, parse_mode='Markdown')
             update_activity('help')
     except Exception as e:
@@ -141,6 +145,8 @@ def send_discount(message):
                                    telebot.types.InlineKeyboardButton(text=constants.buttons[0][i+2], callback_data=constants.buttons[1][i+2]))
                 i += 2
             keyboard_start.add(constants.discounts, constants.channel)
+            if message.from_user.is_premium:
+                bot.send_message(message.chat.id, '🤡 Сэкономить решил, псина премиумная?')
             bot.send_message(message.chat.id, constants.buttons[2][0], reply_markup=keyboard_start, parse_mode='Markdown')
             update_activity('discount')
     except Exception as e:
@@ -152,6 +158,8 @@ def send_discount(message):
 @bot.message_handler(func=lambda message: message.text and message.text.lower() in constants.dvk and message.chat.id == secret.tg_chat_id)
 def aaa(message):
     try:
+        if message.from_user.is_premium:
+            bot.send_message(message.chat.id, '🤡 Получай свою девку, псина премиумная')
         bot.send_message(secret.tg_chat_id, 'Двк з рлм')
         update_activity('devka')
     except Exception as e:
@@ -161,6 +169,8 @@ def aaa(message):
 @bot.message_handler(func=lambda message: message.text and message.text.lower() in constants.devka and message.chat.id == secret.tg_chat_id)
 def aaaa(message):
     try:
+        if message.from_user.is_premium:
+            bot.send_message(message.chat.id, '🤡 Получай свою девку, псина премиумная')
         bot.send_message(secret.tg_chat_id, 'Девка за рулём')
         update_activity('devka')
     except Exception as e:
@@ -171,6 +181,8 @@ def aaaa(message):
 @bot.message_handler(func=lambda message: message.text and message.text.lower() in constants.russia and message.chat.id == secret.tg_chat_id)
 def russia(message):
     try:
+        if message.from_user.is_premium:
+            bot.send_message(message.chat.id, '🤡 Ебать ты патриот, псина премиумная')
         bot.send_voice(secret.tg_chat_id, constants.anthem, '🫡')
         update_activity('russia')
     except Exception as e:
@@ -181,6 +193,8 @@ def russia(message):
 @bot.message_handler(func=lambda message: message.text and message.text.lower() in constants.vracha and message.chat.id == secret.tg_chat_id)
 def vracha(message):
     try:
+        if message.from_user.is_premium:
+            bot.send_message(message.chat.id, '🤡 А что подписка не лечит от всех болезней, псина премиумная?')
         bot.send_document(secret.tg_chat_id, 'CgADAgADRgIAAkbDcEn-Ox-uqrgsHgI', caption='@oxy_genium')
         update_activity('vracha')
     except Exception as e:
@@ -191,6 +205,8 @@ def vracha(message):
 @bot.message_handler(func=lambda message: message.text and message.text.lower() in constants.git and message.chat.id == secret.tg_chat_id)
 def git(message):
     try:
+        if message.from_user.is_premium:
+            bot.send_message(message.chat.id, '🤡 Ебать ты програмес, псина премиумная')
         bot.send_message(secret.tg_chat_id, 'Хуит')
         update_activity('git')
     except Exception as e:
@@ -201,6 +217,8 @@ def git(message):
 @bot.message_handler(func=lambda message: message.text and constants.team in message.text.lower() and message.chat.id == secret.tg_chat_id)
 def team(message):
     try:
+        if message.from_user.is_premium:
+            bot.send_message(message.chat.id, '🤡 Ты никому тут не упёрся, псина премиумная')        
         bot.send_message(chat_id=secret.tg_chat_id, disable_notification=False, reply_to_message_id=message.message_id, text=constants.team_text, disable_web_page_preview=True, parse_mode="MarkdownV2")
         update_activity('team')
     except Exception as e:
@@ -224,6 +242,8 @@ def rapid(message):
         # Ну тут почти без изменений, тока data[1] became value
         response = urllib2.urlopen('https://bot.zhuykovkb.ru:81/rapid?data=' + quote(value) + '&memberid=' + str(message.from_user.id))
         answer = json.loads(str(response.read(), 'utf-8'))
+        if message.from_user.is_premium:
+            bot.send_message(message.chat.id, '🤡 Да вот тебе не настрать на рапиды, псина премиумная?')
         bot.send_message(secret.tg_chat_id, answer['message'], parse_mode='Markdown')
         if answer['message'] == 'Номер успешно добавлен':
             update_activity('rapid_new')
@@ -236,7 +256,10 @@ def rapid(message):
 @bot.message_handler(func=lambda message: message.text and message.text.lower() in constants.suk and message.chat.id == secret.tg_chat_id)
 def barsuk(message):
     try:
-        bot.send_message(secret.tg_chat_id, 'Барсук')
+        if message.from_user.is_premium:
+            bot.send_message(message.chat.id, '🤡 Хуй тебе, а не барсука, псина премиумная')
+        else:
+            bot.send_message(secret.tg_chat_id, 'Барсук')
         update_activity('cyk')
     except Exception as e:
         send_error(message, 16, e)
@@ -246,7 +269,10 @@ def barsuk(message):
 @bot.message_handler(func=lambda message: message.text and message.text.lower() in constants.syuk and message.chat.id == secret.tg_chat_id)
 def barsyuk(message):
     try:
-        bot.send_message(secret.tg_chat_id, 'Барсюк')
+        if message.from_user.is_premium:
+            bot.send_message(message.chat.id, '🤡 Хуй тебе, а не барсюка, псина премиумная')
+        else:
+            bot.send_message(secret.tg_chat_id, 'Барсюк')
         update_activity('cyk')
     except Exception as e:
         send_error(message, 17, e)
@@ -273,6 +299,8 @@ def send_text(message):
                 try:
                     if len(message.text) <= 291:
                         opros = constants.tg_names[constants.tg_ids.index(message.from_user.id)] + ': ' + message.text
+                        if message.from_user.is_premium:
+                            bot.send_message(message.chat.id, '🤡 Да всем насрать на твой опрос, псина премиумная')                        
                         poll = bot.send_poll(secret.tg_chat_id, opros, constants.poll_options, is_anonymous=False, allows_multiple_answers=False)
                         stop_button = telebot.types.InlineKeyboardButton(text='Остановить опрос 🚫',
                                                                          callback_data='stop_{0}_{1}'.format(
@@ -317,6 +345,8 @@ def callback_buttons(call):
                 send_error(call.message, 22, e)
         # Обработка запроса скидок
         elif call.data[0:4] == 'disc':
+            if call.from_user.is_premium:
+                bot.answer_callback_query(call.id, '🤡 Псина премиумная')
             discount_id = int(call.data.split('_')[1])
             buttons_text = constants.buttons[0][0:discount_id] + constants.buttons[0][discount_id+1:len(constants.buttons[0])]
             buttons_callback_data = constants.buttons[1][0:discount_id] + constants.buttons[1][discount_id+1:len(constants.buttons[1])]
