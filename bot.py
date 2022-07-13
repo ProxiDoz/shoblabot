@@ -61,7 +61,7 @@ def update_activity(field):
         with open('/root/router/shoblabot/activity_count', 'w') as lang:
             lang.write(json.dumps(activity_count))
     except Exception as e:
-        bot.send_message(secret.apple_id, '❌ Ошибка в функции udate_activity:\n*Поле: *{0}\n*Ошибка:*\n{1}'.format(field, e))
+        bot.send_message(secret.apple_id, '❌ Ошибка в функции udate_activity:\n*Поле: *{0}\n*Ошибка:*\n{1}'.format(field, e), parse_mode='Markdown')
         
 
 # Функция отправки ошибки
@@ -75,7 +75,7 @@ def send_error(message, error_id, error):
                                                  str(message.chat.last_name), str(message.chat.id), message.text, time.ctime(time.time()), error),
                          parse_mode='Markdown')
     except Exception as e:
-        bot.send_message(secret.apple_id, '❌ Ошибка в функции send_error:\n*Сообщение: *{0}\n*Ошибка:*\n{1}'.format(message.text, e))
+        bot.send_message(secret.apple_id, '❌ Ошибка в функции send_error:\n*Сообщение: *{0}\n*Ошибка:*\n{1}'.format(message.text, e), parse_mode='Markdown')
 
         
 # Вызов статистики
@@ -370,14 +370,14 @@ def sdr():
                                  '🥳 [{0}](tg://user?id={1}), с др!'.format(constants.tg_names[i], constants.tg_ids[i]), parse_mode='Markdown')
             i += 1
     except Exception as e:
-       bot.send_message(secret.apple_id, '❌ Ошибка в функции отправки поздравления в Шоблу sdr():\n*Ошибка:*\n' + str(e))
+       bot.send_message(secret.apple_id, '❌ Ошибка в функции отправки поздравления в Шоблу sdr():\n*Ошибка:*\n' + str(e), parse_mode='Markdown')
 
 
 # Запуск функций
 try:
     bot.remove_webhook()
 except Exception as e:
-    bot.send_message(secret.apple_id, '❌ Ошибка в функции bot.remove_webhook():\n*Ошибка:*\n' + str(e))
+    bot.send_message(secret.apple_id, '❌ Ошибка в функции bot.remove_webhook():\n*Ошибка:*\n' + str(e), parse_mode='Markdown')
 
 try:
     sdr()
@@ -387,9 +387,9 @@ except Exception as e:
 try:
     bot.polling()
 except Exception as e:
-    bot.send_message(secret.apple_id, '❌ Ошибка при запуске bot.polling():\n*Ошибка:*\n' + str(e))
+    bot.send_message(secret.apple_id, '❌ Ошибка при запуске bot.polling():\n*Ошибка:*\n' + str(e), parse_mode='Markdown')
     
 # try:
 #     bot.send_message(secret.apple_id, '⏳ *Время запуска бота:* _{0}_'.format(time.ctime(time.time())), parse_mode='Markdown')
 # except Exception as e:
-#     bot.send_message(secret.apple_id, '❌ Ошибка в функции send_start_time:\n*Ошибка:*\n' + str(e))
+#     bot.send_message(secret.apple_id, '❌ Ошибка в функции send_start_time:\n*Ошибка:*\n' + str(e), parse_mode='Markdown')
