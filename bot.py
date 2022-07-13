@@ -92,7 +92,7 @@ def statistics(message):
                                                              activity_count[cur_mnth]['vracha'], activity_count[cur_mnth]['pin'], activity_count[cur_mnth]['rapid_new'],
                                                              activity_count[cur_mnth]['cyk'], activity_count[cur_mnth]['russia'], activity_count[cur_mnth]['team'],
                                                              activity_count[cur_mnth]['start'], activity_count[cur_mnth]['help'], activity_count[cur_mnth]['who'],
-                                                             activity_count[cur_mnth]['rapid'])
+                                                             activity_count[cur_mnth]['rapid'], activity_count[cur_mnth]['/29'])
         bot.send_message(secret.apple_id, month_statistics, parse_mode='Markdown')
     except Exception as e:
         send_error(message, 4, e)
@@ -258,6 +258,7 @@ def barsyuk(message):
 def block(message):
     try:
         bot.send_message(secret.tg_chat_id, '*Значит так, - сразу нахуй!*', parse_mode='Markdown')
+        update_activity('/29')
     except Exception as e:
         send_error(message, 18, e)
 
@@ -351,11 +352,12 @@ def sdr():
                 with open('/root/router/shoblabot/activity_count', 'r') as lang:
                     activity_count = json.loads(lang.read())
             month_statistics = constants.month_statistics.format(activity_count[cur_mnth]['opros'], activity_count[cur_mnth]['discount'],
-                                                           activity_count[cur_mnth]['devka'], activity_count[cur_mnth]['vracha'],
-                                                           activity_count[cur_mnth]['pin'], activity_count[cur_mnth]['rapid_new'],
-                                                           activity_count[cur_mnth]['cyk'], activity_count[cur_mnth]['russia'],
-                                                           activity_count[cur_mnth]['team'], activity_count[cur_mnth]['start'],
-                                                           activity_count[cur_mnth]['help'], activity_count[cur_mnth]['who'], activity_count[cur_mnth]['rapid'])
+                                                                activity_count[cur_mnth]['devka'], activity_count[cur_mnth]['vracha'],
+                                                                activity_count[cur_mnth]['pin'], activity_count[cur_mnth]['rapid_new'],
+                                                                activity_count[cur_mnth]['cyk'], activity_count[cur_mnth]['russia'],
+                                                                activity_count[cur_mnth]['team'], activity_count[cur_mnth]['start'],
+                                                                activity_count[cur_mnth]['help'], activity_count[cur_mnth]['who'],
+                                                                 activity_count[cur_mnth]['rapid'], activity_count[cur_mnth]['/29'])
             bot.send_message(secret.tg_chat_id, month_statistics, parse_mode='Markdown')
             # Рассылка по 10челлендж
             challenge = bot.send_message(secret.tg_chat_id, '📸 Шоблятки, время для #10челлендж и выших фоточек за месяц!', parse_mode='Markdown')
