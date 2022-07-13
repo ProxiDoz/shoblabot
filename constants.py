@@ -112,9 +112,31 @@ russia = ['ра\nси\nя', 'ра си я', 'расия',
 	  'ро\nсс\nея', 'ро сс ея', 'россея',
 	  'ро\nис\nся', 'ро ис ся', 'роисся',
           'ро\nес\nся', 'ро ес ся', 'роесся']
+anthem = 'AwACAgIAAxkBAAJDIWLGyK15Ym3bMc0u5PU9YXtDDxHnAALtHAACbJI4SiCUtXmDfvoxKQQ'
 
 # team
 team = '@team'
+team_text = '⚠️ *Внимание, Шобла*\n\n' \
+            '[Тарс](t.me/shackoor), ' \
+            '[Апол](t.me/apoll), ' \
+            '[Ивановский](t.me/ivanovmm), ' \
+            '[Конатик](t.me/KanatoF), ' \
+            '[Кир](t.me/zhuykovkb), ' \
+            '[Катя](tg://user?id=434756061), ' \
+            '[Максон](t.me/MrGogu), ' \
+            '[Носик](tg://user?id=51994109), ' \
+            '[Окз](t.me/oxy_genium), ' \
+            '[Паузеньк](t.me/Pausenk), ' \
+            '[НТЩ](t.me/ntshch), ' \
+            '[Толяновский](t.me/toliyansky), ' \
+            '[Виктор](t.me/FrelVick), ' \
+            '[Морго](t.me/margoiv_a), ' \
+            '[Мишаня](t.me/Mich37), ' \
+            '[Ксю](t.me/ksenia_boorda), ' \
+            '[Ромолэ](t.me/Roman_Kazitskiy), ' \
+            '[Эльтос](t.me/elvira_aes), ' \
+            '[Аня](t.me/kebushka), ' \
+            '[Деннис](tg://user?id=503404575)'
 
 # rapid
 rapid = '/rapid'
