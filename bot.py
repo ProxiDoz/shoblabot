@@ -145,9 +145,9 @@ def send_discount(message):
                                    telebot.types.InlineKeyboardButton(text=constants.buttons[0][i+2], callback_data=constants.buttons[1][i+2]))
                 i += 2
             keyboard_start.add(constants.discounts, constants.channel)
+            bot.send_message(message.chat.id, constants.buttons[2][0], reply_markup=keyboard_start, parse_mode='Markdown')
             if message.from_user.is_premium:
                 bot.send_message(message.chat.id, '🤡 Сэкономить решил, псина премиумная?')
-            bot.send_message(message.chat.id, constants.buttons[2][0], reply_markup=keyboard_start, parse_mode='Markdown')
             update_activity('discount')
     except Exception as e:
         send_error(message, 8, e)
