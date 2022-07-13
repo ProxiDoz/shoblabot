@@ -10,7 +10,6 @@ import constants
 import secret
 # import cherry
 import threading
-import subprocess
 import urllib.request as urllib2  # Для отправки фотографий из Telegram в Шоблу
 from urllib.parse import quote
 
@@ -51,17 +50,17 @@ def handle_help(message):
 def update_activity(field):
     try:
         now_time = datetime.datetime.now()
-        cur_mnth = str(now_time.year) + '.' + str(now_time.month)
+        current_month = str(now_time.year) + '.' + str(now_time.month)
         # Загружаем данные из файла activity_count
         if os.path.isfile('/root/router/shoblabot/activity_count'):
             with open('/root/router/shoblabot/activity_count', 'r') as lang:
                 activity_count = json.loads(lang.read())
-        activity_count[cur_mnth][field] += 1
+        activity_count[current_month][field] += 1
         # Записываем данные в файл activity_count
         with open('/root/router/shoblabot/activity_count', 'w') as lang:
             lang.write(json.dumps(activity_count))
     except Exception as e:
-        bot.send_message(secret.apple_id, '❌ Ошибка в функции udate_activity:\n*Поле: *{0}\n*Ошибка:*\n{1}'.format(field, e), parse_mode='Markdown')
+        bot.send_message(secret.apple_id, '❌ Ошибка в функции update_activity:\n*Поле: *{0}\n*Ошибка:*\n{1}'.format(field, e), parse_mode='Markdown')
         
 
 # Функция отправки ошибки
@@ -83,16 +82,16 @@ def send_error(message, error_id, error):
 def statistics(message):
     try:
         now_time = datetime.datetime.now()
-        cur_mnth = str(now_time.year) + '.' + str(now_time.month)
+        current_month = str(now_time.year) + '.' + str(now_time.month)
         # Загружаем данные из файла activity_count
         if os.path.isfile('/root/router/shoblabot/activity_count'):
             with open('/root/router/shoblabot/activity_count', 'r') as lang:
                 activity_count = json.loads(lang.read())
-        month_statistics = constants.month_statistics.format(activity_count[cur_mnth]['opros'], activity_count[cur_mnth]['discount'], activity_count[cur_mnth]['devka'],
-                                                             activity_count[cur_mnth]['vracha'], activity_count[cur_mnth]['pin'], activity_count[cur_mnth]['rapid_new'],
-                                                             activity_count[cur_mnth]['cyk'], activity_count[cur_mnth]['russia'], activity_count[cur_mnth]['team'],
-                                                             activity_count[cur_mnth]['start'], activity_count[cur_mnth]['help'], activity_count[cur_mnth]['who'],
-                                                             activity_count[cur_mnth]['rapid'], activity_count[cur_mnth]['/29'])
+        month_statistics = constants.month_statistics.format(activity_count[current_month]['opros'], activity_count[current_month]['discount'], activity_count[current_month]['devka'],
+                                                             activity_count[current_month]['vracha'], activity_count[current_month]['pin'], activity_count[current_month]['rapid_new'],
+                                                             activity_count[current_month]['cyk'], activity_count[current_month]['russia'], activity_count[current_month]['team'],
+                                                             activity_count[current_month]['start'], activity_count[current_month]['help'], activity_count[current_month]['who'],
+                                                             activity_count[current_month]['rapid'], activity_count[current_month]['/29'])
         bot.send_message(secret.apple_id, month_statistics, parse_mode='Markdown')
     except Exception as e:
         send_error(message, 4, e)
@@ -290,7 +289,6 @@ def send_text(message):
                         bot.delete_message(secret.tg_chat_id, message.reply_to_message.message_id)
                         bot.send_message(message.chat.id, constants.too_large_question, reply_to_message_id=message.message_id, reply_markup=force_reply)                       
                 except Exception as e:
-                    # bot.send_message(message.chat.id, constants.errors[14] + '\nНовый опросник\n' + str(e))
                     send_error(message, 19, e)      
             # Если это попытка запинить сообщение
             elif message.text == '@shoblabot':
