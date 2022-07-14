@@ -378,7 +378,7 @@ def sdr():
         threading.Timer(3600, sdr).start()  # Каждые полчаса - 1800, каждые 10 мин - 600
         # Отправка предупреждения о загрузке оперативной памяти
         if psutil.virtual_memory()[2] > 80:
-            bot.send_message(secret.apple_id, '‼️ Oh shit, attention ‼️\n💾 Used RAM: {0}%'.format(psutil.virtual_memory()[2])), parse_mode='MarkdownV2')
+            bot.send_message(secret.apple_id, '‼️ Oh shit, attention ‼️\n💾 Used RAM: {0}%'.format(psutil.virtual_memory()[2]), parse_mode='MarkdownV2')
         # Отправка статистики 1ого чиса месяца
         now_time = datetime.datetime.now()
         dr = str(now_time.day) + '.' + str(now_time.month)
