@@ -222,7 +222,7 @@ def git(message):
 def team(message):
     try:
         bot.send_message(chat_id=secret.tg_chat_id, disable_notification=False, reply_to_message_id=message.message_id, text=constants.team_text,
-                         disable_web_page_preview=True, parse_mode='MarkdownV2')
+                         disable_web_page_preview=True, parse_mode='Markdown')
         if message.from_user.is_premium:
             bot.send_message(message.chat.id, '🤡 Ты тут никому не упёрся, ||псина|| премиумная', parse_mode='MarkdownV2')
         update_activity('team')
@@ -290,7 +290,7 @@ def block(message):
         if message.from_user.is_premium:
             bot.send_message(message.chat.id, '🤡 Значит так, - сразу нахуй, ||псина|| премиумная', parse_mode='MarkdownV2')
         else:
-            bot.send_message(secret.tg_chat_id, '*Значит так, - сразу ||нахуй||\!*', parse_mode='MarkdownV2')
+            bot.send_message(secret.tg_chat_id, '*Значит так, \- сразу ||нахуй||\!*', parse_mode='MarkdownV2')
         update_activity('/29')
     except Exception as e:
         send_error(message, 18, e)
