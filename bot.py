@@ -26,13 +26,13 @@ activity_count = {}  # Переменная для сбора статистик
 def handle_start(message):
     try:
         if message.chat.id == secret.tg_chat_id or message.from_user.id in constants.tg_ids:
-            bot.send_message(secret.tg_requests_chat_id, '🕹 [start](tg://user?id={0})'.format(str(message.from_user.id)), parse_mode='Markdown')
-            bot.send_message(message.chat.id, constants.help_text, disable_web_page_preview=True, parse_mode='Markdown')
+            bot.send_message(secret.tg_requests_chat_id, '🕹 [start](tg://user?id={0})'.format(str(message.from_user.id)), parse_mode='MarkdownV2')
+            bot.send_message(message.chat.id, constants.help_text, disable_web_page_preview=True, parse_mode='MarkdownV2')
             if message.from_user.is_premium:
-                bot.send_message(message.chat.id, '🤡 Ебать ты команду выбрал, псина премиумная')
+                bot.send_message(message.chat.id, '🤡 Ебать ты команду выбрал, ||псина|| премиумная', parse_mode='MarkdownV2')
             update_activity('start')
         else:
-            bot.send_message(message.chat.id, constants.help_text_light, parse_mode='Markdown')
+            bot.send_message(message.chat.id, constants.help_text_light, parse_mode='MarkdownV2')
     except Exception as e:
         send_error(message, 0, e)
 
@@ -42,10 +42,10 @@ def handle_start(message):
 def handle_help(message):
     try:
         if message.chat.id == secret.tg_chat_id or message.from_user.id in constants.tg_ids:
-            bot.send_message(secret.tg_requests_chat_id, '❓ [help](tg://user?id={0})'.format(str(message.from_user.id)), parse_mode='Markdown')
-            bot.send_message(message.chat.id, constants.help_text, reply_markup=constants.help_keyboard, parse_mode='Markdown')
+            bot.send_message(secret.tg_requests_chat_id, '❓ [help](tg://user?id={0})'.format(str(message.from_user.id)), parse_mode='MarkdownV2')
+            bot.send_message(message.chat.id, constants.help_text, reply_markup=constants.help_keyboard, parse_mode='MarkdownV2')
             if message.from_user.is_premium:
-                bot.send_message(message.chat.id, '🤡 Тебе ничего не поможет, псина премиумная')
+                bot.send_message(message.chat.id, '🤡 Тебе ничего не поможет, ||псина|| премиумная', parse_mode='MarkdownV2')
             update_activity('help')
     except Exception as e:
         send_error(message, 1, e)
@@ -57,12 +57,12 @@ def who_will(message):
     try:
         update_activity('who')
         if message.chat.id == secret.tg_chat_id:
-            bot.send_message(secret.tg_requests_chat_id, '✅❌ [who](tg://user?id={0})'.format(str(message.from_user.id)), parse_mode='Markdown')
+            bot.send_message(secret.tg_requests_chat_id, '✅❌ [who](tg://user?id={0})'.format(str(message.from_user.id)), parse_mode='MarkdownV2')
             force_reply = telebot.types.ForceReply(True)
             bot.send_message(secret.tg_chat_id, constants.enter_question_new, reply_to_message_id=message.message_id, reply_markup=force_reply)
             bot.delete_message(secret.tg_chat_id, message.message_id)
         elif message.chat.id in constants.tg_ids:
-            bot.send_message(message.chat.id, '❌ Опрос создается только в [Шобле](https://t.me/c/1126587083/)', parse_mode='Markdown')
+            bot.send_message(message.chat.id, '❌ Опрос создается только в [Шобле](https://t.me/c/1126587083/)', parse_mode='MarkdownV2')
     except Exception as e:
         send_error(message, 7, e)
 
@@ -79,9 +79,9 @@ def send_discount(message):
                                    telebot.types.InlineKeyboardButton(text=constants.buttons[0][i+2], callback_data=constants.buttons[1][i+2]))
                 i += 2
             keyboard_start.add(constants.discounts, constants.channel)
-            bot.send_message(message.chat.id, constants.buttons[2][0], reply_markup=keyboard_start, parse_mode='Markdown')
+            bot.send_message(message.chat.id, constants.buttons[2][0], reply_markup=keyboard_start, parse_mode='MarkdownV2')
             if message.from_user.is_premium:
-                bot.send_message(message.chat.id, '🤡 Сэкономить решил, псина премиумная?')
+                bot.send_message(message.chat.id, '🤡 Сэкономить решил, ||псина|| премиумная?', parse_mode='MarkdownV2')
             update_activity('discount')
     except Exception as e:
         send_error(message, 8, e)   
@@ -102,7 +102,7 @@ def update_activity(field):
         with open('/root/router/shoblabot/activity_count', 'w') as lang:
             lang.write(json.dumps(activity_count))
     except Exception as e:
-        bot.send_message(secret.apple_id, '❌ Ошибка в функции update_activity:\n*Поле: *{0}\n*Ошибка:*\n{1}'.format(field, e), parse_mode='Markdown')
+        bot.send_message(secret.apple_id, '❌ Ошибка в функции update_activity:\n*Поле: *{0}\n*Ошибка:*\n{1}'.format(field, e), parse_mode='MarkdownV2')
         
 
 # Функция отправки ошибки
@@ -116,7 +116,7 @@ def send_error(message, error_id, error):
                                                  str(message.chat.last_name), str(message.chat.id), message.text, time.ctime(time.time()), error),
                          parse_mode='Markdown')
     except Exception as e:
-        bot.send_message(secret.apple_id, '❌ Ошибка в функции send_error:\n*Сообщение: *{0}\n*Ошибка:*\n{1}'.format(message.text, e), parse_mode='Markdown')
+        bot.send_message(secret.apple_id, '❌ Ошибка в функции send_error:\n*Сообщение: *{0}\n*Ошибка:*\n{1}'.format(message.text, e), parse_mode='MarkdownV2')
 
         
 # Вызов статистики
@@ -134,7 +134,7 @@ def statistics(message):
                                                              activity_count[current_month]['cyk'], activity_count[current_month]['russia'], activity_count[current_month]['team'],
                                                              activity_count[current_month]['start'], activity_count[current_month]['help'], activity_count[current_month]['who'],
                                                              activity_count[current_month]['rapid'], activity_count[current_month]['/29'])
-        bot.send_message(secret.apple_id, month_statistics, parse_mode='Markdown')
+        bot.send_message(secret.apple_id, month_statistics, parse_mode='MarkdownV2')
     except Exception as e:
         send_error(message, 4, e)
 
@@ -160,7 +160,7 @@ def server_info(message):
 def aaa(message):
     try:
         if message.from_user.is_premium:
-            bot.send_message(message.chat.id, '🤡 Получай свою девку, псина премиумная')
+            bot.send_message(message.chat.id, '🤡 Получай свою девку, ||псина|| премиумная', parse_mode='MarkdownV2')
         bot.send_message(secret.tg_chat_id, 'Двк з рлм')
         update_activity('devka')
     except Exception as e:
@@ -171,7 +171,7 @@ def aaa(message):
 def aaaa(message):
     try:
         if message.from_user.is_premium:
-            bot.send_message(message.chat.id, '🤡 Получай свою девку, псина премиумная')
+            bot.send_message(message.chat.id, '🤡 Получай свою девку, ||псина|| премиумная', parse_mode='MarkdownV2')
         bot.send_message(secret.tg_chat_id, 'Девка за рулём')
         update_activity('devka')
     except Exception as e:
@@ -184,7 +184,7 @@ def russia(message):
     try:
         bot.send_voice(secret.tg_chat_id, constants.anthem, '🫡')
         if message.from_user.is_premium:
-            bot.send_message(message.chat.id, '🤡 Ебать ты патриот, псина премиумная')
+            bot.send_message(message.chat.id, '🤡 Ебать ты патриот, ||псина|| премиумная', parse_mode='MarkdownV2')
         update_activity('russia')
     except Exception as e:
         send_error(message, 11, e)
@@ -196,7 +196,7 @@ def vracha(message):
     try:
         bot.send_document(secret.tg_chat_id, 'CgADAgADRgIAAkbDcEn-Ox-uqrgsHgI', caption='@oxy_genium')
         if message.from_user.is_premium:
-            bot.send_message(message.chat.id, '🤡 А что подписка не лечит от всех болезней, псина премиумная?')        
+            bot.send_message(message.chat.id, '🤡 А что подписка не лечит от всех болезней, ||псина|| премиумная?', parse_mode='MarkdownV2')    
         update_activity('vracha')
     except Exception as e:
         send_error(message, 12, e)
@@ -208,7 +208,7 @@ def git(message):
     try:
         bot.send_message(secret.tg_chat_id, 'Хуит')
         if message.from_user.is_premium:
-            bot.send_message(message.chat.id, '🤡 Ебать ты програмес, псина премиумная')
+            bot.send_message(message.chat.id, '🤡 Ебать ты програмес, ||псина|| премиумная', parse_mode='MarkdownV2')
         update_activity('git')
     except Exception as e:
         send_error(message, 13, e)
@@ -218,9 +218,9 @@ def git(message):
 @bot.message_handler(func=lambda message: message.text and constants.team in message.text.lower() and message.chat.id == secret.tg_chat_id)
 def team(message):
     try:
-        bot.send_message(chat_id=secret.tg_chat_id, disable_notification=False, reply_to_message_id=message.message_id, text=constants.team_text, disable_web_page_preview=True, parse_mode="MarkdownV2")        
+        bot.send_message(chat_id=secret.tg_chat_id, disable_notification=False, reply_to_message_id=message.message_id, text=constants.team_text, disable_web_page_preview=True, parse_mode='MarkdownV2')        
         if message.from_user.is_premium:
-            bot.send_message(message.chat.id, '🤡 Ты тут никому не упёрся, псина премиумная')        
+            bot.send_message(message.chat.id, '🤡 Ты тут никому не упёрся, ||псина|| премиумная', parse_mode='MarkdownV2')      
         update_activity('team')
     except Exception as e:
         send_error(message, 14, e)
@@ -244,8 +244,8 @@ def rapid(message):
         response = urllib2.urlopen('https://bot.zhuykovkb.ru:81/rapid?data=' + quote(value) + '&memberid=' + str(message.from_user.id))
         answer = json.loads(str(response.read(), 'utf-8'))
         if message.from_user.is_premium:
-            bot.send_message(message.chat.id, '🤡 Да вот тебе не настрать на рапиды, псина премиумная?')
-        bot.send_message(secret.tg_chat_id, answer['message'], parse_mode='Markdown')
+            bot.send_message(message.chat.id, '🤡 Да вот тебе не настрать на рапиды, ||псина|| премиумная?', parse_mode='MarkdownV2')
+        bot.send_message(secret.tg_chat_id, answer['message'], parse_mode='MarkdownV2')
         if answer['message'] == 'Номер успешно добавлен':
             update_activity('rapid_new')
     except Exception as e:
@@ -258,7 +258,7 @@ def rapid(message):
 def barsuk(message):
     try:
         if message.from_user.is_premium:
-            bot.send_message(message.chat.id, '🤡 Хуй тебе, а не барсука, псина премиумная')
+            bot.send_message(message.chat.id, '🤡 Хуй тебе, а не барсука, ||псина|| премиумная', parse_mode='MarkdownV2')
         else:
             bot.send_message(secret.tg_chat_id, 'Барсук')
         update_activity('cyk')
@@ -271,7 +271,7 @@ def barsuk(message):
 def barsyuk(message):
     try:
         if message.from_user.is_premium:
-            bot.send_message(message.chat.id, '🤡 Хуй тебе, а не барсюка, псина премиумная')
+            bot.send_message(message.chat.id, '🤡 Хуй тебе, а не барсюка, ||псина|| премиумная', parse_mode='MarkdownV2')
         else:
             bot.send_message(secret.tg_chat_id, 'Барсюк')
         update_activity('cyk')
@@ -284,9 +284,9 @@ def barsyuk(message):
 def block(message):
     try:
         if message.from_user.is_premium:
-            bot.send_message(message.chat.id, '🤡 Значит так, - сразу нахуй, псина премиумная')
+            bot.send_message(message.chat.id, '🤡 Значит так, - сразу нахуй, ||псина|| премиумная', parse_mode='MarkdownV2')
         else:
-            bot.send_message(secret.tg_chat_id, '*Значит так, - сразу нахуй!*', parse_mode='Markdown')
+            bot.send_message(secret.tg_chat_id, '*Значит так, - сразу ||нахуй||!*', parse_mode='MarkdownV2')
         update_activity('/29')
     except Exception as e:
         send_error(message, 18, e)
@@ -310,7 +310,7 @@ def send_text(message):
                         keyboard_opros_stop = telebot.types.InlineKeyboardMarkup(row_width=1)
                         keyboard_opros_stop.add(stop_button)
                         if message.from_user.is_premium:
-                            bot.send_message(message.chat.id, '🤡 Да всем насрать на твой опрос, псина премиумная')
+                            bot.send_message(message.chat.id, '🤡 Да всем насрать на твой опрос, ||псина|| премиумная', parse_mode='MarkdownV2')
                         bot.delete_message(secret.tg_chat_id, message.reply_to_message.message_id)
                         bot.edit_message_reply_markup(secret.tg_chat_id, poll.message_id, reply_markup=keyboard_opros_stop)
                         bot.delete_message(secret.tg_chat_id, message.message_id)
@@ -327,13 +327,13 @@ def send_text(message):
                 bot.pin_chat_message(chat_id=secret.tg_chat_id, message_id=message.reply_to_message.message_id,
                                      disable_notification=False)
                 if message.from_user.is_premium:
-                    bot.send_message(message.chat.id, '🤡 Жопу себе запинь, псина премиумная')
+                    bot.send_message(message.chat.id, '🤡 Жопу себе запинь, ||псина|| премиумная', parse_mode='MarkdownV2')
                 update_activity('pin')
         elif message.reply_to_message is not None and message.text == '@shoblabot':
             bot.pin_chat_message(chat_id=secret.tg_chat_id, message_id=message.reply_to_message.message_id,
                                  disable_notification=False)
             if message.from_user.is_premium:
-                bot.send_message(message.chat.id, '🤡 Жопу себе запинь, псина премиумная')
+                bot.send_message(message.chat.id, '🤡 Жопу себе запинь, ||псина|| премиумная', parse_mode='MarkdownV2')
             update_activity('pin')
     except Exception as e:
         send_error(message, 20, e)
@@ -366,7 +366,7 @@ def callback_buttons(call):
                 i += 2
             keyboard_update.add(constants.discounts, constants.channel)
             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                                  text=constants.buttons[2][discount_id], parse_mode='Markdown',
+                                  text=constants.buttons[2][discount_id], parse_mode='MarkdownV2',
                                   reply_markup=keyboard_update)
     except Exception as e:
         send_error(call.message, 3, e)
@@ -376,6 +376,10 @@ def callback_buttons(call):
 def sdr():
     try:
         threading.Timer(3600, sdr).start()  # Каждые полчаса - 1800, каждые 10 мин - 600
+        # Отправка предупреждения о загрузке оперативной памяти
+        if psutil.virtual_memory()[2] > 80:
+            bot.send_message(secret.apple_id, '‼️ Oh shit, attention ‼️\n💾 Used RAM: {0}%'.format(psutil.virtual_memory()[2])), parse_mode='MarkdownV2')
+        # Отправка статистики 1ого чиса месяца
         now_time = datetime.datetime.now()
         dr = str(now_time.day) + '.' + str(now_time.month)
         i = 0
@@ -396,37 +400,39 @@ def sdr():
                                                                  activity_count[cur_mnth]['rapid'], activity_count[cur_mnth]['/29'])
             bot.send_message(secret.tg_chat_id, month_statistics, parse_mode='Markdown')
             # Рассылка по 10челлендж
-            challenge = bot.send_message(secret.tg_chat_id, '📸 Шоблятки, время для #10челлендж и выших фоточек за месяц!', parse_mode='Markdown')
+            challenge = bot.send_message(secret.tg_chat_id, '📸 Шоблятки, время для #10челлендж и выших фоточек за месяц!', parse_mode='MarkdownV2')
             bot.pin_chat_message(secret.tg_chat_id, challenge.message_id, disable_notification=False)
-        if dr == str(28.5):  # День Баяна в Шобле отмечается 28 мая
+        # День Баяна в Шобле отмечается 28 мая
+        if dr == str(28.5):
             bot.send_message(secret.tg_chat_id, '🪗 Шобла, поздравляю с Днём Баяна!')
+        # Отправка поздравлений с ДР
         for item in constants.tg_drs:
             if item == dr:
                 bot.send_message(secret.tg_chat_id,
-                                 '🥳 [{0}](tg://user?id={1}), с др!'.format(constants.tg_names[i], constants.tg_ids[i]), parse_mode='Markdown')
+                                 '🥳 [{0}](tg://user?id={1}), с др!'.format(constants.tg_names[i], constants.tg_ids[i]), parse_mode='MarkdownV2')
             i += 1
     except Exception as e:
-       bot.send_message(secret.apple_id, '❌ Ошибка в функции отправки поздравления в Шоблу sdr():\n*Ошибка:*\n' + str(e), parse_mode='Markdown')
+       bot.send_message(secret.apple_id, '❌ Ошибка в функции отправки поздравления в Шоблу sdr():\n*Ошибка:*\n' + str(e), parse_mode='MarkdownV2')
 
     
 # # # # # # Запуск функций # # # # # #
 try:
     bot.remove_webhook()
 except Exception as e:
-    bot.send_message(secret.apple_id, '❌ Ошибка в функции bot.remove_webhook():\n*Ошибка:*\n' + str(e), parse_mode='Markdown')
+    bot.send_message(secret.apple_id, '❌ Ошибка в функции bot.remove_webhook():\n*Ошибка:*\n' + str(e), parse_mode='MarkdownV2')
 
 try:
     sdr()
 except Exception as e:
-    bot.send_message(secret.apple_id, '❌ Ошибка в запуске sdr():\n*Ошибка:*\n' + str(e), parse_mode='Markdown')
+    bot.send_message(secret.apple_id, '❌ Ошибка в запуске sdr():\n*Ошибка:*\n' + str(e), parse_mode='MarkdownV2')
     
 try:
-    bot.send_message(secret.tg_test_chat_id, '⏳ *Время запуска бота:* _{0}_'.format(time.ctime(time.time())), parse_mode='Markdown')
+    bot.send_message(secret.tg_test_chat_id, '⏳ *Время запуска бота:* _{0}_'.format(time.ctime(time.time())), parse_mode='MarkdownV2')
 except Exception as e:
-    bot.send_message(secret.apple_id, '❌ Ошибка в функции send_start_time:\n*Ошибка:*\n' + str(e), parse_mode='Markdown')
+    bot.send_message(secret.apple_id, '❌ Ошибка в функции send_start_time:\n*Ошибка:*\n' + str(e), parse_mode='MarkdownV2')
     
 try:
     bot.polling()
 except Exception as e:
-    bot.send_message(secret.apple_id, '❌ Ошибка при запуске bot.polling():\n*Ошибка:*\n' + str(e), parse_mode='Markdown')
+    bot.send_message(secret.apple_id, '❌ Ошибка при запуске bot.polling():\n*Ошибка:*\n' + str(e), parse_mode='MarkdownV2')
 
