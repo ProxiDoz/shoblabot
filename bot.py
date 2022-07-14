@@ -57,12 +57,12 @@ def who_will(message):
     try:
         update_activity('who')
         if message.chat.id == secret.tg_chat_id:
-            bot.send_message(secret.tg_requests_chat_id, '✅❌ [who](tg://user?id={0})'.format(str(message.from_user.id)), parse_mode='MarkdownV2')
+            bot.send_message(secret.tg_requests_chat_id, '✅❌ [who](tg://user?id={0})'.format(str(message.from_user.id)), parse_mode='Markdown')
             force_reply = telebot.types.ForceReply(True)
             bot.send_message(secret.tg_chat_id, constants.enter_question_new, reply_to_message_id=message.message_id, reply_markup=force_reply)
             bot.delete_message(secret.tg_chat_id, message.message_id)
         elif message.chat.id in constants.tg_ids:
-            bot.send_message(message.chat.id, '❌ Опрос создается только в [Шобле](https://t.me/c/1126587083/)', parse_mode='MarkdownV2')
+            bot.send_message(message.chat.id, '❌ Опрос создается только в [Шобле](https://t.me/c/1126587083/)', parse_mode='Markdown')
     except Exception as e:
         send_error(message, 7, e)
 
