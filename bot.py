@@ -21,8 +21,7 @@ bot = telebot.TeleBot(secret.tg_token)  # Token бота
 activity_count = {}  # Переменная для сбора статистики по командам
 
 
-# # # # # # Тело бота # # # # # #
-# Начальное сообщение
+# # # # # # Доступные команды # # # # # #
 @bot.message_handler(commands=['start'])
 def handle_start(message):
     try:
@@ -51,7 +50,44 @@ def handle_help(message):
     except Exception as e:
         send_error(message, 1, e)
 
+        
+# Функция отправки опроса в чат
+@bot.message_handler(commands=['who'])
+def who_will(message):
+    try:
+        update_activity('who')
+        if message.chat.id == secret.tg_chat_id:
+            bot.send_message(secret.tg_requests_chat_id, '✅❌ [who](tg://user?id={0})'.format(str(message.from_user.id)), parse_mode='Markdown')
+            force_reply = telebot.types.ForceReply(True)
+            bot.send_message(secret.tg_chat_id, constants.enter_question_new, reply_to_message_id=message.message_id, reply_markup=force_reply)
+            bot.delete_message(secret.tg_chat_id, message.message_id)
+        elif message.chat.id in constants.tg_ids:
+            bot.send_message(message.chat.id, '❌ Опрос создается только в [Шобле](https://t.me/c/1126587083/)', parse_mode='Markdown')
+    except Exception as e:
+        send_error(message, 7, e)
 
+
+# Отправка скидок
+@bot.message_handler(commands=['discount'])
+def send_discount(message):
+    try:
+        if message.from_user.id in constants.tg_ids:
+            i = 0
+            keyboard_start = telebot.types.InlineKeyboardMarkup(row_width=2)
+            while i < len(constants.buttons[0]) - 1:
+                keyboard_start.add(telebot.types.InlineKeyboardButton(text=constants.buttons[0][i+1], callback_data=constants.buttons[1][i+1]),
+                                   telebot.types.InlineKeyboardButton(text=constants.buttons[0][i+2], callback_data=constants.buttons[1][i+2]))
+                i += 2
+            keyboard_start.add(constants.discounts, constants.channel)
+            bot.send_message(message.chat.id, constants.buttons[2][0], reply_markup=keyboard_start, parse_mode='Markdown')
+            if message.from_user.is_premium:
+                bot.send_message(message.chat.id, '🤡 Сэкономить решил, псина премиумная?')
+            update_activity('discount')
+    except Exception as e:
+        send_error(message, 8, e)   
+        
+        
+# # # # # # Служебные функции и команды # # # # # #
 # Функция сбора статистики по командам и функциям
 def update_activity(field):
     try:
@@ -118,45 +154,8 @@ def server_info(message):
         send_error(message, 5, e)
 
 
-# # # # # # Общие команды # # # # # #
-# Функция отправки опроса в чат
-@bot.message_handler(commands=['who'])
-def who_will(message):
-    try:
-        update_activity('who')
-        if message.chat.id == secret.tg_chat_id:
-            bot.send_message(secret.tg_requests_chat_id, '✅❌ [who](tg://user?id={0})'.format(str(message.from_user.id)), parse_mode='Markdown')
-            force_reply = telebot.types.ForceReply(True)
-            bot.send_message(secret.tg_chat_id, constants.enter_question_new, reply_to_message_id=message.message_id, reply_markup=force_reply)
-            bot.delete_message(secret.tg_chat_id, message.message_id)
-        elif message.chat.id in constants.tg_ids:
-            bot.send_message(message.chat.id, '❌ Опрос создается только в [Шобле](https://t.me/c/1126587083/)', parse_mode='Markdown')
-    except Exception as e:
-        send_error(message, 7, e)
-
-
-# Отправка скидок
-@bot.message_handler(commands=['discount'])
-def send_discount(message):
-    try:
-        if message.from_user.id in constants.tg_ids:
-            i = 0
-            keyboard_start = telebot.types.InlineKeyboardMarkup(row_width=2)
-            while i < len(constants.buttons[0]) - 1:
-                keyboard_start.add(telebot.types.InlineKeyboardButton(text=constants.buttons[0][i+1], callback_data=constants.buttons[1][i+1]),
-                                   telebot.types.InlineKeyboardButton(text=constants.buttons[0][i+2], callback_data=constants.buttons[1][i+2]))
-                i += 2
-            keyboard_start.add(constants.discounts, constants.channel)
-            bot.send_message(message.chat.id, constants.buttons[2][0], reply_markup=keyboard_start, parse_mode='Markdown')
-            if message.from_user.is_premium:
-                bot.send_message(message.chat.id, '🤡 Сэкономить решил, псина премиумная?')
-            update_activity('discount')
-    except Exception as e:
-        send_error(message, 8, e)
-
-
-# # # # # # Обработка данных
-# Обработка девки за рулем
+# # # # # # Обработка текста # # # # # #
+# Обработка девок за рулем
 @bot.message_handler(func=lambda message: message.text and message.text.lower() in constants.dvk and message.chat.id == secret.tg_chat_id)
 def aaa(message):
     try:
@@ -293,7 +292,7 @@ def block(message):
         send_error(message, 18, e)
 
     
-# Обработчик текста
+# # # # # # Обработка реплаев # # # # # #
 @bot.message_handler(content_types=['text'])
 def send_text(message):
     try:
@@ -340,7 +339,7 @@ def send_text(message):
         send_error(message, 20, e)
 
         
-# Обработчик Call Back Data
+# # # # # # Обработчик Call Back Data # # # # # #
 @bot.callback_query_handler(func=lambda call: True)
 def callback_buttons(call):
     try:
@@ -373,7 +372,7 @@ def callback_buttons(call):
         send_error(call.message, 3, e)
 
 
-# Отправка поздравления с др в Шоблу
+# # # # # # Отправка запланированных сообщений # # # # # #
 def sdr():
     try:
         threading.Timer(3600, sdr).start()  # Каждые полчаса - 1800, каждые 10 мин - 600
@@ -409,8 +408,8 @@ def sdr():
     except Exception as e:
        bot.send_message(secret.apple_id, '❌ Ошибка в функции отправки поздравления в Шоблу sdr():\n*Ошибка:*\n' + str(e), parse_mode='Markdown')
 
-
-# Запуск функций
+    
+# # # # # # Запуск функций # # # # # #
 try:
     bot.remove_webhook()
 except Exception as e:
@@ -419,14 +418,14 @@ except Exception as e:
 try:
     sdr()
 except Exception as e:
-    bot.send_message(secret.apple_id, '❌ Ошибка в запуске sdr():\n*Ошибка:*\n' + str(e))
+    bot.send_message(secret.apple_id, '❌ Ошибка в запуске sdr():\n*Ошибка:*\n' + str(e), parse_mode='Markdown')
 
 try:
     bot.polling()
 except Exception as e:
     bot.send_message(secret.apple_id, '❌ Ошибка при запуске bot.polling():\n*Ошибка:*\n' + str(e), parse_mode='Markdown')
     
-# try:
-#     bot.send_message(secret.apple_id, '⏳ *Время запуска бота:* _{0}_'.format(time.ctime(time.time())), parse_mode='Markdown')
-# except Exception as e:
-#     bot.send_message(secret.apple_id, '❌ Ошибка в функции send_start_time:\n*Ошибка:*\n' + str(e), parse_mode='Markdown')
+try:
+    bot.send_message(secret.tg_test_chat_id, '⏳ *Время запуска бота:* _{0}_'.format(time.ctime(time.time())), parse_mode='Markdown')
+except Exception as e:
+    bot.send_message(secret.apple_id, '❌ Ошибка в функции send_start_time:\n*Ошибка:*\n' + str(e), parse_mode='Markdown')
