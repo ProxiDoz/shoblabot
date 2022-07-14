@@ -288,7 +288,7 @@ def barsyuk(message):
 def block(message):
     try:
         if message.from_user.is_premium:
-            bot.send_message(message.chat.id, '🤡 Значит так, - сразу нахуй, ||псина|| премиумная', parse_mode='MarkdownV2')
+            bot.send_message(message.chat.id, '🤡 Значит так, \- сразу нахуй, ||псина|| премиумная', parse_mode='MarkdownV2')
         else:
             bot.send_message(secret.tg_chat_id, '*Значит так, \- сразу ||нахуй||\!*', parse_mode='MarkdownV2')
         update_activity('/29')
