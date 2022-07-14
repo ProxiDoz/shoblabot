@@ -162,9 +162,9 @@ def server_info(message):
 @bot.message_handler(func=lambda message: message.text and message.text.lower() in constants.dvk and message.chat.id == secret.tg_chat_id)
 def aaa(message):
     try:
+        bot.send_message(secret.tg_chat_id, 'Двк з рлм')
         if message.from_user.is_premium:
             bot.send_message(message.chat.id, '🤡 Получай свою девку, ||псина|| премиумная', parse_mode='MarkdownV2')
-        bot.send_message(secret.tg_chat_id, 'Двк з рлм')
         update_activity('devka')
     except Exception as e:
         send_error(message, 9, e)
@@ -173,9 +173,9 @@ def aaa(message):
 @bot.message_handler(func=lambda message: message.text and message.text.lower() in constants.devka and message.chat.id == secret.tg_chat_id)
 def aaaa(message):
     try:
+        bot.send_message(secret.tg_chat_id, 'Девка за рулём')
         if message.from_user.is_premium:
             bot.send_message(message.chat.id, '🤡 Получай свою девку, ||псина|| премиумная', parse_mode='MarkdownV2')
-        bot.send_message(secret.tg_chat_id, 'Девка за рулём')
         update_activity('devka')
     except Exception as e:
         send_error(message, 10, e)
@@ -249,7 +249,7 @@ def rapid(message):
         answer = json.loads(str(response.read(), 'utf-8'))
         if message.from_user.is_premium:
             bot.send_message(message.chat.id, '🤡 Да вот тебе не настрать на рапиды, ||псина|| премиумная?', parse_mode='MarkdownV2')
-        bot.send_message(secret.tg_chat_id, answer['message'], parse_mode='MarkdownV2')
+        bot.send_message(secret.tg_chat_id, answer['message'], parse_mode='Markdown')
         if answer['message'] == 'Номер успешно добавлен':
             update_activity('rapid_new')
     except Exception as e:
@@ -290,7 +290,7 @@ def block(message):
         if message.from_user.is_premium:
             bot.send_message(message.chat.id, '🤡 Значит так, - сразу нахуй, ||псина|| премиумная', parse_mode='MarkdownV2')
         else:
-            bot.send_message(secret.tg_chat_id, '*Значит так, - сразу ||нахуй||!*', parse_mode='MarkdownV2')
+            bot.send_message(secret.tg_chat_id, '*Значит так, - сразу ||нахуй||\!*', parse_mode='MarkdownV2')
         update_activity('/29')
     except Exception as e:
         send_error(message, 18, e)
