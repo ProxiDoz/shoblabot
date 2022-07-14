@@ -419,13 +419,14 @@ try:
     sdr()
 except Exception as e:
     bot.send_message(secret.apple_id, '❌ Ошибка в запуске sdr():\n*Ошибка:*\n' + str(e), parse_mode='Markdown')
-
-try:
-    bot.polling()
-except Exception as e:
-    bot.send_message(secret.apple_id, '❌ Ошибка при запуске bot.polling():\n*Ошибка:*\n' + str(e), parse_mode='Markdown')
     
 try:
     bot.send_message(secret.tg_test_chat_id, '⏳ *Время запуска бота:* _{0}_'.format(time.ctime(time.time())), parse_mode='Markdown')
 except Exception as e:
     bot.send_message(secret.apple_id, '❌ Ошибка в функции send_start_time:\n*Ошибка:*\n' + str(e), parse_mode='Markdown')
+    
+try:
+    bot.polling()
+except Exception as e:
+    bot.send_message(secret.apple_id, '❌ Ошибка при запуске bot.polling():\n*Ошибка:*\n' + str(e), parse_mode='Markdown')
+
