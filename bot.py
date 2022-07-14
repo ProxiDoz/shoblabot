@@ -261,7 +261,7 @@ def barsuk(message):
             bot.send_message(message.chat.id, '🤡 Хуй тебе, а не барсука, ||псина|| премиумная', parse_mode='MarkdownV2')
         else:
             bot.send_message(secret.tg_chat_id, 'Барсук')
-        update_activity('cyk')
+            update_activity('cyk')
     except Exception as e:
         send_error(message, 16, e)
         
@@ -274,7 +274,7 @@ def barsyuk(message):
             bot.send_message(message.chat.id, '🤡 Хуй тебе, а не барсюка, ||псина|| премиумная', parse_mode='MarkdownV2')
         else:
             bot.send_message(secret.tg_chat_id, 'Барсюк')
-        update_activity('cyk')
+            update_activity('cyk')
     except Exception as e:
         send_error(message, 17, e)
         
