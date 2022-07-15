@@ -436,6 +436,6 @@ except Exception as e:
     bot.send_message(secret.apple_id, '❌ Ошибка в функции send_start_time:\n*Ошибка:*\n' + str(e), parse_mode='MarkdownV2')
 
 try:
-    bot.polling()
+    bot.polling(none_stop=True)
 except Exception as e:
     bot.send_message(secret.apple_id, '❌ Ошибка при запуске bot.polling\n*Ошибка:*\n' + str(e), parse_mode='MarkdownV2')
