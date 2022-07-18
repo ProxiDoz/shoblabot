@@ -94,12 +94,12 @@ def update_activity(field):
         now_time = datetime.datetime.now()
         current_month = str(now_time.year) + '.' + str(now_time.month)
         # Загружаем данные из файла activity_count
-        if os.path.isfile('/root/router/shoblabot/activity_count'):
-            with open('/root/router/shoblabot/activity_count', 'r') as lang:
+        if os.path.isfile('constants.activity_file):
+            with open(constants.activity_file, 'r') as lang:
                 activity_count = json.loads(lang.read())
         activity_count[current_month][field] += 1
         # Записываем данные в файл activity_count
-        with open('/root/router/shoblabot/activity_count', 'w') as lang:
+        with open(constants.activity_file, 'w') as lang:
             lang.write(json.dumps(activity_count))
     except Exception as e:
         bot.send_message(secret.apple_id, '❌ Ошибка в функции update_activity:\n*Поле: *{0}\n*Ошибка:*\n{1}'.format(field, e), parse_mode='MarkdownV2')
@@ -109,7 +109,7 @@ def update_activity(field):
 def send_error(message, error_id, error):
     try:
         bot.send_message(secret.apple_id,
-                         '❌ *{0}\nОт:* {1} {2}\n*Username:* {3}\n*Чат:* {4} {5} {6}\n*id:* {7}\n*Сообщение:* {8}\n'
+                         '❌ *{0}\nОт:* {1} {2}\n*Username:* @{3}\n*Чат:* {4} {5} {6}\n*id:* {7}\n*Сообщение:* {8}\n'
                          '*Время:* _{9}_\n*Ошибка:* _{10}_'.format(constants.errors[error_id], str(message.from_user.first_name),
                                                                    str(message.from_user.last_name), str(message.from_user.username),
                                                                    str(message.chat.title), str(message.chat.first_name),
@@ -127,8 +127,8 @@ def statistics(message):
         now_time = datetime.datetime.now()
         current_month = str(now_time.year) + '.' + str(now_time.month)
         # Загружаем данные из файла activity_count
-        if os.path.isfile('/root/router/shoblabot/activity_count'):
-            with open('/root/router/shoblabot/activity_count', 'r') as lang:
+        if os.path.isfile(constants.activity_file):
+            with open(constants.activity_file, 'r') as lang:
                 activity_count = json.loads(lang.read())
         month_statistics = constants.month_statistics.format(activity_count[current_month]['opros'], activity_count[current_month]['discount'],
                                                              activity_count[current_month]['devka'], activity_count[current_month]['vracha'],
@@ -157,6 +157,22 @@ def server_info(message):
         send_error(message, 5, e)
 
 
+# Запрос отправки логов в личку
+@bot.message_handler(commands=['log'])
+def bot_log(message):
+    try:
+        if message.chat.id == secret.apple_id:
+            try:
+                bot.send_document(secret.apple_id, open(constants.log_file, 'rb'))
+            except Exception as e:
+                send_error(message, 23, e)
+        else:
+            # print('{0} - {1}\nUser ID: {2}, user_name: @{3}'.format(time.ctime(time.time()), constants.errors[6], message.from_user.id, message.from_user.username))
+            send_error(message, 6, 'N/A')
+    except Exception as e:
+        send_error(message, 24, e)
+        
+        
 # # # # # # Обработка текста # # # # # #
 # Обработка девок за рулем
 @bot.message_handler(func=lambda message: message.text and message.text.lower() in constants.dvk and message.chat.id == secret.tg_chat_id)
@@ -392,8 +408,8 @@ def sdr():
         if now_time.day == 1:  # День для статистики по боту выкладывания фоток за месяц Месечная десятка челлендж
             cur_mnth = str(now_time.year - 1) + '.12' if now_time.month == 1 else str(now_time.year) + '.' + str(now_time.month - 1)
             # Загружаем данные из файла activity_count
-            if os.path.isfile('/root/router/shoblabot/activity_count'):
-                with open('/root/router/shoblabot/activity_count', 'r') as lang:
+            if os.path.isfile(constants.activity_file):
+                with open(constants.activity_file, 'r') as lang:
                     activity_count = json.loads(lang.read())
             month_statistics = constants.month_statistics.format(activity_count[cur_mnth]['opros'], activity_count[cur_mnth]['discount'],
                                                                  activity_count[cur_mnth]['devka'], activity_count[cur_mnth]['vracha'],
