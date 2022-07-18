@@ -94,7 +94,7 @@ def update_activity(field):
         now_time = datetime.datetime.now()
         current_month = str(now_time.year) + '.' + str(now_time.month)
         # Загружаем данные из файла activity_count
-        if os.path.isfile('constants.activity_file):
+        if os.path.isfile(constants.activity_file):
             with open(constants.activity_file, 'r') as lang:
                 activity_count = json.loads(lang.read())
         activity_count[current_month][field] += 1
