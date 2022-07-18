@@ -26,7 +26,7 @@ def handle_start(message):
     try:
         if message.chat.id == secret.tg_chat_id or message.from_user.id in constants.tg_ids:
             log('вызов команды /start by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
-            # bot.send_message(secret.tg_requests_chat_id, '🕹 [start](tg://user?id={0})'.format(message.from_user.id), parse_mode='MarkdownV2')
+            bot.send_message(secret.tg_requests_chat_id, '🕹 [start](tg://user?id={0})'.format(message.from_user.id), parse_mode='Markdown')
             bot.send_message(message.chat.id, constants.help_text, disable_web_page_preview=True, parse_mode='Markdown')
             if message.from_user.is_premium:
                 bot.send_message(message.chat.id, '🤡 Ебать ты команду выбрал, ||псина|| премиумная', parse_mode='MarkdownV2')
@@ -45,7 +45,7 @@ def handle_help(message):
     try:
         if message.chat.id == secret.tg_chat_id or message.from_user.id in constants.tg_ids:
             log('вызов команды /help by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
-            # bot.send_message(secret.tg_requests_chat_id, '❓ [help](tg://user?id={0})'.format(message.from_user.id), parse_mode='MarkdownV2')
+            bot.send_message(secret.tg_requests_chat_id, '❓ [help](tg://user?id={0})'.format(message.from_user.id), parse_mode='Markdown')
             bot.send_message(message.chat.id, constants.help_text, reply_markup=constants.help_keyboard, parse_mode='Markdown')
             if message.from_user.is_premium:
                 bot.send_message(message.chat.id, '🤡 Тебе ничего не поможет, ||псина|| премиумная', parse_mode='MarkdownV2')
@@ -62,7 +62,7 @@ def who_will(message):
         update_activity('who')
         if message.chat.id == secret.tg_chat_id:
             log('вызов команды /who by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
-            # bot.send_message(secret.tg_requests_chat_id, '✅❌ [who](tg://user?id={0})'.format(str(message.from_user.id)), parse_mode='Markdown')
+            bot.send_message(secret.tg_requests_chat_id, '✅❌ [who](tg://user?id={0})'.format(str(message.from_user.id)), parse_mode='Markdown')
             force_reply = telebot.types.ForceReply(True)
             bot.send_message(secret.tg_chat_id, constants.enter_question_new, reply_to_message_id=message.message_id, reply_markup=force_reply)
             bot.delete_message(secret.tg_chat_id, message.message_id)
@@ -170,11 +170,10 @@ def server_info(message):
     try:
         if message.chat.id == secret.apple_id:
             try:
-                log('отправка статуса сервера')
-                bot.send_message(message.chat.id,
-                                 '💾 Used RAM: {0}%'.format(psutil.virtual_memory()[2])) if message.text == '/s' else bot.send_message(
-                    secret.tg_chat_id, message.text[3:len(message.text)])
+                log('отправка статуса RAM памяти сервера')
+                bot.send_message(message.chat.id, '💿 Used RAM: {0}%\n💾 Used disk: {1}%'.format(psutil.virtual_memory()[2], psutil.disk_usage('/')[3])) if message.text == '/s' else bot.send_message(secret.tg_chat_id, message.text[3:len(message.text)])
             except Exception as e:
+                log('{0}\nТекст ошибки: {1}'.format(constants.errors[21], e))
                 send_error(message, 21, e)
         else:
             log('вызов команды /s\n{0}: User ID - {1}, user_name - @{2}'.format(constants.errors[6], message.from_user.id, message.from_user.username))
