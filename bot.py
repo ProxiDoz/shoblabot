@@ -121,11 +121,17 @@ def send_error(message, error_id, error):
     try:
         bot.send_message(secret.apple_id,
                          '❌ *{0}\nОт:* {1} {2}\n*Username:* @{3}\n*Чат:* {4} {5} {6}\n*id:* {7}\n*Сообщение:* {8}\n'
-                         '*Время:* _{9}_\n*Текст ошибки:* _{10}_'.format(constants.errors[error_id], str(message.from_user.first_name),
-                                                                   str(message.from_user.last_name), str(message.from_user.username),
-                                                                   str(message.chat.title), str(message.chat.first_name),
-                                                                   str(message.chat.last_name), str(message.chat.id), message.text,
-                                                                   time.ctime(time.time()), error),
+                         '*Время:* _{9}_\n*Текст ошибки:* _{10}_'.format(constants.errors[error_id],
+                                                                         str(message.from_user.first_name), 
+                                                                         str(message.from_user.last_name),
+                                                                         str(message.from_user.username),
+                                                                         str(message.chat.title),
+                                                                         str(message.chat.first_name),
+                                                                         str(message.chat.last_name),
+                                                                         str(message.chat.id),
+                                                                         message.text,
+                                                                         time.ctime(time.time()),
+                                                                         error),
                          parse_mode='Markdown')
     except Exception as e:
         log('Ошибка в функции send_error:\nСообщение: {0}\nТекст ошибки: {1}'.format(message.text, e))
@@ -188,7 +194,7 @@ def server_info(message):
 @bot.message_handler(commands=['log'])
 def share_log(message):
     try:
-        if message.chat.id == secret.apple_id:
+        if message.chat.id == secret.tg_chat_id:
             try:
                 log('вызов команды /log by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
                 bot.send_document(secret.apple_id, open(constants.log_file, 'rb'))
