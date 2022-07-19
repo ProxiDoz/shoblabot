@@ -519,8 +519,8 @@ try:
     log('попытка запуска bot.infinity_polling()')
     bot.infinity_polling()
 except Exception as e:
-    log('Ошибка при запуске bot.polling:\nТекст ошибки: ' + str(e))
-    bot.send_message(secret.apple_id, '❌ Ошибка при запуске bot.polling\n*Текст ошибки:*\n' + str(e), parse_mode='MarkdownV2')
+    log('Ошибка при запуске bot.infinity_polling:\nТекст ошибки: ' + str(e))
+    bot.send_message(secret.apple_id, '❌ Ошибка при запуске bot.infinity_polling\n*Текст ошибки:*\n' + str(e) + '\nBOT IS DOWN', parse_mode='MarkdownV2')
 
 
 # class WebhookServer(object):
