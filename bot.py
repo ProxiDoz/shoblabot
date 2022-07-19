@@ -191,7 +191,7 @@ def share_log(message):
             if message.from_user.id == secret.apple_id or message.from_user.is_premium:  # Это Апол или премиумный пользователь
                 try:
                     log('вызов команды /log by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
-                    bot.send_document(smessage.chat.id, open(constants.log_file, 'rb'))
+                    bot.send_document(message.chat.id, open(constants.log_file, 'rb'))
                 except Exception as e:
                     send_error(message, 23, e)
             else:
