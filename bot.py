@@ -194,10 +194,10 @@ def server_info(message):
 @bot.message_handler(commands=['log'])
 def share_log(message):
     try:
-        if message.chat.id == secret.tg_chat_id:
+        if message.chat.id == secret.tg_chat_id or message.from_user.id in constants.tg_ids:
             try:
                 log('вызов команды /log by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
-                bot.send_document(secret.apple_id, open(constants.log_file, 'rb'))
+                bot.send_document(message.chat.id, open(constants.log_file, 'rb'))
             except Exception as e:
                 send_error(message, 23, e)
         else:
