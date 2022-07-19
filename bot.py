@@ -157,8 +157,10 @@ def statistics(message):
 
                 bot.send_message(message.chat.id, month_statistics.replace('прошлый', 'текущий'), parse_mode='MarkdownV2')
             else:
-                log('вызов команды /stat\n{0}: User ID - {1}, user_name - @{2}'.format(constants.errors[6], message.from_user.id, message.from_user.username))
-                send_error(message, 6, 'N/A')
+                bot.send_message(message.chat.id, '⭐ У вас нет премиум подписки для использования данной команды')
+        else:
+            log('вызов команды /stat\n{0}: User ID - {1}, user_name - @{2}'.format(constants.errors[6], message.from_user.id, message.from_user.username))
+            send_error(message, 6, 'N/A')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[4], e))
         send_error(message, 4, e)
@@ -195,8 +197,10 @@ def share_log(message):
                 except Exception as e:
                     send_error(message, 23, e)
             else:
-                log('вызов команды /log\n{0}: User ID - {1}, user_name - @{2}'.format(constants.errors[6], message.from_user.id, message.from_user.username))
-                send_error(message, 6, 'N/A')
+                bot.send_message(message.chat.id, '⭐ У вас нет премиум подписки для использования данной команды')
+        else:
+            log('вызов команды /log\n{0}: User ID - {1}, user_name - @{2}'.format(constants.errors[6], message.from_user.id, message.from_user.username))
+            send_error(message, 6, 'N/A')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[24], e))
         send_error(message, 24, e)
