@@ -15,6 +15,8 @@ import random
 import threading
 import urllib.request as urllib2  # Для отправки фотографий из Telegram в Шоблу
 from urllib.parse import quote
+import traceback
+
 
 # # # # # # Инициализация # # # # # #
 bot = telebot.TeleBot(secret.tg_token)  # Token бота
@@ -508,6 +510,8 @@ try:
     log('попытка запуска bot.infinity_polling()')
     bot.infinity_polling()
 except Exception as e:
+    with open(constants.log_file, 'a') as log_file:
+        traceback.print_exc(file=log_file)
     log('Ошибка при запуске bot.polling:\nТекст ошибки: ' + str(e))
     bot.send_message(secret.apple_id, '❌ Ошибка при запуске bot.polling\n*Текст ошибки:*\n' + str(e), parse_mode='MarkdownV2')
 
