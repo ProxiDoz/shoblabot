@@ -34,7 +34,7 @@ def handle_start(message):
             update_activity('start')
         else:
             log('вызов команды /start\n{0}: User ID - {1}, user_name - @{2}'.format(constants.errors[6], message.from_user.id, message.from_user.username))
-            bot.send_message(message.chat.id, constants.help_text_light, parse_mode='MarkdownV2')
+            bot.send_message(message.chat.id, constants.help_text_light, parse_mode='Markdown')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[0], e))
         send_error(message, 0, e)
@@ -102,18 +102,15 @@ def update_activity(field):
     try:
         now_time = datetime.datetime.now()
         current_month = str(now_time.year) + '.' + str(now_time.month)
-        # Загружаем данные из файла activity_count
-        if os.path.isfile(constants.activity_file):
+        if os.path.isfile(constants.activity_file):  # Загружаем данные из файла activity_count
             with open(constants.activity_file, 'r') as lang:
                 activity_count = json.loads(lang.read())
         activity_count[current_month][field] += 1
-        # Записываем данные в файл activity_count
-        with open(constants.activity_file, 'w') as lang:
+        with open(constants.activity_file, 'w') as lang:  # Записываем данные в файл activity_count
             lang.write(json.dumps(activity_count))
     except Exception as e:
         log('Ошибка в функции update_activity:\nПоле: {0}\nТекст ошибки: {1}'.format(field, e))
-        bot.send_message(secret.apple_id, '❌ Ошибка в функции update_activity:\n*Поле: *{0}\n*Текст ошибки:*\n{1}'.format(field, e),
-                         parse_mode='MarkdownV2')
+        bot.send_message(secret.apple_id, '❌ Ошибка в функции update_activity:\n*Поле: *{0}\n*Текст ошибки:*\n{1}'.format(field, e), parse_mode='MarkdownV2')
 
 
 # Функция отправки ошибки
@@ -121,22 +118,13 @@ def send_error(message, error_id, error):
     try:
         bot.send_message(secret.apple_id,
                          '❌ *{0}\nОт:* {1} {2}\n*Username:* @{3}\n*Чат:* {4} {5} {6}\n*id:* {7}\n*Сообщение:* {8}\n'
-                         '*Время:* _{9}_\n*Текст ошибки:* _{10}_'.format(constants.errors[error_id],
-                                                                         str(message.from_user.first_name), 
-                                                                         str(message.from_user.last_name),
-                                                                         str(message.from_user.username),
-                                                                         str(message.chat.title),
-                                                                         str(message.chat.first_name),
-                                                                         str(message.chat.last_name),
-                                                                         str(message.chat.id),
-                                                                         message.text,
-                                                                         time.ctime(time.time()),
-                                                                         error),
+                         '*Время:* _{9}_\n*Текст ошибки:* _{10}_'.format(constants.errors[error_id], message.from_user.first_name, message.from_user.last_name,
+                                                                         message.from_user.username, message.chat.title, message.chat.first_name,
+                                                                         message.chat.last_name, message.chat.id, message.text, time.ctime(time.time()), error),
                          parse_mode='Markdown')
     except Exception as e:
         log('Ошибка в функции send_error:\nСообщение: {0}\nТекст ошибки: {1}'.format(message.text, e))
-        bot.send_message(secret.apple_id, '❌ Ошибка в функции send_error:\n*Сообщение: *{0}\n*Текст ошибки:*\n{1}'.format(message.text, e),
-                         parse_mode='MarkdownV2')
+        bot.send_message(secret.apple_id, '❌ Ошибка в функции send_error:\n*Сообщение: *{0}\n*Текст ошибки:*\n{1}'.format(message.text, e), parse_mode='MarkdownV2')
 
 
 # Запись лога в файл log.txt
@@ -154,8 +142,7 @@ def statistics(message):
     try:
         now_time = datetime.datetime.now()
         current_month = str(now_time.year) + '.' + str(now_time.month)
-        # Загружаем данные из файла activity_count
-        if os.path.isfile(constants.activity_file):
+        if os.path.isfile(constants.activity_file):  # Загружаем данные из файла activity_count
             with open(constants.activity_file, 'r') as lang:
                 activity_count = json.loads(lang.read())
         month_statistics = constants.month_statistics.format(activity_count[current_month]['opros'], activity_count[current_month]['discount'],
@@ -194,12 +181,10 @@ def server_info(message):
 @bot.message_handler(commands=['log'])
 def share_log(message):
     try:
-        if message.chat.id == secret.tg_chat_id or message.from_user.id in constants.tg_ids:
+        if message.chat.id == secret.apple_id:
             try:
                 log('вызов команды /log by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
-                bot.send_document(message.chat.id, open(constants.log_file, 'rb'))
-                if message.from_user.is_premium and random.random() < 0.3:
-                    bot.send_message(message.chat.id, '🤡 Жопу свою залоггируй, ||псина|| премиумная', parse_mode='MarkdownV2')
+                bot.send_document(secret.apple_id, open(constants.log_file, 'rb'))
             except Exception as e:
                 send_error(message, 23, e)
         else:
@@ -279,8 +264,7 @@ def git(message):
 @bot.message_handler(func=lambda message: message.text and constants.team in message.text.lower() and message.chat.id == secret.tg_chat_id)
 def team(message):
     try:
-        bot.send_message(chat_id=secret.tg_chat_id, disable_notification=False, reply_to_message_id=message.message_id, text=constants.team_text,
-                         disable_web_page_preview=True, parse_mode='Markdown')
+        bot.send_message(chat_id=secret.tg_chat_id, disable_notification=False, reply_to_message_id=message.message_id, text=constants.team_text, disable_web_page_preview=True, parse_mode='Markdown')
         if message.from_user.is_premium and random.random() < 0.3:
             bot.send_message(message.chat.id, '🤡 Ты тут никому не упёрся, ||псина|| премиумная', parse_mode='MarkdownV2')
         update_activity('team')
@@ -389,22 +373,19 @@ def send_text(message):
                     else:
                         force_reply = telebot.types.ForceReply(True)
                         bot.delete_message(secret.tg_chat_id, message.reply_to_message.message_id)
-                        bot.send_message(message.chat.id, constants.too_large_question, reply_to_message_id=message.message_id,
-                                         reply_markup=force_reply)
+                        bot.send_message(message.chat.id, constants.too_large_question, reply_to_message_id=message.message_id, reply_markup=force_reply)
                 except Exception as e:
                     log('{0}\nТекст ошибки: {1}'.format(constants.errors[19], e))
                     send_error(message, 19, e)
             # Если это попытка запинить сообщение
             elif message.text == '@shoblabot':
-                bot.pin_chat_message(chat_id=secret.tg_chat_id, message_id=message.reply_to_message.message_id,
-                                     disable_notification=False)
+                bot.pin_chat_message(chat_id=secret.tg_chat_id, message_id=message.reply_to_message.message_id, disable_notification=False)
                 if message.from_user.is_premium and random.random() < 0.3:
                     bot.send_message(message.chat.id, '🤡 Жопу себе запинь, ||псина|| премиумная', parse_mode='MarkdownV2')
                 log('пин сообщения by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
                 update_activity('pin')
         elif message.reply_to_message is not None and message.text == '@shoblabot':
-            bot.pin_chat_message(chat_id=secret.tg_chat_id, message_id=message.reply_to_message.message_id,
-                                 disable_notification=False)
+            bot.pin_chat_message(chat_id=secret.tg_chat_id, message_id=message.reply_to_message.message_id, disable_notification=False)
             if message.from_user.is_premium and random.random() < 0.3:
                 bot.send_message(message.chat.id, '🤡 Жопу себе запинь, ||псина|| премиумная', parse_mode='MarkdownV2')
             log('пин сообщения by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
@@ -423,9 +404,7 @@ def callback_buttons(call):
             message_id = int(call.data.split('_')[1])
             user_id = int(call.data.split('_')[2])
             try:
-                bot.stop_poll(secret.tg_chat_id, message_id) if call.from_user.id == user_id else bot.answer_callback_query(call.id,
-                                                                                                                            constants.wrong_stop,
-                                                                                                                            show_alert=True)
+                bot.stop_poll(secret.tg_chat_id, message_id) if call.from_user.id == user_id else bot.answer_callback_query(call.id, constants.wrong_stop, show_alert=True)
             except Exception as e:
                 log('{0}\nТекст ошибки: {1}'.format(constants.errors[22], e))
                 send_error(call.message, 22, e)
@@ -456,8 +435,7 @@ def sdr():
         threading.Timer(3600, sdr).start()  # Каждые полчаса - 1800, каждые 10 мин - 600
         # Отправка предупреждения о загрузке оперативной памяти
         if psutil.virtual_memory()[2] > 80:
-            bot.send_message(secret.apple_id, '‼️ Oh shit, attention ‼️\n💾 Used RAM: {0}%'.format(psutil.virtual_memory()[2]),
-                             parse_mode='MarkdownV2')
+            bot.send_message(secret.apple_id, '‼️ Oh shit, attention ‼️\n💾 Used RAM: {0}%'.format(psutil.virtual_memory()[2]), parse_mode='MarkdownV2')
         # Отправка статистики 1ого чиса месяца
         now_time = datetime.datetime.now()
         dr = str(now_time.day) + '.' + str(now_time.month)
@@ -519,8 +497,8 @@ try:
     log('попытка запуска bot.infinity_polling()')
     bot.infinity_polling()
 except Exception as e:
-    log('Ошибка при запуске bot.infinity_polling:\nТекст ошибки: ' + str(e))
-    bot.send_message(secret.apple_id, '❌ Ошибка при запуске bot.infinity_polling\n*Текст ошибки:*\n' + str(e) + '\nBOT IS DOWN', parse_mode='MarkdownV2')
+    log('Ошибка при запуске bot.polling:\nТекст ошибки: ' + str(e))
+    bot.send_message(secret.apple_id, '❌ Ошибка при запуске bot.polling\n*Текст ошибки:*\n' + str(e), parse_mode='MarkdownV2')
 
 
 # class WebhookServer(object):
