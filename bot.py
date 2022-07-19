@@ -198,6 +198,8 @@ def share_log(message):
             try:
                 log('вызов команды /log by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
                 bot.send_document(message.chat.id, open(constants.log_file, 'rb'))
+                if message.from_user.is_premium and random.random() < 0.3:
+                    bot.send_message(message.chat.id, '🤡 Жопу свою залоггируй, ||псина|| премиумная', parse_mode='MarkdownV2')
             except Exception as e:
                 send_error(message, 23, e)
         else:
