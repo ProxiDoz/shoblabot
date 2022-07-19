@@ -502,14 +502,13 @@ except Exception as e:
 try:
     with open(constants.log_file, 'a') as log_file:
         log_file.write('\nSTART\n' + time.ctime(time.time()) + ' - время запуска бота\n')
-    # log('\nSTART\n{0} - время запуска бота'.format(time.ctime(time.time())))
     # bot.send_message(secret.tg_test_chat_id, '⏳ *Время запуска бота:* _{0}_'.format(time.ctime(time.time())), parse_mode='MarkdownV2')
 except Exception as e:
     bot.send_message(secret.apple_id, '❌ Ошибка при логировании start_time:\n*Текст ошибки:*\n' + str(e), parse_mode='MarkdownV2')
 
 try:
-    log('попытка запуска bot.polling()')
-    bot.polling(none_stop=True)
+    log('попытка запуска bot.infinity_polling()')
+    bot.infinity_polling()
 except Exception as e:
     log('Ошибка при запуске bot.polling:\nТекст ошибки: ' + str(e))
     bot.send_message(secret.apple_id, '❌ Ошибка при запуске bot.polling\n*Текст ошибки:*\n' + str(e), parse_mode='MarkdownV2')
