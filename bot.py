@@ -141,7 +141,7 @@ def log(text):
 def statistics(message):
     try:
         if message.chat.id == secret.tg_chat_id or message.from_user.id in constants.tg_ids:  # Это Шобла или человек из Шоблы
-            if message.from_user.id == secret.apple_id or message.from_user.is_premium:  # Это Апло или премиумный пользователь
+            if message.from_user.id == secret.apple_id or message.from_user.is_premium:  # Это Апол или премиумный пользователь
                 now_time = datetime.datetime.now()
                 current_month = str(now_time.year) + '.' + str(now_time.month)
                 if os.path.isfile(constants.activity_file):  # Загружаем данные из файла activity_count
@@ -156,9 +156,9 @@ def statistics(message):
                                                                      activity_count[current_month]['rapid'], activity_count[current_month]['/29'])
 
                 bot.send_message(message.chat.id, month_statistics.replace('прошлый', 'текущий'), parse_mode='MarkdownV2')
-        else:
-            log('вызов команды /stat\n{0}: User ID - {1}, user_name - @{2}'.format(constants.errors[6], message.from_user.id, message.from_user.username))
-            send_error(message, 6, 'N/A')
+            else:
+                log('вызов команды /stat\n{0}: User ID - {1}, user_name - @{2}'.format(constants.errors[6], message.from_user.id, message.from_user.username))
+                send_error(message, 6, 'N/A')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[4], e))
         send_error(message, 4, e)
@@ -188,15 +188,15 @@ def server_info(message):
 def share_log(message):
     try:
         if message.chat.id == secret.tg_chat_id or message.from_user.id in constants.tg_ids:  # Это Шобла или человек из Шоблы
-            if message.from_user.id == secret.apple_id or message.from_user.is_premium:  # Это Апло или премиумный пользователь
+            if message.from_user.id == secret.apple_id or message.from_user.is_premium:  # Это Апол или премиумный пользователь
                 try:
                     log('вызов команды /log by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
                     bot.send_document(smessage.chat.id, open(constants.log_file, 'rb'))
                 except Exception as e:
                     send_error(message, 23, e)
-        else:
-            log('вызов команды /log\n{0}: User ID - {1}, user_name - @{2}'.format(constants.errors[6], message.from_user.id, message.from_user.username))
-            send_error(message, 6, 'N/A')
+            else:
+                log('вызов команды /log\n{0}: User ID - {1}, user_name - @{2}'.format(constants.errors[6], message.from_user.id, message.from_user.username))
+                send_error(message, 6, 'N/A')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[24], e))
         send_error(message, 24, e)
