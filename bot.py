@@ -140,19 +140,25 @@ def log(text):
 @bot.message_handler(commands=['stat'])
 def statistics(message):
     try:
-        now_time = datetime.datetime.now()
-        current_month = str(now_time.year) + '.' + str(now_time.month)
-        if os.path.isfile(constants.activity_file):  # Загружаем данные из файла activity_count
-            with open(constants.activity_file, 'r') as lang:
-                activity_count = json.loads(lang.read())
-        month_statistics = constants.month_statistics.format(activity_count[current_month]['opros'], activity_count[current_month]['discount'],
-                                                             activity_count[current_month]['devka'], activity_count[current_month]['vracha'],
-                                                             activity_count[current_month]['pin'], activity_count[current_month]['rapid_new'],
-                                                             activity_count[current_month]['cyk'], activity_count[current_month]['russia'],
-                                                             activity_count[current_month]['team'], activity_count[current_month]['start'],
-                                                             activity_count[current_month]['help'], activity_count[current_month]['who'],
-                                                             activity_count[current_month]['rapid'], activity_count[current_month]['/29'])
-        bot.send_message(secret.apple_id, month_statistics, parse_mode='MarkdownV2')
+        if message.chat.id == secret.tg_chat_id or message.from_user.id in constants.tg_ids:
+            if message.from_user.id == secret.apple_id or message.from_user.is_premium:
+                now_time = datetime.datetime.now()
+                current_month = str(now_time.year) + '.' + str(now_time.month)
+                if os.path.isfile(constants.activity_file):  # Загружаем данные из файла activity_count
+                    with open(constants.activity_file, 'r') as lang:
+                        activity_count = json.loads(lang.read())
+                month_statistics = constants.month_statistics.format(activity_count[current_month]['opros'], activity_count[current_month]['discount'],
+                                                                     activity_count[current_month]['devka'], activity_count[current_month]['vracha'],
+                                                                     activity_count[current_month]['pin'], activity_count[current_month]['rapid_new'],
+                                                                     activity_count[current_month]['cyk'], activity_count[current_month]['russia'],
+                                                                     activity_count[current_month]['team'], activity_count[current_month]['start'],
+                                                                     activity_count[current_month]['help'], activity_count[current_month]['who'],
+                                                                     activity_count[current_month]['rapid'], activity_count[current_month]['/29'])
+
+                bot.send_message(secret.apple_id, month_statistics.replace('прошлый', 'текущий'), parse_mode='MarkdownV2')
+        else:
+            log('вызов команды /stat\n{0}: User ID - {1}, user_name - @{2}'.format(constants.errors[6], message.from_user.id, message.from_user.username))
+            send_error(message, 6, 'N/A')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[4], e))
         send_error(message, 4, e)
@@ -162,10 +168,10 @@ def statistics(message):
 @bot.message_handler(commands=['s'])
 def server_info(message):
     try:
-        if message.chat.id == secret.apple_id:
+        if message.from_user.id == secret.apple_id:
             try:
-                log('отправка статуса RAM памяти сервера')
-                bot.send_message(message.chat.id, '💿 Used RAM: {0}%\n💾 Used disk: {1}%'.format(psutil.virtual_memory()[2], psutil.disk_usage('/')[3])) if message.text == '/s' else bot.send_message(secret.tg_chat_id, message.text[3:len(message.text)])
+                log('отправка статуса памяти сервера')
+                bot.send_message(message.chat.id, '💿 Used RAM: {0}% из 512 Мбайт\n💾 Used ROM: {1}% из 10 Гб'.format(psutil.virtual_memory()[2], psutil.disk_usage('/')[3])) if message.text == '/s' else bot.send_message(secret.tg_chat_id, message.text[3:len(message.text)])
             except Exception as e:
                 log('{0}\nТекст ошибки: {1}'.format(constants.errors[21], e))
                 send_error(message, 21, e)
@@ -181,12 +187,13 @@ def server_info(message):
 @bot.message_handler(commands=['log'])
 def share_log(message):
     try:
-        if message.chat.id == secret.apple_id:
-            try:
-                log('вызов команды /log by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
-                bot.send_document(secret.apple_id, open(constants.log_file, 'rb'))
-            except Exception as e:
-                send_error(message, 23, e)
+        if message.chat.id == secret.tg_chat_id or message.from_user.id in constants.tg_ids:
+            if message.from_user.id == secret.apple_id or message.from_user.is_premium:
+                try:
+                    log('вызов команды /log by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
+                    bot.send_document(secret.apple_id, open(constants.log_file, 'rb'))
+                except Exception as e:
+                    send_error(message, 23, e)
         else:
             log('вызов команды /log\n{0}: User ID - {1}, user_name - @{2}'.format(constants.errors[6], message.from_user.id, message.from_user.username))
             send_error(message, 6, 'N/A')
