@@ -215,7 +215,7 @@ def aaa(message):
         send_error(message, 9, e)
 
 
-@bot.message_handler(func=lambda message: message.text and message.text.lower() in constants.devka and message.chat.id == secret.tg_chat_id)
+@bot.message_handler(func=lambda message: message.text and message.text.lower().replace(' ', '').replace('\n', '') in constants.devka and message.chat.id == secret.tg_chat_id)
 def aaaa(message):
     try:
         bot.send_message(secret.tg_chat_id, 'Девка за рулём')
