@@ -363,11 +363,12 @@ def block(message):
 @bot.message_handler(func=lambda m: True)
 def faggot(message):
     try:
-        faggotEUCountry = helper.getFaggotEUCountryRequest( message.text, ['гей', 'пидор', 'педик', 'гомо', 'гомосек', 'глиномес', 'пидераст', 'леша'] )
-        if faggotEUCountry[0]:
-             location = faggotEUCountry[1]['coords']
-             bot.reply_to(message, 'Ты что то сказал про гея? Держи...')
-             bot.send_location(secret.tg_chat_id, location['lat'], location['lng'])
+        if random.random() < 0.3:
+            faggotEUCountry = helper.getFaggotEUCountryRequest( message.text, ['гей', 'пидор', 'педик', 'гомо', 'гомосек', 'глиномес', 'пидераст', 'леша'] )
+            if faggotEUCountry[0]:
+                 location = faggotEUCountry[1]['coords']
+                 bot.reply_to(message, 'Ты что то сказал про гея? Держи...')
+                 bot.send_location(secret.tg_chat_id, location['lat'], location['lng'])
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[25], e))
         send_error(message, 25, e)
