@@ -65,6 +65,7 @@ def getFaggotEUCountryRequest( message_text = '', request_string_list = [] ):
                 return ( True, fag )
             else:
                 return ( False, {} )
+    return (False, {})
 
 setFaggotLog()
 __loadFaggotsEUCountries()
