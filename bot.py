@@ -27,7 +27,7 @@ activity_count = {}  # Переменная для сбора статистик
 # # # # # # Доступные команды # # # # # #
 # Вызов стартового сообщения / справки
 @bot.message_handler(commands=['start', 'help'])
-def handle_start(message):
+def handle_start_help(message):
     try:
         if message.chat.id == secret.tg_chat_id or message.from_user.id in constants.tg_ids:
             log('вызов команды {0} by {1}'.format(message.text, constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
@@ -39,9 +39,8 @@ def handle_start(message):
             log('вызов команды {0}\n{1}: User ID - {2}, user_name - @{3}'.format(message.text, constants.errors[6], message.from_user.id, message.from_user.username))
             bot.send_message(message.chat.id, constants.help_text_light, parse_mode='Markdown')
     except Exception as e:
-        error_id = 0 if message.text == '/start' else error_id = 1
-        log('{0}\nТекст ошибки: {1}'.format(constants.errors[error_id], e))
-        send_error(message, error_id, e)
+        log('{0}\nТекст ошибки: {1}'.format(constants.errors[0 if message.text == '/start' else 1], e))
+        send_error(message, 0 if message.text == '/start' else 1, e)
 
 
 # Функция отправки опроса в чат
