@@ -36,7 +36,7 @@ def handle_start(message):
                 bot.send_message(message.chat.id, '🤡 Ебать ты команду выбрал, ||псина|| премиумная', parse_mode='MarkdownV2')
             update_activity('start') if message.text == '/start' else update_activity('help')
         else:
-            log('вызов команды {0}}\n{1}: User ID - {2}, user_name - @{3}'.format(message.text, constants.errors[6], message.from_user.id, message.from_user.username))
+            log('вызов команды {0}\n{1}: User ID - {2}, user_name - @{3}'.format(message.text, constants.errors[6], message.from_user.id, message.from_user.username))
             bot.send_message(message.chat.id, constants.help_text_light, parse_mode='Markdown')
     except Exception as e:
         error_id = 0 if message.text == '/start' else error_id = 1
