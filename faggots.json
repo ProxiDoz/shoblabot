@@ -1,0 +1,218 @@
+[
+    {
+        "name": "Austria",
+        "capital": "Vienna",
+        "coords": {
+            "lat": 48.21269846330568, 
+            "lng": 16.36933887139689
+        }
+    },
+    {
+        "name": "Belgium",
+        "capital": "Brussels",
+        "coords": {
+            "lat": 50.8521923041656, 
+            "lng": 4.351726795610051
+        }
+    },
+    {
+        "name": "Bulgaria",
+        "capital": "Sofia",
+        "coords": {
+            "lat": 42.69943043717233, 
+            "lng": 23.317770426340374
+        }
+    },
+    {
+        "name": "Croatia",
+        "capital": "Zagreb",
+        "coords": {
+            "lat": 45.81230617620714, 
+            "lng": 15.975277837929818
+        }
+    },
+    {
+        "name": "Cyprus",
+        "capital": "Nicosia",
+        "coords": {
+            "lat": 35.183690038572955, 
+            "lng": 33.36581574978248
+        }
+    },
+    {
+        "name": "Czech Republic",
+        "capital": "Prague",
+        "coords": {
+            "lat": 50.08146706576653, 
+            "lng": 14.417910963956832
+        }
+    },
+    {
+        "name": "Denmark",
+        "capital": "Copenhagen",
+        "coords": {
+            "lat": 55.69021393471731, 
+            "lng": 12.567408302508717
+        }
+    },
+    {
+        "name": "Estonia",
+        "capital": "Tallinn",
+        "coords": {
+            "lat": 59.42760352659293, 
+            "lng": 24.729143865381417
+        }
+    },
+    {
+        "name": "Finland",
+        "capital": "Helsinki",
+        "coords": {
+            "lat": 60.16756546454952, 
+            "lng": 24.933629093803265
+        }
+    },
+    {
+        "name": "France",
+        "capital": "Paris",
+        "coords": {
+            "lat": 48.857266536474675, 
+            "lng": 2.332786153793249
+        }
+    },
+    {
+        "name": "Germany",
+        "capital": "Berlin",
+        "coords": {
+            "lat": 52.51965687598396, 
+            "lng": 13.404851653311619
+        }
+    },
+    {
+        "name": "Greece",
+        "capital": "Athens",
+        "coords": {
+            "lat": 37.98961023128484, 
+            "lng": 23.73473377241055
+        }
+    },
+    {
+        "name": "Hungary",
+        "capital": "Budapest",
+        "coords": {
+            "lat": 47.48991677287912, 
+            "lng": 19.07126027170201
+        }
+    },
+    {
+        "name": "Republic of Ireland",
+        "capital": "Dublin",
+        "coords": {
+            "lat": 53.347874746215254, 
+            "lng": -6.274521347230116
+        }
+    },
+    {
+        "name": "Italy",
+        "capital": "Rome",
+        "coords": {
+            "lat": 41.89216182002913, 
+            "lng": 12.492387115277902
+        }
+    },
+    {
+        "name": "Latvia",
+        "capital": "Riga",
+        "coords": {
+            "lat": 56.96348227417029, 
+            "lng": 24.105788966877054
+        }
+    },
+    {
+        "name": "Lithuania",
+        "capital": "Vilnius",
+        "coords": {
+            "lat": 54.67508174641011, 
+            "lng": 25.288631884799212
+        }
+    },
+    {
+        "name": "Luxembourg",
+        "capital": "Luxembourg",
+        "coords": {
+            "lat": 49.60912186147812, 
+            "lng": 6.129021367788679
+        }
+    },
+    {
+        "name": "Malta",
+        "capital": "Valletta",
+        "coords": {
+            "lat": 35.898289170577726, 
+            "lng": 14.513658465553846
+        }
+    },
+    {
+        "name": "Netherlands",
+        "capital": "Amsterdam",
+        "coords": {
+            "lat": 52.377273108306824, 
+            "lng": 4.900904610142343
+        }
+    },
+    {
+        "name": "Poland",
+        "capital": "Warsaw",
+        "coords": {
+            "lat": 52.25552194443831, 
+            "lng": 21.021416297477433
+        }
+    },
+    {
+        "name": "Portugal",
+        "capital": "Lisbon",
+        "coords": {
+            "lat": 38.71982789685332, 
+            "lng": -9.14028212578351
+        }
+    },
+    {
+        "name": "Romania",
+        "capital": "Bucharest",
+        "coords": {
+            "lat": 44.44170260498256, 
+            "lng": 26.098762291667683
+        }
+    },
+    {
+        "name": "Slovakia",
+        "capital": "Bratislava",
+        "coords": {
+            "lat": 48.14753608436835, 
+            "lng": 17.10633212496413
+        }
+    },
+    {
+        "name": "Slovenia",
+        "capital": "Ljubljana",
+        "coords": {
+            "lat": 46.06322724381876, 
+            "lng": 14.510466168562298
+        }
+    },
+    {
+        "name": "Spain",
+        "capital": "Madrid",
+        "coords": {
+            "lat": 40.415698230889284, 
+            "lng": -3.7071360415349193
+        }
+    },
+    {
+        "name": "Sweden",
+        "capital": "Stickholm",
+        "coords": {
+            "lat": 59.32936949870664, 
+            "lng": 18.068520104405536
+        }
+    }
+]

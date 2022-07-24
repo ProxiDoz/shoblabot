@@ -16,7 +16,8 @@ import threading
 import urllib.request as urllib2  # Для отправки фотографий из Telegram в Шоблу
 from urllib.parse import quote
 import traceback
-
+import helper  # faggot handler
+helper.setFaggotLog(False)
 
 # # # # # # Инициализация # # # # # #
 bot = telebot.TeleBot(secret.tg_token)  # Token бота
@@ -357,7 +358,21 @@ def block(message):
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[18], e))
         send_error(message, 18, e)
 
+        
+# Обработка каждого сообщения на гея/лешу
+@bot.message_handler(func=lambda m: True)
+def faggot(message):
+    try:
+        faggotEUCountry = helper.getFaggotEUCountryRequest( message.text, ['гей', 'пидор', 'педик', 'гомо', 'гомосек', 'глиномес', 'пидераст', 'леша'] )
+        if faggotEUCountry[0]:
+             location = faggotEUCountry[1]['coords']
+             bot.reply_to(message, 'Ты что то сказал про гея? Держи...')
+             bot.send_location(secret.tg_chat_id, location['lat'], location['lng'])
+    except Exception as e:
+        log('{0}\nТекст ошибки: {1}'.format(constants.errors[25], e))
+        send_error(message, 25, e)
 
+        
 # # # # # # Обработка реплаев # # # # # #
 @bot.message_handler(content_types=['text'])
 def send_text(message):
@@ -484,7 +499,6 @@ def sdr():
     except Exception as e:
         log('Ошибка в функции отправки поздравления в Шоблу sdr:\nТекст ошибки: ' + str(e))
         bot.send_message(secret.apple_id, '❌ Ошибка в функции отправки поздравления в Шоблу sdr\n*Текст ошибки:*\n' + str(e), parse_mode='MarkdownV2')
-
 
 # # # # # # Запуск функций # # # # # #
 try:
