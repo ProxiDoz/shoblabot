@@ -25,36 +25,23 @@ activity_count = {}  # Переменная для сбора статистик
 
 
 # # # # # # Доступные команды # # # # # #
-@bot.message_handler(commands=['start'])
+# Вызов стартового сообщения / справки
+@bot.message_handler(commands=['start', 'help'])
 def handle_start(message):
     try:
         if message.chat.id == secret.tg_chat_id or message.from_user.id in constants.tg_ids:
-            log('вызов команды /start by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
-            bot.send_message(message.chat.id, constants.help_text, disable_web_page_preview=True, parse_mode='Markdown')
-            if message.from_user.is_premium and random.random() < 0.3:
-                bot.send_message(message.chat.id, '🤡 Ебать ты команду выбрал, ||псина|| премиумная', parse_mode='MarkdownV2')
-            update_activity('start')
-        else:
-            log('вызов команды /start\n{0}: User ID - {1}, user_name - @{2}'.format(constants.errors[6], message.from_user.id, message.from_user.username))
-            bot.send_message(message.chat.id, constants.help_text_light, parse_mode='Markdown')
-    except Exception as e:
-        log('{0}\nТекст ошибки: {1}'.format(constants.errors[0], e))
-        send_error(message, 0, e)
-
-
-# Вызов справки
-@bot.message_handler(commands=['help'])
-def handle_help(message):
-    try:
-        if message.chat.id == secret.tg_chat_id or message.from_user.id in constants.tg_ids:
-            log('вызов команды /help by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
+            log('вызов команды {0} by {1}'.format(message.text, constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
             bot.send_message(message.chat.id, constants.help_text, reply_markup=constants.help_keyboard, parse_mode='Markdown')
             if message.from_user.is_premium and random.random() < 0.3:
-                bot.send_message(message.chat.id, '🤡 Тебе ничего не поможет, ||псина|| премиумная', parse_mode='MarkdownV2')
-            update_activity('help')
+                bot.send_message(message.chat.id, '🤡 Ебать ты команду выбрал, ||псина|| премиумная', parse_mode='MarkdownV2')
+            update_activity('start') if message.text == '/start' else update_activity('help')
+        else:
+            log('вызов команды {0}}\n{1}: User ID - {2}, user_name - @{3}'.format(message.text, constants.errors[6], message.from_user.id, message.from_user.username))
+            bot.send_message(message.chat.id, constants.help_text_light, parse_mode='Markdown')
     except Exception as e:
-        log('{0}\nТекст ошибки: {1}'.format(constants.errors[1], e))
-        send_error(message, 1, e)
+        error_id = 0 if message.text == '/start' else error_id = 1
+        log('{0}\nТекст ошибки: {1}'.format(constants.errors[error_id], e))
+        send_error(message, error_id, e)
 
 
 # Функция отправки опроса в чат
