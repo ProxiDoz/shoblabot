@@ -17,7 +17,7 @@ def __loadFaggotsEUCountries():
     global __faggots
 
     try:
-        f = open('__faggots.json')
+        f = open('faggots.json')
         __faggots = json.load(f)
         f.close()
     except Exception as e:
