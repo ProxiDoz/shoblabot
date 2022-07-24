@@ -121,6 +121,15 @@ def log(text):
     except Exception as e:
         bot.send_message(secret.apple_id, '❌ Ошибка при записи лога\n*Текст ошибки:*\n' + str(e), parse_mode='MarkdownV2')
 
+        
+# Пин сообщения ботом
+def pin(message):
+    bot.pin_chat_message(chat_id=secret.tg_chat_id, message_id=message.reply_to_message.message_id, disable_notification=False)
+    if message.from_user.is_premium and random.random() < 0.3:
+        bot.send_message(message.chat.id, '🤡 Жопу себе запинь, ||псина|| премиумная', parse_mode='MarkdownV2')
+    log('пин сообщения by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
+    update_activity('pin')
+    
 
 # Вызов статистики
 @bot.message_handler(commands=['stat'])
@@ -347,11 +356,12 @@ def block(message):
 def faggot(message):
     try:
         if random.random() < 0.3:
-            faggotEUCountry = helper.getFaggotEUCountryRequest( message.text, ['гей', 'пидор', 'педик', 'гомо', 'гомосек', 'глиномес', 'пидераст', 'леша'] )
+            faggotEUCountry = helper.getFaggotEUCountryRequest(message.text, ['гей', 'пидор', 'педик', 'гомо', 'гомосек', 'глиномес', 'пидераст', 'леша'])
             if faggotEUCountry[0]:
-                 location = faggotEUCountry[1]['coords']
-                 bot.reply_to(message, 'Ты что то сказал про гея? Держи...')
-                 bot.send_location(secret.tg_chat_id, location['lat'], location['lng'])
+                location = faggotEUCountry[1]['coords']
+                bot.reply_to(message, 'Ты что то сказал про гея? Держи...')
+                bot.send_location(secret.tg_chat_id, location['lat'], location['lng'])
+        send_text(message)
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[25], e))
         send_error(message, 25, e)
@@ -391,17 +401,9 @@ def send_text(message):
                     send_error(message, 19, e)
             # Если это попытка запинить сообщение
             elif message.text == '@shoblabot':
-                bot.pin_chat_message(chat_id=secret.tg_chat_id, message_id=message.reply_to_message.message_id, disable_notification=False)
-                if message.from_user.is_premium and random.random() < 0.3:
-                    bot.send_message(message.chat.id, '🤡 Жопу себе запинь, ||псина|| премиумная', parse_mode='MarkdownV2')
-                log('пин сообщения by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
-                update_activity('pin')
+                pin(message)
         elif message.reply_to_message is not None and message.text == '@shoblabot':
-            bot.pin_chat_message(chat_id=secret.tg_chat_id, message_id=message.reply_to_message.message_id, disable_notification=False)
-            if message.from_user.is_premium and random.random() < 0.3:
-                bot.send_message(message.chat.id, '🤡 Жопу себе запинь, ||псина|| премиумная', parse_mode='MarkdownV2')
-            log('пин сообщения by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
-            update_activity('pin')
+            pin(message)
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[20], e))
         send_error(message, 20, e)
