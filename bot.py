@@ -17,7 +17,6 @@ import urllib.request as urllib2  # Для отправки фотографий
 from urllib.parse import quote
 import traceback
 import helper  # faggot handler
-helper.setFaggotLog(False)
 
 # # # # # # Инициализация # # # # # #
 bot = telebot.TeleBot(secret.tg_token)  # Token бота
