@@ -3,7 +3,6 @@
 apple_id = XXXXXX
 tg_chat_id = -XXXXXXXXXXXXX  
 tg_test_chat_id = -XXXXXXXXXXXXX
-tg_requests_chat_id = -XXXXXXXXX
 zhuykovkb_apple_id = XXXXXX
 
 #  Tokens
