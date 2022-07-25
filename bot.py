@@ -11,6 +11,7 @@ import datetime
 import constants
 import secret
 import random
+# import cherry
 import threading
 import urllib.request as urllib2  # Для отправки фотографий из Telegram в Шоблу
 from urllib.parse import quote
@@ -34,8 +35,7 @@ def handle_start_help(message):
                 bot.send_message(message.chat.id, '🤡 Ебать ты команду выбрал, ||псина|| премиумная', parse_mode='MarkdownV2')
             update_activity('start') if message.text == '/start' else update_activity('help')
         else:
-            log('вызов команды {0}\n{1}: User ID - {2}, user_name - @{3}'.format(message.text, constants.errors[6], message.from_user.id,
-                                                                                 message.from_user.username))
+            log('вызов команды {0}\n{1}: User ID - {2}, user_name - @{3}'.format(message.text, constants.errors[6], message.from_user.id, message.from_user.username))
             bot.send_message(message.chat.id, constants.help_text_light, parse_mode='Markdown')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[0 if message.text == '/start' else 1], e))
@@ -102,15 +102,14 @@ def update_activity(field):
 def send_error(message, error_id, error):
     try:
         bot.send_message(secret.apple_id,
-                         '❌ *{0}\nОт:* {1} {2}\n*Username:* @{3}\n*Чат:* {4} {5} {6}\n*id:* {7}\n*Сообщение:* {8}\n*Время:* _{9}_\n*Текст ошибки:* '
-                         '_{10}_'.format(constants.errors[error_id], message.from_user.first_name, message.from_user.last_name, message.from_user.username,
-                                         message.chat.title, message.chat.first_name, message.chat.last_name, message.chat.id, message.text,
-                                         time.ctime(time.time()), error),
+                         '❌ *{0}\nОт:* {1} {2}\n*Username:* @{3}\n*Чат:* {4} {5} {6}\n*id:* {7}\n*Сообщение:* {8}\n'
+                         '*Время:* _{9}_\n*Текст ошибки:* _{10}_'.format(constants.errors[error_id], message.from_user.first_name, message.from_user.last_name,
+                                                                         message.from_user.username, message.chat.title, message.chat.first_name,
+                                                                         message.chat.last_name, message.chat.id, message.text, time.ctime(time.time()), error),
                          parse_mode='Markdown')
     except Exception as e:
         log('Ошибка в функции send_error:\nСообщение: {0}\nТекст ошибки: {1}'.format(message.text, e))
-        bot.send_message(secret.apple_id, '❌ Ошибка в функции send_error:\n*Сообщение: *{0}\n*Текст ошибки:*\n{1}'.format(message.text, e),
-                         parse_mode='MarkdownV2')
+        bot.send_message(secret.apple_id, '❌ Ошибка в функции send_error:\n*Сообщение: *{0}\n*Текст ошибки:*\n{1}'.format(message.text, e), parse_mode='MarkdownV2')
 
 
 # Запись лога в файл log.txt
@@ -121,7 +120,20 @@ def log(text):
     except Exception as e:
         bot.send_message(secret.apple_id, '❌ Ошибка при записи лога\n*Текст ошибки:*\n' + str(e), parse_mode='MarkdownV2')
 
+        
+# Пин сообщения ботом
+def pin(message):
+    try:
+        bot.pin_chat_message(chat_id=secret.tg_chat_id, message_id=message.reply_to_message.message_id, disable_notification=False)
+        if message.from_user.is_premium and random.random() < 0.3:
+            bot.send_message(message.chat.id, '🤡 Жопу себе запинь, ||псина|| премиумная', parse_mode='MarkdownV2')
+        log('пин сообщения by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
+        update_activity('pin')
+    except Exception as e:
+        log('{0}\nТекст ошибки: {1}'.format(constants.errors[26], e))
+        send_error(message, 26, e)
 
+        
 # Вызов статистики
 @bot.message_handler(commands=['stat'])
 def statistics(message):
@@ -159,7 +171,7 @@ def server_info(message):
         if message.from_user.id == secret.apple_id:
             try:
                 log('отправка статуса памяти сервера')
-                bot.send_message(message.chat.id, '💿 Used RAM: {0}% из 512Мбайт'.format(psutil.virtual_memory()[2])) if message.text == '/s' else bot.send_message(secret.tg_chat_id, message.text[3:len(message.text)])
+                bot.send_message(message.chat.id, '💿 Used RAM: {0}% из 512 Мбайт\n💾 Used ROM: {1}% из 10 Гб'.format(psutil.virtual_memory()[2], psutil.disk_usage('/')[3])) if message.text == '/s' else bot.send_message(secret.tg_chat_id, message.text[3:len(message.text)])
             except Exception as e:
                 log('{0}\nТекст ошибки: {1}'.format(constants.errors[21], e))
                 send_error(message, 21, e)
@@ -219,8 +231,7 @@ def aaaa(message):
 
 
 # Обработка РАСИЯ
-@bot.message_handler(
-    func=lambda message: message.text and message.text.lower().replace(' ', '').replace('\n', '') in constants.russia and message.chat.id == secret.tg_chat_id)
+@bot.message_handler(func=lambda message: message.text and message.text.lower().replace(' ', '').replace('\n', '') in constants.russia and message.chat.id == secret.tg_chat_id)
 def russia(message):
     try:
         bot.send_voice(secret.tg_chat_id, constants.anthem, '🫡')
@@ -262,8 +273,7 @@ def git(message):
 @bot.message_handler(func=lambda message: message.text and constants.team in message.text.lower() and message.chat.id == secret.tg_chat_id)
 def team(message):
     try:
-        bot.send_message(chat_id=secret.tg_chat_id, disable_notification=False, reply_to_message_id=message.message_id, text=constants.team_text,
-                         disable_web_page_preview=True, parse_mode='Markdown')
+        bot.send_message(chat_id=secret.tg_chat_id, disable_notification=False, reply_to_message_id=message.message_id, text=constants.team_text, disable_web_page_preview=True, parse_mode='Markdown')
         if message.from_user.is_premium and random.random() < 0.3:
             bot.send_message(message.chat.id, '🤡 Ты тут никому не упёрся, ||псина|| премиумная', parse_mode='MarkdownV2')
         update_activity('team')
@@ -343,7 +353,7 @@ def block(message):
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[18], e))
         send_error(message, 18, e)
 
-
+        
 # Обработка каждого сообщения на гея/лешу
 @bot.message_handler(func=lambda m: True)
 def faggot(message):
@@ -358,26 +368,15 @@ def faggot(message):
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[25], e))
         send_error(message, 25, e)
-
-
+        
+        
 # # # # # # Обработка реплаев # # # # # #
 @bot.message_handler(content_types=['text'])
 def send_text(message):
     try:
-        # Если это попытка запинить сообщение
-        if message.reply_to_message is not None and message.text == '@shoblabot' and message.chat.id == secret.tg_chat_id:
-            try:
-                if message.from_user.is_premium and random.random() < 0.3:
-                    bot.send_message(message.chat.id, '🤡 Жопу себе запинь, ||псина|| премиумная', parse_mode='MarkdownV2')
-                bot.pin_chat_message(chat_id=secret.tg_chat_id, message_id=message.reply_to_message.message_id, disable_notification=False)
-                log('пин сообщения by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
-                update_activity('pin')
-            except Exception as e:
-                log('{0}\nТекст ошибки: {1}'.format(constants.errors[26], e))
-                send_error(message, 26, e)
         # Если это реплай на сообщение бота
-        elif message.reply_to_message is not None and message.reply_to_message.from_user.id == secret.bot_id:
-            # Запрос внесения опроса
+        if message.reply_to_message is not None and message.reply_to_message.from_user.id == secret.bot_id:
+            # Запрос внесения опроса (нового)
             if message.reply_to_message.text == constants.enter_question_new or message.reply_to_message.text == constants.too_large_question:
                 try:
                     if len(message.text) <= 291:
@@ -403,6 +402,11 @@ def send_text(message):
                 except Exception as e:
                     log('{0}\nТекст ошибки: {1}'.format(constants.errors[19], e))
                     send_error(message, 19, e)
+            # Если это попытка запинить сообщение
+            elif message.text == '@shoblabot':
+                pin(message)
+        elif message.reply_to_message is not None and message.text == '@shoblabot':
+            pin(message)
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[20], e))
         send_error(message, 20, e)
@@ -417,8 +421,7 @@ def callback_buttons(call):
             message_id = int(call.data.split('_')[1])
             user_id = int(call.data.split('_')[2])
             try:
-                bot.stop_poll(secret.tg_chat_id, message_id) if call.from_user.id == user_id else bot.answer_callback_query(call.id, constants.wrong_stop,
-                                                                                                                            show_alert=True)
+                bot.stop_poll(secret.tg_chat_id, message_id) if call.from_user.id == user_id else bot.answer_callback_query(call.id, constants.wrong_stop, show_alert=True)
             except Exception as e:
                 log('{0}\nТекст ошибки: {1}'.format(constants.errors[22], e))
                 send_error(call.message, 22, e)
@@ -475,17 +478,13 @@ def sdr():
             bot.pin_chat_message(secret.tg_chat_id, challenge.message_id, disable_notification=False)
         # День Баяна в Шобле отмечается 28 мая
         if dr == str(28.5):
-            bot.send_photo(secret.tg_chat_id, 'AgACAgIAAxkBAAJFzWLeYTbQ2ENcXEwoPOrRZprGCCUUAALHuTEb6BT4ShJZvIDQxNjZAQADAgADcwADKQQ',
-                           caption='🪗 Шобла, поздравляю с Днём Баяна!')
+            bot.send_photo(secret.tg_chat_id, 'AgACAgIAAxkBAAJFzWLeYTbQ2ENcXEwoPOrRZprGCCUUAALHuTEb6BT4ShJZvIDQxNjZAQADAgADcwADKQQ', caption='🪗 Шобла, поздравляю с Днём Баяна!')
         # Отправка поздравлений с ДР
         for item in constants.tg_drs:
             if item[:-5] == dr:
                 if (now_time.year - int(item[-4:])) % 10 == 0:
                     bot.send_message(secret.tg_chat_id,
-                                     '🥳 [{0}](tg://user?id={1}), с др\!\nДобро пожаловать в клуб кому за {2} 😏'.format(constants.tg_names[i],
-                                                                                                                         constants.tg_ids[i],
-                                                                                                                         now_time.year - int(item[-4:])),
-                                     parse_mode='MarkdownV2')
+                                     '🥳 [{0}](tg://user?id={1}), с др\!\nДобро пожаловать в клуб кому за {2} 😏'.format(constants.tg_names[i], constants.tg_ids[i], now_time.year - int(item[-4:])), parse_mode='MarkdownV2')
                 else:
                     bot.send_message(secret.tg_chat_id,
                                      '🥳 [{0}](tg://user?id={1}), с др\!'.format(constants.tg_names[i], constants.tg_ids[i]), parse_mode='MarkdownV2')
@@ -493,7 +492,6 @@ def sdr():
     except Exception as e:
         log('Ошибка в функции отправки поздравления в Шоблу sdr:\nТекст ошибки: ' + str(e))
         bot.send_message(secret.apple_id, '❌ Ошибка в функции отправки поздравления в Шоблу sdr\n*Текст ошибки:*\n' + str(e), parse_mode='MarkdownV2')
-
 
 # # # # # # Запуск функций # # # # # #
 try:
@@ -523,3 +521,22 @@ except Exception as e:
         traceback.print_exc(file=log_file)
     log('Ошибка при запуске bot.polling:\nТекст ошибки: ' + str(e))
     bot.send_message(secret.apple_id, '❌ Ошибка при запуске bot.polling\n*Текст ошибки:*\n' + str(e), parse_mode='MarkdownV2')
+
+
+# class WebhookServer(object):
+#     # index равнозначно /, т.к. отсутствию части после ip-адреса (грубо говоря)
+#     @cherrypy.expose
+#     def index(self):
+#         length = int(cherrypy.request.headers['content-length'])
+#         json_string = cherrypy.request.body.read(length).decode("utf-8")
+#         update = telebot.types.Update.de_json(json_string)
+#         bot.process_new_updates([update])
+#         return ''
+#
+# if __name__ == '__main__':
+#     cherrypy.config.update({
+#         'server.socket_host': '127.0.0.1',
+#         'server.socket_port': 7771,
+#         'engine.autoreload.on': False
+#     })
+#     cherrypy.quickstart(WebhookServer(), '/', {'/': {}})
