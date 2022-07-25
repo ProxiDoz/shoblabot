@@ -364,16 +364,6 @@ def faggot(message):
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[25], e))
         send_error(message, 25, e)
-
-        
-@bot.message_handler(content_types=['photo'])
-def send_photo(message):
-    try:
-        # bot.send_photo(secret.apple_id, 'AgACAgIAAxkBAAKQRWLeYMh0zuQnmvpxi_ttcJmL68dmAAKKuTEbZk7wSvwl-UIlu6RcAQADAgADcwADKQQ')
-        # print(message.photo)
-        bot.send_message(secret.apple_id, str(message.photo[0].file_id))
-    except:
-        bot.send_message(secret.apple_id, 'ops')
         
         
 # # # # # # Обработка реплаев # # # # # #
@@ -484,7 +474,7 @@ def sdr():
             bot.pin_chat_message(secret.tg_chat_id, challenge.message_id, disable_notification=False)
         # День Баяна в Шобле отмечается 28 мая
         if dr == str(28.5):
-            bot.send_message(secret.tg_chat_id, '🪗 Шобла, поздравляю с Днём Баяна!')
+            bot.send_photo(secret.tg_chat_id, 'AgACAgIAAxkBAAJFzWLeYTbQ2ENcXEwoPOrRZprGCCUUAALHuTEb6BT4ShJZvIDQxNjZAQADAgADcwADKQQ', caption='🪗 Шобла, поздравляю с Днём Баяна!')
         # Отправка поздравлений с ДР
         for item in constants.tg_drs:
             if item[:-5] == dr:
