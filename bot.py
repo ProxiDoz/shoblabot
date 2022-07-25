@@ -123,13 +123,17 @@ def log(text):
         
 # Пин сообщения ботом
 def pin(message):
-    bot.pin_chat_message(chat_id=secret.tg_chat_id, message_id=message.reply_to_message.message_id, disable_notification=False)
-    if message.from_user.is_premium and random.random() < 0.3:
-        bot.send_message(message.chat.id, '🤡 Жопу себе запинь, ||псина|| премиумная', parse_mode='MarkdownV2')
-    log('пин сообщения by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
-    update_activity('pin')
-    
+    try:
+        bot.pin_chat_message(chat_id=secret.tg_chat_id, message_id=message.reply_to_message.message_id, disable_notification=False)
+        if message.from_user.is_premium and random.random() < 0.3:
+            bot.send_message(message.chat.id, '🤡 Жопу себе запинь, ||псина|| премиумная', parse_mode='MarkdownV2')
+        log('пин сообщения by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
+        update_activity('pin')
+    except Exception as e:
+        log('{0}\nТекст ошибки: {1}'.format(constants.errors[26], e))
+        send_error(message, 26, e)
 
+        
 # Вызов статистики
 @bot.message_handler(commands=['stat'])
 def statistics(message):
