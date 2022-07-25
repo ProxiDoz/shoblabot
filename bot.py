@@ -366,6 +366,16 @@ def faggot(message):
         send_error(message, 25, e)
 
         
+@bot.message_handler(content_types=['photo'])
+def send_photo(message):
+    try:
+        # bot.send_photo(secret.apple_id, 'AgACAgIAAxkBAAKQRWLeYMh0zuQnmvpxi_ttcJmL68dmAAKKuTEbZk7wSvwl-UIlu6RcAQADAgADcwADKQQ')
+        # print(message.photo)
+        bot.send_message(secret.apple_id, str(message.photo[0].file_id))
+    except:
+        bot.send_message(secret.apple_id, 'ops')
+        
+        
 # # # # # # Обработка реплаев # # # # # #
 @bot.message_handler(content_types=['text'])
 def send_text(message):
