@@ -154,7 +154,7 @@ def server_info(message):
         if message.from_user.id == secret.apple_id:
             try:
                 log('отправка статуса памяти сервера')
-                bot.send_message(message.chat.id, '💿 Used RAM: {0}% из 512Мбайт'.format(psutil.virtual_memory()[2])) if message.text == '/s' else bot.send_message(secret.tg_chat_id, message.text[3:len(message.text)])
+                bot.send_message(message.chat.id, '💿 RAM: {0}% из 512Мбайт'.format(psutil.virtual_memory()[2])) if message.text == '/s' else bot.send_message(secret.tg_chat_id, message.text[3:len(message.text)])
 
             except Exception as e:
                 log('{0}\nТекст ошибки: {1}'.format(constants.errors[21], e))
