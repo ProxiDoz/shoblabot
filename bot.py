@@ -110,6 +110,7 @@ def send_error(message, error_id, error):
         log('Ошибка в функции send_error:\nСообщение: {0}\nТекст ошибки: {1}'.format(message.text, e))
         bot.send_message(secret.apple_id, '❌ Ошибка в функции send_error:\n*Сообщение: *{0}\n*Текст ошибки:*\n{1}'.format(message.text, e), parse_mode='MarkdownV2')
 
+
 # Запись лога в файл log.txt
 def log(text):
     try:
@@ -117,6 +118,7 @@ def log(text):
             log_file.write(time.ctime(time.time()) + ' - ' + text + '\n')
     except Exception as e:
         bot.send_message(secret.apple_id, '❌ Ошибка при записи лога\n*Текст ошибки:*\n' + str(e), parse_mode='MarkdownV2')
+
 
 # Вызов статистики
 @bot.message_handler(commands=['stat'])
@@ -147,6 +149,7 @@ def statistics(message):
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[4], e))
         send_error(message, 4, e)
 
+
 # Вызов информации о сервере
 @bot.message_handler(commands=['s'])
 def server_info(message):
@@ -155,7 +158,6 @@ def server_info(message):
             try:
                 log('отправка статуса памяти сервера')
                 bot.send_message(message.chat.id, '💿 RAM: {0}% из 512Мбайт'.format(psutil.virtual_memory()[2])) if message.text == '/s' else bot.send_message(secret.tg_chat_id, message.text[3:len(message.text)])
-
             except Exception as e:
                 log('{0}\nТекст ошибки: {1}'.format(constants.errors[21], e))
                 send_error(message, 21, e)
@@ -338,6 +340,7 @@ def block(message):
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[18], e))
         send_error(message, 18, e)
 
+
 # Обработка каждого сообщения на гея/лешу
 @bot.message_handler(func=lambda m: True)
 def faggot(message):
@@ -352,6 +355,7 @@ def faggot(message):
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[25], e))
         send_error(message, 25, e)
+
 
 # # # # # # Обработка реплаев # # # # # #
 @bot.message_handler(content_types=['text'])
@@ -410,8 +414,7 @@ def callback_buttons(call):
             message_id = int(call.data.split('_')[1])
             user_id = int(call.data.split('_')[2])
             try:
-                bot.stop_poll(secret.tg_chat_id, message_id) if call.from_user.id == user_id else bot.answer_callback_query(call.id, constants.wrong_stop,
-                                                                                                                            show_alert=True)
+                bot.stop_poll(secret.tg_chat_id, message_id) if call.from_user.id == user_id else bot.answer_callback_query(call.id, constants.wrong_stop, show_alert=True)
             except Exception as e:
                 log('{0}\nТекст ошибки: {1}'.format(constants.errors[22], e))
                 send_error(call.message, 22, e)
@@ -487,6 +490,7 @@ def sdr():
         log('Ошибка в функции отправки поздравления в Шоблу sdr:\nТекст ошибки: ' + str(e))
         bot.send_message(secret.apple_id, '❌ Ошибка в функции отправки поздравления в Шоблу sdr\n*Текст ошибки:*\n' + str(e), parse_mode='MarkdownV2')
 
+
 # # # # # # Запуск функций # # # # # #
 try:
     bot.remove_webhook()
@@ -503,7 +507,6 @@ except Exception as e:
 try:
     with open(constants.log_file, 'a') as log_file:
         log_file.write('\nSTART\n' + time.ctime(time.time()) + ' - время запуска бота\n')
-    # bot.send_message(secret.tg_test_chat_id, '⏳ *Время запуска бота:* _{0}_'.format(time.ctime(time.time())), parse_mode='MarkdownV2')
 except Exception as e:
     bot.send_message(secret.apple_id, '❌ Ошибка при логировании start_time:\n*Текст ошибки:*\n' + str(e), parse_mode='MarkdownV2')
 
