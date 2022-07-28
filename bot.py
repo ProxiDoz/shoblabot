@@ -78,20 +78,6 @@ def send_discount(message):
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[8], e))
         send_error(message, 8, e)
-
-
-# Обработка IPv6
-@bot.message_handler(commands=['/29'])
-def block(message):
-    try:
-        if message.from_user.is_premium and random.random() < 0.3 and message.chat.id == secret.tg_chat_id:
-            bot.send_message(message.chat.id, '🤡 Значит так, \- сразу нахуй, ||псина|| премиумная', parse_mode='MarkdownV2')
-        elif message.chat.id == secret.tg_chat_id:
-            bot.send_message(secret.tg_chat_id, '*Значит так, \- сразу ||нахуй||\!*', parse_mode='MarkdownV2')
-        update_activity('/29')
-    except Exception as e:
-        log('{0}\nТекст ошибки: {1}'.format(constants.errors[18], e))
-        send_error(message, 18, e)
         
         
 # # # # # # Служебные функции и команды # # # # # #
@@ -341,18 +327,18 @@ def barsyuk(message):
         send_error(message, 17, e)
 
 
-# Обработка IPv6
-# @bot.message_handler(func=lambda message: message.text and message.text.lower() in constants.ip_block and message.chat.id == secret.tg_chat_id)
-# def block(message):
-#     try:
-#         if message.from_user.is_premium and random.random() < 0.3:
-#             bot.send_message(message.chat.id, '🤡 Значит так, \- сразу нахуй, ||псина|| премиумная', parse_mode='MarkdownV2')
-#         else:
-#             bot.send_message(secret.tg_chat_id, '*Значит так, \- сразу ||нахуй||\!*', parse_mode='MarkdownV2')
-#         update_activity('/29')
-#     except Exception as e:
-#         log('{0}\nТекст ошибки: {1}'.format(constants.errors[18], e))
-#         send_error(message, 18, e)
+Обработка IPv6
+@bot.message_handler(func=lambda message: message.text and message.text.lower() == constants.ip_block and message.chat.id == secret.tg_chat_id)
+def block(message):
+    try:
+        if message.from_user.is_premium and random.random() < 0.3:
+            bot.send_message(message.chat.id, '🤡 Значит так, \- сразу нахуй, ||псина|| премиумная', parse_mode='MarkdownV2')
+        else:
+            bot.send_message(secret.tg_chat_id, '*Значит так, \- сразу ||нахуй||\!*', parse_mode='MarkdownV2')
+        update_activity('/29')
+    except Exception as e:
+        log('{0}\nТекст ошибки: {1}'.format(constants.errors[18], e))
+        send_error(message, 18, e)
 
 
 # Обработка каждого сообщения на гея/лешу
