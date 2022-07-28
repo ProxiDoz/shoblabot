@@ -327,7 +327,7 @@ def barsyuk(message):
         send_error(message, 17, e)
 
 
-Обработка IPv6
+# Обработка IPv6
 @bot.message_handler(func=lambda message: message.text and message.text.lower() == constants.ip_block and message.chat.id == secret.tg_chat_id)
 def block(message):
     try:
