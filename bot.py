@@ -12,7 +12,7 @@ import constants
 import secret
 import random
 import threading
-import urllib.request as urllib2  # Для отправки фотографий из Telegram в Шоблу
+import urllib.request as urllib2
 from urllib.parse import quote
 import traceback
 import helper  # faggot handler
@@ -150,6 +150,27 @@ def statistics(message):
         send_error(message, 4, e)
 
 
+# Запрос отправки логов по боту
+@bot.message_handler(commands=['log'])
+def share_log(message):
+    try:
+        if message.chat.id == secret.tg_chat_id or message.from_user.id in constants.tg_ids:  # Это Шобла или человек из Шоблы
+            if message.from_user.id == secret.apple_id or message.from_user.is_premium:  # Это Апол или премиумный пользователь
+                try:
+                    log('вызов команды /log by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
+                    bot.send_document(message.chat.id, open(constants.log_file, 'rb'))
+                except Exception as e:
+                    send_error(message, 23, e)
+            else:
+                bot.send_message(message.chat.id, '⭐ У вас нет премиум подписки для использования данной команды')
+        else:
+            log('вызов команды /log\n{0}: User ID - {1}, user_name - @{2}'.format(constants.errors[6], message.from_user.id, message.from_user.username))
+            send_error(message, 6, 'N/A')
+    except Exception as e:
+        log('{0}\nТекст ошибки: {1}'.format(constants.errors[24], e))
+        send_error(message, 24, e)
+        
+        
 # Вызов информации о сервере
 @bot.message_handler(commands=['s'])
 def server_info(message):
@@ -169,29 +190,8 @@ def server_info(message):
         send_error(message, 5, e)
 
 
-# Запрос отправки логов в личку
-@bot.message_handler(commands=['log'])
-def share_log(message):
-    try:
-        if message.chat.id == secret.tg_chat_id or message.from_user.id in constants.tg_ids:  # Это Шобла или человек из Шоблы
-            if message.from_user.id == secret.apple_id or message.from_user.is_premium:  # Это Апол или премиумный пользователь
-                try:
-                    log('вызов команды /log by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
-                    bot.send_document(message.chat.id, open(constants.log_file, 'rb'))
-                except Exception as e:
-                    send_error(message, 23, e)
-            else:
-                bot.send_message(message.chat.id, '⭐ У вас нет премиум подписки для использования данной команды')
-        else:
-            log('вызов команды /log\n{0}: User ID - {1}, user_name - @{2}'.format(constants.errors[6], message.from_user.id, message.from_user.username))
-            send_error(message, 6, 'N/A')
-    except Exception as e:
-        log('{0}\nТекст ошибки: {1}'.format(constants.errors[24], e))
-        send_error(message, 24, e)
-
-
 # # # # # # Обработка текста # # # # # #
-# Обработка девок за рулем
+# Обработка девки за рулем
 @bot.message_handler(func=lambda message: message.text and message.text.lower().replace('a', '').replace('а', '') == '' and message.chat.id == secret.tg_chat_id)
 def aaa(message):
     try:
@@ -208,9 +208,7 @@ def aaa(message):
 @bot.message_handler(func=lambda message: message.text and message.text.lower().replace(' ', '').replace('\n', '') in constants.russia and message.chat.id == secret.tg_chat_id)
 def russia(message):
     try:
-        bot.send_voice(secret.tg_chat_id, constants.anthem, '🫡')
-        if message.from_user.is_premium and random.random() < 0.3:
-            bot.send_message(message.chat.id, '🤡 Ебать ты патриот, ||псина|| премиумная', parse_mode='MarkdownV2')
+        bot.send_voice(secret.tg_chat_id, constants.anthem, '🫡 Ебать ты патриот, ||псина|| премиумная', parse_mode='MarkdownV2') if message.from_user.is_premium and random.random() < 0.3 else bot.send_voice(secret.tg_chat_id, constants.anthem, '🫡')
         update_activity('russia')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[11], e))
