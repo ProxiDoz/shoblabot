@@ -104,8 +104,7 @@ def send_error(message, error_id, error):
                          '❌ *{0}\nОт:* {1} {2}\n*Username:* @{3}\n*Чат:* {4} {5} {6}\n*id:* {7}\n*Сообщение:* {8}\n*Время:* _{9}_\n*Текст ошибки:* '
                          '_{10}_'.format(constants.errors[error_id], message.from_user.first_name, message.from_user.last_name, message.from_user.username,
                                          message.chat.title, message.chat.first_name, message.chat.last_name, message.chat.id, message.text,
-                                         time.ctime(time.time()), error),
-                         parse_mode='Markdown')
+                                         time.ctime(time.time()), error), parse_mode='Markdown')
     except Exception as e:
         log('Ошибка в функции send_error:\nСообщение: {0}\nТекст ошибки: {1}'.format(message.text, e))
         bot.send_message(secret.apple_id, '❌ Ошибка в функции send_error:\n*Сообщение: *{0}\n*Текст ошибки:*\n{1}'.format(message.text, e), parse_mode='MarkdownV2')
@@ -245,8 +244,7 @@ def git(message):
 @bot.message_handler(func=lambda message: message.text and constants.team in message.text.lower() and message.chat.id == secret.tg_chat_id)
 def team(message):
     try:
-        bot.send_message(chat_id=secret.tg_chat_id, disable_notification=False, reply_to_message_id=message.message_id, text=constants.team_text,
-                         disable_web_page_preview=True, parse_mode='Markdown')
+        bot.send_message(chat_id=secret.tg_chat_id, disable_notification=False, reply_to_message_id=message.message_id, text=constants.team_text, disable_web_page_preview=True, parse_mode='Markdown')
         if message.from_user.is_premium and random.random() < 0.3:
             bot.send_message(message.chat.id, '🤡 Ты тут никому не упёрся, ||псина|| премиумная', parse_mode='MarkdownV2')
         update_activity('team')
@@ -457,20 +455,16 @@ def sdr():
             bot.pin_chat_message(secret.tg_chat_id, challenge.message_id, disable_notification=False)
         # День Баяна в Шобле отмечается 28 мая
         if dr == str(28.5):
-            bot.send_photo(secret.tg_chat_id, 'AgACAgIAAxkBAAJFzWLeYTbQ2ENcXEwoPOrRZprGCCUUAALHuTEb6BT4ShJZvIDQxNjZAQADAgADcwADKQQ',
-                           caption='🪗 Шобла, поздравляю с Днём Баяна!')
+            bot.send_photo(secret.tg_chat_id, 'AgACAgIAAxkBAAJFzWLeYTbQ2ENcXEwoPOrRZprGCCUUAALHuTEb6BT4ShJZvIDQxNjZAQADAgADcwADKQQ', caption='🪗 Шобла, поздравляю с Днём Баяна!')
         # Отправка поздравлений с ДР
         for item in constants.tg_drs:
             if item[:-5] == dr:
                 if (now_time.year - int(item[-4:])) % 10 == 0:
-                    bot.send_message(secret.tg_chat_id,
-                                     '🥳 [{0}](tg://user?id={1}), с др\!\nДобро пожаловать в клуб кому за {2} 😏'.format(constants.tg_names[i],
-                                                                                                                         constants.tg_ids[i],
-                                                                                                                         now_time.year - int(item[-4:])),
+                    bot.send_message(secret.tg_chat_id, '🥳 [{0}](tg://user?id={1}), с др\!\nДобро пожаловать в клуб кому'
+                                                        'за {2} 😏'.format(constants.tg_names[i], constants.tg_ids[i], now_time.year - int(item[-4:])),
                                      parse_mode='MarkdownV2')
                 else:
-                    bot.send_message(secret.tg_chat_id,
-                                     '🥳 [{0}](tg://user?id={1}), с др\!'.format(constants.tg_names[i], constants.tg_ids[i]), parse_mode='MarkdownV2')
+                    bot.send_message(secret.tg_chat_id, '🥳 [{0}](tg://user?id={1}), с др\!'.format(constants.tg_names[i], constants.tg_ids[i]), parse_mode='MarkdownV2')
             i += 1
     except Exception as e:
         log('Ошибка в функции отправки поздравления в Шоблу sdr:\nТекст ошибки: ' + str(e))
@@ -478,11 +472,11 @@ def sdr():
 
 
 # # # # # # Запуск функций # # # # # #
-try:
-    bot.remove_webhook()
-except Exception as e:
-    log('Ошибка в функции функции bot.remove_webhook:\nТекст ошибки: ' + str(e))
-    bot.send_message(secret.apple_id, '❌ Ошибка в функции bot.remove_webhook\n*Текст ошибки:*\n' + str(e), parse_mode='MarkdownV2')
+# try:
+#     bot.remove_webhook()
+# except Exception as e:
+#     log('Ошибка в функции функции bot.remove_webhook:\nТекст ошибки: ' + str(e))
+#     bot.send_message(secret.apple_id, '❌ Ошибка в функции bot.remove_webhook\n*Текст ошибки:*\n' + str(e), parse_mode='MarkdownV2')
 
 try:
     sdr()
