@@ -46,10 +46,8 @@ month_statistics = '🤖 Статистика по боту за прошлый 
                    '/rapid: *{12} раз*'
 
 # Данные для команды /discount
-discounts = telebot.types.InlineKeyboardButton(
-    text='Все скидки 💰', url='https://photos.app.goo.gl/Xu4UQWqhSTcBVwt27')
-channel = telebot.types.InlineKeyboardButton(
-    text='Канал 💳', url='https://t.me/joinchat/AAAAAEk6NVud6BKc7YzZ2g')
+discounts = telebot.types.InlineKeyboardButton(text='Все скидки 💰', url='https://photos.app.goo.gl/Xu4UQWqhSTcBVwt27')
+channel = telebot.types.InlineKeyboardButton(text='Канал 💳', url='https://t.me/joinchat/AAAAAEk6NVud6BKc7YzZ2g')
 buttons = {}
 buttons[0] = ['О\'КЕЙ 🛒',  # 0
               'Лента 🛒',  # 1
@@ -175,8 +173,8 @@ errors = ['Ошибка команды /start',  # 0
           'Обращение из чужого чата',  # 6
           'Ошибка команды /who',  # 7
           'Ошибка команды /discount',  # 8
-          'Ошибка в функции aaa',  # 9
-          'Ошибка в функции aaaa',  # 10
+          'Ошибка в функции aaa (devka)',  # 9
+          '',  # 10 Not in use
           'Ошибка в функции russia',  # 11
           'Ошибка в функции vracha',  # 12
           'Ошибка в функции git',  # 13
