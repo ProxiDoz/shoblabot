@@ -192,28 +192,16 @@ def share_log(message):
 
 # # # # # # Обработка текста # # # # # #
 # Обработка девок за рулем
-@bot.message_handler(func=lambda message: message.text and message.text.lower() in constants.dvk and message.chat.id == secret.tg_chat_id)
+@bot.message_handler(func=lambda message: message.text and message.text.lower().replace('a', '').replace('а', '') == '' and message.chat.id == secret.tg_chat_id)
 def aaa(message):
     try:
-        bot.send_message(secret.tg_chat_id, 'Двк з рлм')
+        bot.send_message(secret.tg_chat_id, 'Девка за рулём') if len(message.text) > 2 else bot.send_message(secret.tg_chat_id, 'Двк з рлм')
         if message.from_user.is_premium and random.random() < 0.3:
             bot.send_message(message.chat.id, '🤡 Получай свою девку, ||псина|| премиумная', parse_mode='MarkdownV2')
         update_activity('devka')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[9], e))
         send_error(message, 9, e)
-
-
-@bot.message_handler(func=lambda message: message.text and message.text.lower() in constants.devka and message.chat.id == secret.tg_chat_id)
-def aaaa(message):
-    try:
-        bot.send_message(secret.tg_chat_id, 'Девка за рулём')
-        if message.from_user.is_premium and random.random() < 0.3:
-            bot.send_message(message.chat.id, '🤡 Получай свою девку, ||псина|| премиумная', parse_mode='MarkdownV2')
-        update_activity('devka')
-    except Exception as e:
-        log('{0}\nТекст ошибки: {1}'.format(constants.errors[10], e))
-        send_error(message, 10, e)
 
 
 # Обработка РАСИЯ
