@@ -451,7 +451,7 @@ def sdr():
                                                                  activity_count[cur_mnth]['rapid'], activity_count[cur_mnth]['/29'])
             bot.send_message(secret.tg_chat_id, month_statistics, parse_mode='Markdown')
             # Рассылка по 10челлендж
-            challenge = bot.send_message(secret.tg_chat_id, '📸 Шоблятки, время для #10челлендж и выших фоточек за месяц!', parse_mode='MarkdownV2')
+            challenge = bot.send_message(secret.tg_chat_id, '📸 Шоблятки, время для #10челлендж и выших фоточек за месяц!', parse_mode='Markdown')
             bot.pin_chat_message(secret.tg_chat_id, challenge.message_id, disable_notification=False)
         # День Баяна в Шобле отмечается 28 мая
         if dr == str(28.5):
