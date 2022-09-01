@@ -434,7 +434,7 @@ def sdr():
         now_time = datetime.datetime.now()
         dr = str(now_time.day) + '.' + str(now_time.month)
         i = 0
-        if now_time.hour != 10:
+        if now_time.hour != 8:
             return
         if now_time.day == 1:  # День для статистики по боту выкладывания фоток за месяц Месечная десятка челлендж
             cur_mnth = str(now_time.year - 1) + '.12' if now_time.month == 1 else str(now_time.year) + '.' + str(now_time.month - 1)
