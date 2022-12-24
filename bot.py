@@ -330,7 +330,7 @@ def block(message):
 def faggot(message):
     try:
         if random.random() < 0.3:
-            faggotEUCountry = helper.getFaggotEUCountryRequest(message.text, ['гей', 'пидор', 'педик', 'гомо', 'гомосек', 'глиномес', 'пидераст', 'леша'])
+            faggotEUCountry = helper.getFaggotEUCountryRequest(message.text, ['гей', 'пидор', 'педик', 'гомо', 'гомосек', 'глиномес', 'пидераст', 'леша', 'путин', 'путен', 'путейн', 'маргарин', 'путена'])
             if faggotEUCountry[0]:
                 location = faggotEUCountry[1]['coords']
                 bot.reply_to(message, 'Ты что то сказал про гея? Держи...')
