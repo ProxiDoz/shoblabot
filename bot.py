@@ -455,9 +455,10 @@ def sdr():
                                                                  activity_count[cur_mnth]['devka'], activity_count[cur_mnth]['vracha'],
                                                                  activity_count[cur_mnth]['pin'], activity_count[cur_mnth]['rapid_new'],
                                                                  activity_count[cur_mnth]['cyk'], activity_count[cur_mnth]['russia'],
-                                                                 activity_count[cur_mnth]['team'], activity_count[cur_mnth]['start'],
-                                                                 activity_count[cur_mnth]['help'], activity_count[cur_mnth]['who'],
-                                                                 activity_count[cur_mnth]['rapid'], activity_count[cur_mnth]['/29'])
+                                                                 activity_count[cur_mnth]['kirov'], activity_count[cur_mnth]['team'],
+                                                                 activity_count[cur_mnth]['start'], activity_count[cur_mnth]['help'],
+                                                                 activity_count[cur_mnth]['who'], activity_count[cur_mnth]['rapid'],
+                                                                 activity_count[cur_mnth]['/29'])
             bot.send_message(secret.tg_chat_id, month_statistics, parse_mode='Markdown')
             # Рассылка по 10челлендж
             challenge = bot.send_message(secret.tg_chat_id, '📸 Шоблятки, время для #10челлендж и выших фоточек за месяц!', parse_mode='Markdown')
