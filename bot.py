@@ -15,7 +15,8 @@ import threading
 import urllib.request as urllib2
 from urllib.parse import quote
 import traceback
-import helper  # faggot handler
+import helpers.faggot as faggot  # faggot handler
+import helpers.find_words as find_words
 
 # # # # # # Инициализация # # # # # #
 bot = telebot.TeleBot(secret.tg_token)  # Token бота
@@ -214,12 +215,13 @@ def russia(message):
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[11], e))
         send_error(message, 11, e)
 
-@bot.message_handler(func=lambda message: message.text and message.text.lower().replace(' ', '').replace('\n', '') in constants.kirov and message.chat.id == secret.tg_chat_id)
+@bot.message_handler(func=lambda m: True)
 def kirov(message):
     try:
-        audio = open(constants.kirov_audio_path, 'rb')
-        bot.send_audio(secret.tg_chat_id, audio)
-        update_activity('kirov')
+        if find_words.wordInMessage(message, constants.kirov):
+            audio = open(constants.kirov_audio_path, 'rb')
+            bot.send_audio(secret.tg_chat_id, audio)
+            update_activity('kirov')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[27], e))
         send_error(message, 27, e)
@@ -341,7 +343,7 @@ def block(message):
 def faggot(message):
     try:
         if random.random() < 0.3:
-            faggotEUCountry = helper.getFaggotEUCountryRequest(message.text, ['гей', 'пидор', 'педик', 'гомо', 'гомосек', 'глиномес', 'пидераст', 'леша', 'путин', 'путен', 'путейн', 'маргарин', 'путена'])
+            faggotEUCountry = faggot.getFaggotEUCountryRequest(message.text, ['гей', 'пидор', 'педик', 'гомо', 'гомосек', 'глиномес', 'пидераст', 'леша', 'путин', 'путен', 'путейн', 'маргарин', 'путена'])
             if faggotEUCountry[0]:
                 location = faggotEUCountry[1]['coords']
                 bot.reply_to(message, 'Ты что то сказал про гея? Держи...')
