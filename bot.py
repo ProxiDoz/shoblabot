@@ -218,7 +218,7 @@ def russia(message):
 @bot.message_handler(func=lambda m: True)
 def kirov(message):
     try:
-        if find_words.wordInMessage(message, constants.kirov):
+        if find_words.wordInMessage(message.text, constants.kirov):
             audio = open(constants.kirov_audio_path, 'rb')
             bot.send_audio(secret.tg_chat_id, audio)
             update_activity('kirov')
