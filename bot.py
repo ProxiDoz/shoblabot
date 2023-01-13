@@ -219,8 +219,8 @@ def kirov(message):
         bot.send_audio(secret.tg_chat_id, constants.kirov_audio_path)
         update_activity('kirov')
     except Exception as e:
-        log('{0}\nТекст ошибки: {1}'.format(constants.errors[11], e))
-        send_error(message, 11, e)
+        log('{0}\nТекст ошибки: {1}'.format(constants.errors[27], e))
+        send_error(message, 27, e)
 
 
 # Обработка врача
