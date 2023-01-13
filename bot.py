@@ -220,7 +220,7 @@ def kirov(message):
     try:
         if find_words.wordInMessage(message.text, constants.kirov):
             audio = open(constants.kirov_audio_path, 'rb')
-            bot.send_audio(secret.tg_chat_id, audio)
+            bot.send_audio(secret.tg_chat_id, audio, reply_to_message_id=message.message_id)
             update_activity('kirov')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[27], e))
