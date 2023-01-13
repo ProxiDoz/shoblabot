@@ -216,7 +216,8 @@ def russia(message):
 @bot.message_handler(func=lambda message: message.text and message.text.lower().replace(' ', '').replace('\n', '') in constants.kirov and message.chat.id == secret.tg_chat_id)
 def kirov(message):
     try:
-        bot.send_audio(secret.tg_chat_id, constants.kirov_audio_path)
+        audio = open(constants.kirov_audio_path, 'rb')
+        bot.send_audio(secret.tg_chat_id, audio)
         update_activity('kirov')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[27], e))
