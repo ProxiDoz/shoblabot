@@ -1,8 +1,11 @@
+import re
+
 def wordInMessage(message = '', trigger_words_list = []):
-  message_as_list = message.split(' ')
-  list_words = list(map(lambda w: w.replace(' ', '').lower().replace('ё', 'е'), message_as_list))
+  pattern = r'\W+'
+  message_as_list = re.split(pattern, message)
+  print(trigger_words_list)
   for word in trigger_words_list:
-    if word.lower() in list_words:
+    print(word)
+    if word.lower() in message_as_list:
       return True
-    else:
-      return False
+  return False
