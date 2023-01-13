@@ -215,6 +215,7 @@ def russia(message):
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[11], e))
         send_error(message, 11, e)
 
+# Обработка Кирова
 @bot.message_handler(func=lambda m: True)
 def kirov(message):
     try:
