@@ -213,6 +213,15 @@ def russia(message):
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[11], e))
         send_error(message, 11, e)
 
+@bot.message_handler(func=lambda message: message.text and message.text.lower().replace(' ', '').replace('\n', '') in constants.kirov and message.chat.id == secret.tg_chat_id)
+def kirov(message):
+    try:
+        bot.send_audio(secret.tg_chat_id, constants.kirov_audio_path)
+        update_activity('kirov')
+    except Exception as e:
+        log('{0}\nТекст ошибки: {1}'.format(constants.errors[11], e))
+        send_error(message, 11, e)
+
 
 # Обработка врача
 @bot.message_handler(func=lambda message: message.text and message.text.lower() in constants.vracha and message.chat.id == secret.tg_chat_id)

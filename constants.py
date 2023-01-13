@@ -118,6 +118,11 @@ russia = ['расия', 'расея', 'раися', 'раеся',
 
           'русия', 'русея', 'руися', 'руеся',
           'руссия', 'руссея', 'руисся', 'руесся', '🫡']
+
+kirov = ['киров', 'Киров']
+
+kirov_audio_path = 'audio/kirov.mp3'
+
 anthem = 'AwACAgIAAxkBAAJDIWLGyK15Ym3bMc0u5PU9YXtDDxHnAALtHAACbJI4SiCUtXmDfvoxKQQ'
 
 # team
