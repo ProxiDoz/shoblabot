@@ -136,7 +136,8 @@ def statistics(message):
                                                                      activity_count[current_month]['cyk'], activity_count[current_month]['russia'],
                                                                      activity_count[current_month]['team'], activity_count[current_month]['start'],
                                                                      activity_count[current_month]['help'], activity_count[current_month]['who'],
-                                                                     activity_count[current_month]['rapid'], activity_count[current_month]['/29'])
+                                                                     activity_count[current_month]['rapid'], activity_count[current_month]['/29'],
+                                                                     activity_count[current_month]['kirov'])
 
                 bot.send_message(message.chat.id, month_statistics.replace('прошлый', 'текущий'), parse_mode='MarkdownV2')
             else:

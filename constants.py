@@ -121,7 +121,7 @@ russia = ['расия', 'расея', 'раися', 'раеся',
 
 kirov = ['киров', 'Киров']
 
-kirov_audio_path = '~/root/router/shoblabot/audio/kirov.mp3'
+kirov_audio_path = '/root/router/shoblabot/audio/kirov.mp3'
 
 anthem = 'AwACAgIAAxkBAAJDIWLGyK15Ym3bMc0u5PU9YXtDDxHnAALtHAACbJI4SiCUtXmDfvoxKQQ'
 
