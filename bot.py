@@ -337,20 +337,21 @@ def faggot(message):
                 location = faggotEUCountry[1]['coords']
                 bot.reply_to(message, 'Ты что то сказал про гея? Держи...')
                 bot.send_location(secret.tg_chat_id, location['lat'], location['lng'])
-        send_text(message)
+        kirov(message)
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[25], e))
         send_error(message, 25, e)
 
         
 # Обработка Кирова
-@bot.message_handler(func=lambda m: True)
+# @bot.message_handler(func=lambda m: True)
 def kirov(message):
     try:
         if find_words.wordInMessage(message.text, constants.kirov):
             audio = open(constants.kirov_audio_path, 'rb')
             bot.send_audio(secret.tg_chat_id, audio, reply_to_message_id=message.message_id)
             update_activity('kirov')
+        send_text(message)
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[27], e))
         send_error(message, 27, e)
