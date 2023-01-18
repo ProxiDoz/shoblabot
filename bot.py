@@ -215,18 +215,6 @@ def russia(message):
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[11], e))
         send_error(message, 11, e)
 
-# Обработка Кирова
-@bot.message_handler(func=lambda m: True)
-def kirov(message):
-    try:
-        if find_words.wordInMessage(message.text, constants.kirov):
-            audio = open(constants.kirov_audio_path, 'rb')
-            bot.send_audio(secret.tg_chat_id, audio, reply_to_message_id=message.message_id)
-            update_activity('kirov')
-    except Exception as e:
-        log('{0}\nТекст ошибки: {1}'.format(constants.errors[27], e))
-        send_error(message, 27, e)
-
 
 # Обработка врача
 @bot.message_handler(func=lambda message: message.text and message.text.lower() in constants.vracha and message.chat.id == secret.tg_chat_id)
@@ -354,7 +342,20 @@ def faggot(message):
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[25], e))
         send_error(message, 25, e)
 
+        
+# Обработка Кирова
+@bot.message_handler(func=lambda m: True)
+def kirov(message):
+    try:
+        if find_words.wordInMessage(message.text, constants.kirov):
+            audio = open(constants.kirov_audio_path, 'rb')
+            bot.send_audio(secret.tg_chat_id, audio, reply_to_message_id=message.message_id)
+            update_activity('kirov')
+    except Exception as e:
+        log('{0}\nТекст ошибки: {1}'.format(constants.errors[27], e))
+        send_error(message, 27, e)
 
+        
 # # # # # # Обработка реплаев # # # # # #
 @bot.message_handler(content_types=['text'])
 def send_text(message):
