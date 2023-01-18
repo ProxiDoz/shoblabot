@@ -331,7 +331,7 @@ def block(message):
 @bot.message_handler(func=lambda m: True)
 def faggot(message):
     try:
-        if random.random() < 0.3:
+        if random.random() < 0:
             faggotEUCountry = faggot.getFaggotEUCountryRequest(message.text, ['гей', 'пидор', 'педик', 'гомо', 'гомосек', 'глиномес', 'пидераст', 'леша', 'путин', 'путен', 'путейн', 'маргарин', 'путена'])
             if faggotEUCountry[0]:
                 location = faggotEUCountry[1]['coords']
@@ -344,7 +344,7 @@ def faggot(message):
 
         
 # Обработка Кирова
-# @bot.message_handler(func=lambda m: True)
+@bot.message_handler(func=lambda m: True)
 def kirov(message):
     try:
         if find_words.wordInMessage(message.text, constants.kirov):
