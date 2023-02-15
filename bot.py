@@ -17,6 +17,7 @@ from urllib.parse import quote
 import traceback
 import helpers.faggot as faggot  # faggot handler
 import helpers.find_words as find_words
+import helpers.translitsky as translitsky
 
 # # # # # # Инициализация # # # # # #
 bot = telebot.TeleBot(secret.tg_token)  # Token бота
@@ -372,8 +373,14 @@ def kirov(message):
 @bot.message_handler(content_types=['text'])
 def send_text(message):
     try:
+        text = message.text
+
+        if translitsky.isTranslitsky(text):
+            answer = translitsky.doTranslitskyRollback(text)
+            bot.send_message(message.chat.id, "`{}`".format(answer), parse_mode='MarkdownV2', reply_to_message_id=message.message_id)
+
         # Если это попытка запинить сообщение
-        if message.reply_to_message is not None and message.text == '@shoblabot' and message.chat.id == secret.tg_chat_id:
+        if message.reply_to_message is not None and text == '@shoblabot' and message.chat.id == secret.tg_chat_id:
             try:
                 if message.from_user.is_premium and random.random() < 0.3:
                     bot.send_message(message.chat.id, '🤡 Жопу себе запинь, ||псина|| премиумная', parse_mode='MarkdownV2')
@@ -388,8 +395,8 @@ def send_text(message):
             # Запрос внесения опроса
             if message.reply_to_message.text == constants.enter_question_new or message.reply_to_message.text == constants.too_large_question:
                 try:
-                    if len(message.text) <= 291:
-                        opros = constants.tg_names[constants.tg_ids.index(message.from_user.id)] + ': ' + message.text
+                    if len(text) <= 291:
+                        opros = constants.tg_names[constants.tg_ids.index(message.from_user.id)] + ': ' + text
                         poll = bot.send_poll(secret.tg_chat_id, opros, constants.poll_options, is_anonymous=False, allows_multiple_answers=False)
                         stop_button = telebot.types.InlineKeyboardButton(text='Остановить опрос 🚫',
                                                                          callback_data='stop_{0}_{1}'.format(
