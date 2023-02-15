@@ -128,7 +128,7 @@ kirov_audio_path = '/root/router/shoblabot/audio/kirov.mp3'
 anthem = 'AwACAgIAAxkBAAJDIWLGyK15Ym3bMc0u5PU9YXtDDxHnAALtHAACbJI4SiCUtXmDfvoxKQQ'
 
 damage = '🥺'
-emotional_daaamage = 'AwACAgIAAxkBAAJDIWLGyK15Ym3bMc0u5PU9YXtDDxHnAALtHAACbJI4SiCUtXmDfvoxKQQ'
+emotional_daaamage = 'BAACAgIAAxkBAAJGdmPsjA5d_xkOhjrnmm6YYnkRPRx_AAJCJAAClVdoS2h9XwZuAAF-QS4E'
 
 # team
 team = '@team'
