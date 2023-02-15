@@ -205,6 +205,17 @@ def aaa(message):
         send_error(message, 9, e)
 
 
+# Обработка emotional daaamage
+@bot.message_handler(func=lambda message: message.text and message.text.lower().replace(' ', '').replace('\n', '') in constants.damage and message.chat.id == secret.tg_chat_id)
+def damage(message):
+    try:
+        bot.send_voice(secret.tg_chat_id, constants.emotional_daaamage)
+        update_activity('damage')
+    except Exception as e:
+        log('{0}\nТекст ошибки: {1}'.format(constants.errors[10], e))
+        send_error(message, 10, e)
+
+
 # Обработка РАСИЯ
 @bot.message_handler(func=lambda message: message.text and message.text.lower().replace(' ', '').replace('\n', '') in constants.russia and message.chat.id == secret.tg_chat_id)
 def russia(message):
@@ -214,7 +225,7 @@ def russia(message):
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[11], e))
         send_error(message, 11, e)
-
+        
 
 # Обработка врача
 @bot.message_handler(func=lambda message: message.text and message.text.lower() in constants.vracha and message.chat.id == secret.tg_chat_id)
@@ -356,7 +367,16 @@ def kirov(message):
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[27], e))
         send_error(message, 27, e)
 
+
+# get file_id
+@bot.message_handler(content_types=['video'])
+def send_video(message):
+    try:
+        bot.send_message(secret.apple_id, message.video.file_id)       
+    except Exception as e:
+        bot.send_message(secret.apple_id, 'error')
         
+            
 # # # # # # Обработка реплаев # # # # # #
 @bot.message_handler(content_types=['text'])
 def send_text(message):
@@ -462,10 +482,10 @@ def sdr():
                                                                  activity_count[cur_mnth]['devka'], activity_count[cur_mnth]['vracha'],
                                                                  activity_count[cur_mnth]['pin'], activity_count[cur_mnth]['rapid_new'],
                                                                  activity_count[cur_mnth]['cyk'], activity_count[cur_mnth]['russia'],
-                                                                 activity_count[cur_mnth]['kirov'], activity_count[cur_mnth]['team'],
-                                                                 activity_count[cur_mnth]['start'], activity_count[cur_mnth]['help'],
-                                                                 activity_count[cur_mnth]['who'], activity_count[cur_mnth]['rapid'],
-                                                                 activity_count[cur_mnth]['/29'])
+                                                                 activity_count[cur_mnth]['team'], activity_count[cur_mnth]['start'],
+                                                                 activity_count[cur_mnth]['help'], activity_count[cur_mnth]['who'],
+                                                                 activity_count[cur_mnth]['rapid'], activity_count[cur_mnth]['/29'],
+                                                                 activity_count[cur_mnth]['kirov'], activity_count[cur_mnth]['damage'])
             bot.send_message(secret.tg_chat_id, month_statistics, parse_mode='Markdown')
             # Рассылка по 10челлендж
             challenge = bot.send_message(secret.tg_chat_id, '📸 Шоблятки, время для #10челлендж и ваших фоточек за месяц!', parse_mode='Markdown')
