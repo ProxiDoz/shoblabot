@@ -33,7 +33,7 @@ def __isWordExists(word):
 
     res = True
     try:
-        r = req.Request("https://od-api.oxforddictionaries.com/api/v2/entries/en-gb/{}".format(word), headers={'app_id' : '', 'app_key' : ''})
+        r = req.Request("https://od-api.oxforddictionaries.com/api/v2/words/en-us?q={}".format(word), headers={'app_id' : '', 'app_key' : ''})
         req.urlopen(r).read()
     except:
         res = False
