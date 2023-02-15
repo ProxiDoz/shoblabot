@@ -55,7 +55,7 @@ def isTranslitsky(centence):
     
     for word in words:
         total_accuracy += 0 if __isWordExists(word) else word_accuracy
-        if total_accuracy >= 65:
+        if total_accuracy >= 30:
             return True
     
     return False
