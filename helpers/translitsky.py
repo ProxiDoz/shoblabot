@@ -1,6 +1,7 @@
 import re
 import json
 import urllib.request as req
+import secret
 
 __my_dict__ = {}
 __words__ = json.load(open('helpers/words.json'))
@@ -33,7 +34,7 @@ def __isWordExists(word):
 
     res = True
     try:
-        r = req.Request("https://od-api.oxforddictionaries.com/api/v2/words/en-us?q={}".format(word), headers={'app_id' : '', 'app_key' : ''})
+        r = req.Request("https://od-api.oxforddictionaries.com/api/v2/words/en-us?q={}".format(word), headers={'app_id' : secret.tr_app_id, 'app_key' : secret.tr_app_key})
         req.urlopen(r).read()
     except:
         res = False
