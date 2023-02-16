@@ -128,7 +128,7 @@ def statistics(message):
         if message.chat.id == secret.tg_chat_id or message.from_user.id in constants.tg_ids:  # Это Шобла или человек из Шоблы
             if message.from_user.id == secret.apple_id or message.from_user.is_premium:  # Это Апол или премиумный пользователь
                 now_time = datetime.datetime.now()
-                current_month = str(now_time.year) + '.' + str(now_time.month)
+                cur_mnth = str(now_time.year) + '.' + str(now_time.month)
                 if os.path.isfile(constants.activity_file):  # Загружаем данные из файла activity_count
                     with open(constants.activity_file, 'r') as lang:
                         activity_count = json.loads(lang.read())
