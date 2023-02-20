@@ -374,8 +374,7 @@ def kirov(message):
 def send_text(message):
     try:
         text = message.text
-
-        if translitsky.isTranslitsky(text):
+        if translitsky.isTranslitsky(text) and text[0:3]!='http':
             answer = translitsky.doTranslitskyRollback(text)
             bot.send_message(message.chat.id, "`{}`".format(answer), parse_mode='MarkdownV2', reply_to_message_id=message.message_id)
 
