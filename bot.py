@@ -182,6 +182,8 @@ def sozvon(message):
             log('вызов команды /sozvon by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
             bot.send_photo(message.chat.id, constants.sozvon_pic, caption=constants.sozvon_link)
             update_activity('sozvon')
+            now_time = datetime.datetime.now()
+            bot.send_message(secret.apple_id, now_time.weekday())
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[28], e))
         send_error(message, 28, e)    
@@ -381,16 +383,6 @@ def kirov(message):
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[27], e))
         send_error(message, 27, e)
-        
-            
-@bot.message_handler(content_types=['photo'])
-def send_photo(message):
-    try:  
-        now_time = datetime.datetime.now()
-        bot.send_message(secret.apple_id, now_time.weekday)
-        bot.send_message(secret.apple_id, message.photo[2].file_id)
-    except Exception as e:
-        bot.send_message(secret.apple_id, 'error')
         
         
 # # # # # # Обработка реплаев # # # # # #
