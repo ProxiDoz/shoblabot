@@ -139,7 +139,8 @@ def statistics(message):
                                                                  activity_count[cur_mnth]['team'], activity_count[cur_mnth]['start'],
                                                                  activity_count[cur_mnth]['help'], activity_count[cur_mnth]['who'],
                                                                  activity_count[cur_mnth]['rapid'], activity_count[cur_mnth]['/29'],
-                                                                 activity_count[cur_mnth]['kirov'], activity_count[cur_mnth]['damage'])
+                                                                 activity_count[cur_mnth]['kirov'], activity_count[cur_mnth]['damage'],
+                                                                    activity_count[cur_mnth]['sozvon'])
 
                 bot.send_message(message.chat.id, month_statistics.replace('прошлый', 'текущий'), parse_mode='MarkdownV2')
             else:
@@ -172,7 +173,20 @@ def share_log(message):
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[24], e))
         send_error(message, 24, e)
         
-        
+
+# Запрос на ссылку созвона
+@bot.message_handler(commands=['sozvon'])
+def sozvon(message):
+    try:
+        if message.from_user.id in constants.tg_ids:
+            log('вызов команды /sozvon by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
+            bot.send_photo(message.chat.id, constants.sozvon_pic, caption=constants.sozvon_link)
+            update_activity('sozvon')
+    except Exception as e:
+        log('{0}\nТекст ошибки: {1}'.format(constants.errors[28], e))
+        send_error(message, 28, e)    
+    
+    
 # Вызов информации о сервере
 @bot.message_handler(commands=['s'])
 def server_info(message):
@@ -369,6 +383,16 @@ def kirov(message):
         send_error(message, 27, e)
         
             
+@bot.message_handler(content_types=['photo'])
+def send_photo(message):
+    try:  
+        now_time = datetime.datetime.now()
+        bot.send_message(secret.apple_id, now_time.weekday)
+        bot.send_message(secret.apple_id, message.photo[2].file_id)
+    except Exception as e:
+        bot.send_message(secret.apple_id, 'error')
+        
+        
 # # # # # # Обработка реплаев # # # # # #
 @bot.message_handler(content_types=['text'])
 def send_text(message):
@@ -469,6 +493,9 @@ def sdr():
         i = 0
         if now_time.hour != 8:
             return
+        if now_time.weekday == 3:  # День (четверг) для отправки опроса о принятии участия в созвоне
+            opros = 'Когда проведём шоблосозвон? Выбирайте день и ниже укажите время (относительно МСК: FRA-2, GEO+1, KAZ+3)'
+            bot.send_poll(secret.tg_chat_id, opros, constants.sozvon_options, is_anonymous=False, allows_multiple_answers=True)
         if now_time.day == 1:  # День для статистики по боту выкладывания фоток за месяц Месечная десятка челлендж
             cur_mnth = str(now_time.year - 1) + '.12' if now_time.month == 1 else str(now_time.year) + '.' + str(now_time.month - 1)
             # Загружаем данные из файла activity_count
@@ -482,7 +509,8 @@ def sdr():
                                                                  activity_count[cur_mnth]['team'], activity_count[cur_mnth]['start'],
                                                                  activity_count[cur_mnth]['help'], activity_count[cur_mnth]['who'],
                                                                  activity_count[cur_mnth]['rapid'], activity_count[cur_mnth]['/29'],
-                                                                 activity_count[cur_mnth]['kirov'], activity_count[cur_mnth]['damage'])
+                                                                 activity_count[cur_mnth]['kirov'], activity_count[cur_mnth]['damage'],
+                                                                    activity_count[cur_mnth]['sozvon'])
             bot.send_message(secret.tg_chat_id, month_statistics, parse_mode='Markdown')
             # Рассылка по 10челлендж
             challenge = bot.send_message(secret.tg_chat_id, '📸 Шоблятки, время для #10челлендж и ваших фоточек за месяц!', parse_mode='Markdown')
