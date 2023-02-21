@@ -182,8 +182,6 @@ def sozvon(message):
             log('вызов команды /sozvon by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
             bot.send_photo(message.chat.id, constants.sozvon_pic, caption=constants.sozvon_link)
             update_activity('sozvon')
-            now_time = datetime.datetime.now()
-            bot.send_message(secret.apple_id, now_time.weekday())
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[28], e))
         send_error(message, 28, e)    
@@ -485,7 +483,7 @@ def sdr():
         i = 0
         if now_time.hour != 8:
             return
-        if now_time.weekday == 3:  # День (четверг) для отправки опроса о принятии участия в созвоне
+        if now_time.weekday() == 3:  # День (четверг) для отправки опроса о принятии участия в созвоне
             opros = 'Когда проведём шоблосозвон? Выбирайте день и ниже укажите время (относительно МСК: FRA-2, GEO+1, KAZ+3)'
             bot.send_poll(secret.tg_chat_id, opros, constants.sozvon_options, is_anonymous=False, allows_multiple_answers=True)
         if now_time.day == 1:  # День для статистики по боту выкладывания фоток за месяц Месечная десятка челлендж
