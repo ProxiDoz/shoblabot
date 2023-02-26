@@ -5,6 +5,8 @@ import telebot
 # Пути к файлам
 log_file = '/root/log.txt'
 activity_file = '/root/router/shoblabot/activity_count'
+kirov_audio_path = '/root/router/shoblabot/audio/kirov.mp3'
+sozvon_file = '/root/router/shoblabot/sozvon_poll'
 
 # Тексты при командах /start и /help
 help_text_light = '⛔ Вы не участник чата Шобла - ReBorn'
@@ -124,8 +126,6 @@ russia = ['расия', 'расея', 'раися', 'раеся',
 
 kirov = ['киров', 'Киров', 'кирове', 'кировский', 'кировское', 'кировчане', 'кировчанское']
 
-kirov_audio_path = '/root/router/shoblabot/audio/kirov.mp3'
-
 anthem = 'AwACAgIAAxkBAAJDIWLGyK15Ym3bMc0u5PU9YXtDDxHnAALtHAACbJI4SiCUtXmDfvoxKQQ'
 
 damage = '🥺'
@@ -208,8 +208,9 @@ errors = ['Ошибка команды /start',  # 0
           'Ошибка в функции share_log', # 24
           'Ошибка в педо-функции',  # 25
           'Ошибка при пине сообщения',  # 26
-          'Ощибка в функции kirov', # 27
-          'Ощибка в функции sozvon' # 28
+          'Ощибка в функции kirov',  # 27
+          'Ошибка в функции sozvon',  # 28
+          'Ошибка в функции poll_results'  # 29
           ]
 
 # ID участниеов Шобла - ReBorn в Telegram
