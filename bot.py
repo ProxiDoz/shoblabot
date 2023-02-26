@@ -537,7 +537,7 @@ def sdr():
                 bot.pin_chat_message(secret.tg_chat_id, photo.message_id, disable_notification=False)
             return
         if now_time.weekday() == 3:  # День (четверг) для отправки опроса о принятии участия в созвоне
-            opros = 'Когда проведём шоблосозвон? Выбирайте день и ниже укажите время (относительно 🇷🇺: 🇫🇷-2, 🇬🇪+1, 🇰🇿+3)'
+            opros = 'Когда проведём шоблосозвон? Выбирайте день и ниже укажите время (относительно 🇷🇺: 🇫🇷-2, 🇬🇪+1, 🇰🇿+3). Опрос закротся через сутки'
             sozvon_poll = bot.send_poll(secret.tg_chat_id, opros, constants.sozvon_options, is_anonymous=False, allows_multiple_answers=True)
             bot.pin_chat_message(secret.tg_chat_id, sozvon_poll.message_id, disable_notification=False)
             curr_sozvon_poll['msg_id'] = sozvon_poll.id
