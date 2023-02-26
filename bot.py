@@ -22,6 +22,11 @@ import helpers.translitsky as translitsky
 # # # # # # Инициализация # # # # # #
 bot = telebot.TeleBot(secret.tg_token)  # Token бота
 activity_count = {}  # Переменная для сбора статистики по командам
+curr_sozvon_poll = {}
+if os.path.isfile(constants.sozvon_file):  # Загружаем данные из файла sozvon_file
+    with open(constants.sozvon_file, 'r') as lang:
+        curr_sozvon_poll = json.loads(lang.read())
+sozvon_results = [0, 0, 0, 0, 0, 0, 0, 0]
 
 
 # # # # # # Доступные команды # # # # # #
@@ -80,8 +85,8 @@ def send_discount(message):
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[8], e))
         send_error(message, 8, e)
-        
-        
+
+
 # # # # # # Служебные функции и команды # # # # # #
 # Функция сбора статистики по командам и функциям
 def update_activity(field):
@@ -133,14 +138,14 @@ def statistics(message):
                     with open(constants.activity_file, 'r') as lang:
                         activity_count = json.loads(lang.read())
                 month_statistics = constants.month_statistics.format(activity_count[cur_mnth]['opros'], activity_count[cur_mnth]['discount'],
-                                                                 activity_count[cur_mnth]['devka'], activity_count[cur_mnth]['vracha'],
-                                                                 activity_count[cur_mnth]['pin'], activity_count[cur_mnth]['rapid_new'],
-                                                                 activity_count[cur_mnth]['cyk'], activity_count[cur_mnth]['russia'],
-                                                                 activity_count[cur_mnth]['team'], activity_count[cur_mnth]['start'],
-                                                                 activity_count[cur_mnth]['help'], activity_count[cur_mnth]['who'],
-                                                                 activity_count[cur_mnth]['rapid'], activity_count[cur_mnth]['/29'],
-                                                                 activity_count[cur_mnth]['kirov'], activity_count[cur_mnth]['damage'],
-                                                                    activity_count[cur_mnth]['sozvon'])
+                                                                     activity_count[cur_mnth]['devka'], activity_count[cur_mnth]['vracha'],
+                                                                     activity_count[cur_mnth]['pin'], activity_count[cur_mnth]['rapid_new'],
+                                                                     activity_count[cur_mnth]['cyk'], activity_count[cur_mnth]['russia'],
+                                                                     activity_count[cur_mnth]['team'], activity_count[cur_mnth]['start'],
+                                                                     activity_count[cur_mnth]['help'], activity_count[cur_mnth]['who'],
+                                                                     activity_count[cur_mnth]['rapid'], activity_count[cur_mnth]['/29'],
+                                                                     activity_count[cur_mnth]['kirov'], activity_count[cur_mnth]['damage'],
+                                                                     activity_count[cur_mnth]['sozvon'])
 
                 bot.send_message(message.chat.id, month_statistics.replace('прошлый', 'текущий'), parse_mode='MarkdownV2')
             else:
@@ -172,7 +177,7 @@ def share_log(message):
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[24], e))
         send_error(message, 24, e)
-        
+
 
 # Запрос на ссылку созвона
 @bot.message_handler(commands=['sozvon'])
@@ -184,9 +189,9 @@ def sozvon(message):
             update_activity('sozvon')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[28], e))
-        send_error(message, 28, e)    
-    
-    
+        send_error(message, 28, e)
+
+
 # Вызов информации о сервере
 @bot.message_handler(commands=['s'])
 def server_info(message):
@@ -194,7 +199,9 @@ def server_info(message):
         if message.from_user.id == secret.apple_id:
             try:
                 log('отправка статуса памяти сервера')
-                bot.send_message(message.chat.id, '💿 RAM: {0}% из 512Мбайт'.format(psutil.virtual_memory()[2])) if message.text == '/s' else bot.send_message(secret.tg_chat_id, message.text[3:len(message.text)])
+                bot.send_message(message.chat.id, '💿 RAM: {0}% из 512Мбайт'.format(psutil.virtual_memory()[2])) if message.text == '/s' else bot.send_message(secret.tg_chat_id,
+                                                                                                                                                               message.text[
+                                                                                                                                                               3:len(message.text)])
             except Exception as e:
                 log('{0}\nТекст ошибки: {1}'.format(constants.errors[21], e))
                 send_error(message, 21, e)
@@ -235,12 +242,13 @@ def damage(message):
 @bot.message_handler(func=lambda message: message.text and message.text.lower().replace(' ', '').replace('\n', '') in constants.russia and message.chat.id == secret.tg_chat_id)
 def russia(message):
     try:
-        bot.send_voice(secret.tg_chat_id, constants.anthem, '🫡 Ебать ты патриот, ||псина|| премиумная', parse_mode='MarkdownV2') if message.from_user.is_premium and random.random() < 0.3 else bot.send_voice(secret.tg_chat_id, constants.anthem, '🫡')
+        bot.send_voice(secret.tg_chat_id, constants.anthem, '🫡 Ебать ты патриот, ||псина|| премиумная',
+                       parse_mode='MarkdownV2') if message.from_user.is_premium and random.random() < 0.3 else bot.send_voice(secret.tg_chat_id, constants.anthem, '🫡')
         update_activity('russia')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[11], e))
         send_error(message, 11, e)
-        
+
 
 # Обработка врача
 @bot.message_handler(func=lambda message: message.text and message.text.lower() in constants.vracha and message.chat.id == secret.tg_chat_id)
@@ -272,7 +280,8 @@ def git(message):
 @bot.message_handler(func=lambda message: message.text and constants.team in message.text.lower() and message.chat.id == secret.tg_chat_id)
 def team(message):
     try:
-        bot.send_message(chat_id=secret.tg_chat_id, disable_notification=False, reply_to_message_id=message.message_id, text=constants.team_text, disable_web_page_preview=True, parse_mode='Markdown')
+        bot.send_message(chat_id=secret.tg_chat_id, disable_notification=False, reply_to_message_id=message.message_id, text=constants.team_text, disable_web_page_preview=True,
+                         parse_mode='Markdown')
         if message.from_user.is_premium and random.random() < 0.3:
             bot.send_message(message.chat.id, '🤡 Ты тут никому не упёрся, ||псина|| премиумная', parse_mode='MarkdownV2')
         update_activity('team')
@@ -358,7 +367,8 @@ def block(message):
 def faggot(message):
     try:
         if random.random() < 0:
-            faggotEUCountry = faggot.getFaggotEUCountryRequest(message.text, ['гей', 'пидор', 'педик', 'гомо', 'гомосек', 'глиномес', 'пидераст', 'леша', 'путин', 'путен', 'путейн', 'маргарин', 'путена'])
+            faggotEUCountry = faggot.getFaggotEUCountryRequest(message.text,
+                                                               ['гей', 'пидор', 'педик', 'гомо', 'гомосек', 'глиномес', 'пидераст', 'леша', 'путин', 'путен', 'путейн', 'маргарин', 'путена'])
             if faggotEUCountry[0]:
                 location = faggotEUCountry[1]['coords']
                 bot.reply_to(message, 'Ты что то сказал про гея? Держи...')
@@ -368,7 +378,7 @@ def faggot(message):
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[25], e))
         send_error(message, 25, e)
 
-        
+
 # Обработка Кирова
 @bot.message_handler(func=lambda m: True)
 def kirov(message):
@@ -381,14 +391,34 @@ def kirov(message):
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[27], e))
         send_error(message, 27, e)
-        
-        
+
+
+# # # # # # Обработка опросов # # # # # #
+@bot.poll_handler(func=lambda poll: True)
+def poll_results(poll):
+    try:
+        if poll.is_closed == 1 and str(poll.id) == curr_sozvon_poll['poll_id'] and poll.total_voter_count > 0:
+            i = 0
+            for item in poll.options:
+                sozvon_results[i] = int(item.voter_count)
+                i += 1
+            max_date = sozvon_results[0:4].index(max(sozvon_results[0:4]))
+            max_time = sozvon_results[4:].index(max(sozvon_results[4:])) + 4
+            curr_sozvon_poll['max_date'] = max_date
+            curr_sozvon_poll['max_time'] = max_time
+            with open(constants.sozvon_file, 'w') as lang:  # Записываем данные в файл sozvon_file
+                lang.write(json.dumps(curr_sozvon_poll))
+    except Exception as e:
+        log('{0}\nТекст ошибки: {1}'.format(constants.errors[29], e))
+        bot.send_message(secret.apple_id, '❌ Ошибка в функции poll_results:\n*Сообщение: *{0}\n*Текст ошибки:*\n{1}'.format(poll, e), parse_mode='MarkdownV2')
+
+
 # # # # # # Обработка реплаев # # # # # #
 @bot.message_handler(content_types=['text'])
 def send_text(message):
     try:
         text = message.text
-        if translitsky.isTranslitsky(text) and text[0:4]!='http':
+        if translitsky.isTranslitsky(text) and text[0:4] != 'http':
             answer = translitsky.doTranslitskyRollback(text)
             bot.send_message(message.chat.id, "`{}`".format(answer), parse_mode='MarkdownV2', reply_to_message_id=message.message_id)
 
@@ -481,11 +511,44 @@ def sdr():
         now_time = datetime.datetime.now()
         dr = str(now_time.day) + '.' + str(now_time.month)
         i = 0
-        if now_time.hour != 8:
+        if os.path.isfile(constants.sozvon_file):
+            with open(constants.sozvon_file, 'r') as lang:
+                curr_sozvon_poll = json.loads(lang.read())
+        if now_time.hour != 9:
+            if now_time.hour != 18:
+                if now_time.hour != 19:
+                    if now_time.hour != 20:
+                        if now_time.hour != 21:
+                            return
+                        if now_time.weekday()-3 == curr_sozvon_poll['max_date']:
+                            photo = bot.send_photo(secret.tg_chat_id, constants.sozvon_pic, caption='*Го созвон: *' + constants.sozvon_link)
+                            bot.pin_chat_message(secret.tg_chat_id, photo.message_id, disable_notification=False)
+                        return
+                    if now_time.weekday() - 3 == curr_sozvon_poll['max_date']:
+                        photo = bot.send_photo(secret.tg_chat_id, constants.sozvon_pic, caption='*Го созвон: *' + constants.sozvon_link)
+                        bot.pin_chat_message(secret.tg_chat_id, photo.message_id, disable_notification=False)
+                    return
+                if now_time.weekday() - 3 == curr_sozvon_poll['max_date']:
+                    photo = bot.send_photo(secret.tg_chat_id, constants.sozvon_pic, caption='*Го созвон: *' + constants.sozvon_link)
+                    bot.pin_chat_message(secret.tg_chat_id, photo.message_id, disable_notification=False)
+                return
+            if now_time.weekday() - 3 == curr_sozvon_poll['max_date']:
+                photo = bot.send_photo(secret.tg_chat_id, constants.sozvon_pic, caption='*Го созвон: *' + constants.sozvon_link)
+                bot.pin_chat_message(secret.tg_chat_id, photo.message_id, disable_notification=False)
             return
         if now_time.weekday() == 3:  # День (четверг) для отправки опроса о принятии участия в созвоне
-            opros = 'Когда проведём шоблосозвон? Выбирайте день и время (относительно 🇷🇺: 🇫🇷-2, 🇬🇪+1, 🇰🇿+3)'
-            bot.send_poll(secret.tg_chat_id, opros, constants.sozvon_options, is_anonymous=False, allows_multiple_answers=True)
+            opros = 'Когда проведём шоблосозвон? Выбирайте день и ниже укажите время (относительно 🇷🇺: 🇫🇷-2, 🇬🇪+1, 🇰🇿+3)'
+            sozvon_poll = bot.send_poll(secret.tg_chat_id, opros, constants.sozvon_options, is_anonymous=False, allows_multiple_answers=True)
+            bot.pin_chat_message(secret.tg_chat_id, sozvon_poll.message_id, disable_notification=False)
+            curr_sozvon_poll['msg_id'] = sozvon_poll.id
+            curr_sozvon_poll['poll_id'] = sozvon_poll.poll.id
+            with open(constants.sozvon_file, 'w') as lang:  # Записываем данные в файл sozvon_file
+                lang.write(json.dumps(curr_sozvon_poll))
+        if now_time.weekday() == 4:  # День (пятница) для остановки опроса о принятии участия в созвоне
+            if os.path.isfile(constants.sozvon_file):
+                with open(constants.sozvon_file, 'r') as lang:
+                    curr_sozvon_poll = json.loads(lang.read())
+            bot.stop_poll(secret.tg_chat_id, curr_sozvon_poll['msg_id'])
         if now_time.day == 1:  # День для статистики по боту выкладывания фоток за месяц Месечная десятка челлендж
             cur_mnth = str(now_time.year - 1) + '.12' if now_time.month == 1 else str(now_time.year) + '.' + str(now_time.month - 1)
             # Загружаем данные из файла activity_count
@@ -500,7 +563,7 @@ def sdr():
                                                                  activity_count[cur_mnth]['help'], activity_count[cur_mnth]['who'],
                                                                  activity_count[cur_mnth]['rapid'], activity_count[cur_mnth]['/29'],
                                                                  activity_count[cur_mnth]['kirov'], activity_count[cur_mnth]['damage'],
-                                                                    activity_count[cur_mnth]['sozvon'])
+                                                                 activity_count[cur_mnth]['sozvon'])
             bot.send_message(secret.tg_chat_id, month_statistics, parse_mode='Markdown')
             # Рассылка по 10челлендж
             challenge = bot.send_message(secret.tg_chat_id, '📸 Шоблятки, время для #10челлендж и ваших фоточек за месяц!', parse_mode='Markdown')
