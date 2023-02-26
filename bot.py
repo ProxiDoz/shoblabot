@@ -180,7 +180,7 @@ def sozvon(message):
     try:
         if message.from_user.id in constants.tg_ids:
             log('вызов команды /sozvon by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
-            bot.send_photo(message.chat.id, constants.sozvon_pic, caption=constants.sozvon_link)
+            bot.send_photo(message.chat.id, constants.sozvon_pic, caption='*Го созвон: *' + constants.sozvon_link)
             update_activity('sozvon')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[28], e))
@@ -484,7 +484,7 @@ def sdr():
         if now_time.hour != 8:
             return
         if now_time.weekday() == 3:  # День (четверг) для отправки опроса о принятии участия в созвоне
-            opros = 'Когда проведём шоблосозвон? Выбирайте день и ниже укажите время (относительно МСК: FRA-2, GEO+1, KAZ+3)'
+            opros = 'Когда проведём шоблосозвон? Выбирайте день и время (относительно 🇷🇺: 🇫🇷-2, 🇬🇪+1, 🇰🇿+3)'
             bot.send_poll(secret.tg_chat_id, opros, constants.sozvon_options, is_anonymous=False, allows_multiple_answers=True)
         if now_time.day == 1:  # День для статистики по боту выкладывания фоток за месяц Месечная десятка челлендж
             cur_mnth = str(now_time.year - 1) + '.12' if now_time.month == 1 else str(now_time.year) + '.' + str(now_time.month - 1)
