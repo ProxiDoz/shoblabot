@@ -185,7 +185,7 @@ def sozvon(message):
     try:
         if message.from_user.id in constants.tg_ids:
             log('вызов команды /sozvon by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
-            bot.send_photo(message.chat.id, constants.sozvon_pic, caption='*Го созвон: *' + constants.sozvon_link,, parse_mode='Markdown')
+            bot.send_photo(message.chat.id, constants.sozvon_pic, caption='*Го созвон: *' + constants.sozvon_link, parse_mode='Markdown')
             update_activity('sozvon')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[28], e))
