@@ -185,7 +185,7 @@ def sozvon(message):
     try:
         if message.from_user.id in constants.tg_ids:
             log('вызов команды /sozvon by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
-            bot.send_photo(message.chat.id, constants.sozvon_pic, caption='*Го созвон: *' + constants.sozvon_link,, parse_mode='MarkdownV')
+            bot.send_photo(message.chat.id, constants.sozvon_pic, caption='*Го созвон: *' + constants.sozvon_link,, parse_mode='Markdown')
             update_activity('sozvon')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[28], e))
@@ -521,19 +521,19 @@ def sdr():
                         if now_time.hour != 21:
                             return
                         if now_time.weekday()-3 == curr_sozvon_poll['max_date']:
-                            photo = bot.send_photo(secret.tg_chat_id, constants.sozvon_pic, caption='*Го созвон: *' + constants.sozvon_link, parse_mode='MarkdownV')
+                            photo = bot.send_photo(secret.tg_chat_id, constants.sozvon_pic, caption='*Го созвон: *' + constants.sozvon_link, parse_mode='Markdown')
                             bot.pin_chat_message(secret.tg_chat_id, photo.message_id, disable_notification=False)
                         return
                     if now_time.weekday() - 3 == curr_sozvon_poll['max_date']:
-                        photo = bot.send_photo(secret.tg_chat_id, constants.sozvon_pic, caption='*Го созвон: *' + constants.sozvon_link, parse_mode='MarkdownV')
+                        photo = bot.send_photo(secret.tg_chat_id, constants.sozvon_pic, caption='*Го созвон: *' + constants.sozvon_link, parse_mode='Markdown')
                         bot.pin_chat_message(secret.tg_chat_id, photo.message_id, disable_notification=False)
                     return
                 if now_time.weekday() - 3 == curr_sozvon_poll['max_date']:
-                    photo = bot.send_photo(secret.tg_chat_id, constants.sozvon_pic, caption='*Го созвон: *' + constants.sozvon_link, parse_mode='MarkdownV')
+                    photo = bot.send_photo(secret.tg_chat_id, constants.sozvon_pic, caption='*Го созвон: *' + constants.sozvon_link, parse_mode='Markdown')
                     bot.pin_chat_message(secret.tg_chat_id, photo.message_id, disable_notification=False)
                 return
             if now_time.weekday() - 3 == curr_sozvon_poll['max_date']:
-                photo = bot.send_photo(secret.tg_chat_id, constants.sozvon_pic, caption='*Го созвон: *' + constants.sozvon_link, parse_mode='MarkdownV')
+                photo = bot.send_photo(secret.tg_chat_id, constants.sozvon_pic, caption='*Го созвон: *' + constants.sozvon_link, parse_mode='Markdown')
                 bot.pin_chat_message(secret.tg_chat_id, photo.message_id, disable_notification=False)
             return
         if now_time.weekday() == 3:  # День (четверг) для отправки опроса о принятии участия в созвоне
