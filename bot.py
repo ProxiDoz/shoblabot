@@ -520,19 +520,19 @@ def sdr():
                     if now_time.hour != 20:
                         if now_time.hour != 21:
                             return
-                        if now_time.weekday()-3 == curr_sozvon_poll['max_date']:
+                        if now_time.weekday()- 4 == curr_sozvon_poll['max_date'] and now_time.hour - 18 == curr_sozvon_poll['max_time']:
                             photo = bot.send_photo(secret.tg_chat_id, constants.sozvon_pic, caption='*Го созвон: *' + constants.sozvon_link, parse_mode='Markdown')
                             bot.pin_chat_message(secret.tg_chat_id, photo.message_id, disable_notification=False)
                         return
-                    if now_time.weekday() - 3 == curr_sozvon_poll['max_date']:
+                    if now_time.weekday() - 4 == curr_sozvon_poll['max_date'] and now_time.hour - 18 == curr_sozvon_poll['max_time']:
                         photo = bot.send_photo(secret.tg_chat_id, constants.sozvon_pic, caption='*Го созвон: *' + constants.sozvon_link, parse_mode='Markdown')
                         bot.pin_chat_message(secret.tg_chat_id, photo.message_id, disable_notification=False)
                     return
-                if now_time.weekday() - 3 == curr_sozvon_poll['max_date']:
+                if now_time.weekday() - 4 == curr_sozvon_poll['max_date'] and now_time.hour - 18 == curr_sozvon_poll['max_time']:
                     photo = bot.send_photo(secret.tg_chat_id, constants.sozvon_pic, caption='*Го созвон: *' + constants.sozvon_link, parse_mode='Markdown')
                     bot.pin_chat_message(secret.tg_chat_id, photo.message_id, disable_notification=False)
                 return
-            if now_time.weekday() - 3 == curr_sozvon_poll['max_date']:
+            if now_time.weekday() - 4 == curr_sozvon_poll['max_date'] and now_time.hour - 18 == curr_sozvon_poll['max_time']:
                 photo = bot.send_photo(secret.tg_chat_id, constants.sozvon_pic, caption='*Го созвон: *' + constants.sozvon_link, parse_mode='Markdown')
                 bot.pin_chat_message(secret.tg_chat_id, photo.message_id, disable_notification=False)
             return
@@ -542,6 +542,8 @@ def sdr():
             bot.pin_chat_message(secret.tg_chat_id, sozvon_poll.message_id, disable_notification=False)
             curr_sozvon_poll['msg_id'] = sozvon_poll.id
             curr_sozvon_poll['poll_id'] = sozvon_poll.poll.id
+            curr_sozvon_poll['max_date'] = 10
+            curr_sozvon_poll['max_time'] = 10
             with open(constants.sozvon_file, 'w') as lang:  # Записываем данные в файл sozvon_file
                 lang.write(json.dumps(curr_sozvon_poll))
         if now_time.weekday() == 4:  # День (пятница) для остановки опроса о принятии участия в созвоне
