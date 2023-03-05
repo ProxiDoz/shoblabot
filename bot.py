@@ -517,7 +517,7 @@ def sdr():
                 curr_sozvon_poll = json.loads(lang.read())
         if now_time.hour != 9:
             log(str(now_time.hour))
-            if now_time.weekday() - 4 == curr_sozvon_poll['max_date'] and now_time.hour - 14 == curr_sozvon_poll['max_time']:
+            if now_time.weekday() - 3 == curr_sozvon_poll['max_date'] and now_time.hour - 14 == curr_sozvon_poll['max_time']:
                 photo = bot.send_photo(secret.tg_chat_id, constants.sozvon_pic, caption='*Го созвон: *' + constants.sozvon_link, parse_mode='Markdown')
                 bot.pin_chat_message(secret.tg_chat_id, photo.message_id, disable_notification=False)
                 log('Отправлено приглашение на общий созвон')
