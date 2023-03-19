@@ -408,7 +408,9 @@ def poll_results(poll):
             curr_sozvon_poll['max_time'] = max_time
             with open(constants.sozvon_file, 'w') as lang:  # Записываем данные в файл sozvon_file
                 lang.write(json.dumps(curr_sozvon_poll))
-            log('Приглашение fн общий созвон будет отправлено в ' + constants.sozvon_options[max_time] + ' ' + constants.sozvon_options[max_date])
+            log('Приглашение на общий созвон будет отправлено в ' + constants.sozvon_options[max_time] + ' ' + constants.sozvon_options[max_date][4:])
+            poll_results = bot.send_message(secret.tg_chat_id, 'Шоблятки, созвон на этой неделе будет ' + constants.sozvon_options[max_date][4:] + ' ' + constants.sozvon_options[max_time], parse_mode='Markdown')
+            bot.pin_chat_message(secret.tg_chat_id, poll_results.message_id, disable_notification=False)
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[29], e))
         bot.send_message(secret.apple_id, '❌ Ошибка в функции poll_results:\n*Сообщение: *{0}\n*Текст ошибки:*\n{1}'.format(poll, e), parse_mode='MarkdownV2')
@@ -516,7 +518,6 @@ def sdr():
             with open(constants.sozvon_file, 'r') as lang:
                 curr_sozvon_poll = json.loads(lang.read())
         if now_time.hour != 9:
-            log(str(now_time.hour))
             if now_time.weekday() - 3 == curr_sozvon_poll['max_date'] and now_time.hour - 14 == curr_sozvon_poll['max_time']:
                 photo = bot.send_photo(secret.tg_chat_id, constants.sozvon_pic, caption='*Го созвон: *' + constants.sozvon_link, parse_mode='Markdown')
                 bot.pin_chat_message(secret.tg_chat_id, photo.message_id, disable_notification=False)
