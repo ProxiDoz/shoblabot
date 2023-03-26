@@ -518,7 +518,7 @@ def sdr():
             with open(constants.sozvon_file, 'r') as lang:
                 curr_sozvon_poll = json.loads(lang.read())
         if now_time.hour != 9:
-            if now_time.weekday() - 3 == curr_sozvon_poll['max_date'] and now_time.hour - 15 == curr_sozvon_poll['max_time']:
+            if now_time.weekday() - 3 == curr_sozvon_poll['max_date'] and now_time.hour - 13 == curr_sozvon_poll['max_time']:
                 reminder = bot.send_message(secret.tg_chat_id, 'Сегодня шоблосозвон будет через час. Ожмдайте ссылку.', parse_mode='Markdown')
                 bot.pin_chat_message(secret.tg_chat_id, reminder.message_id, disable_notification=False)
                 log('Отправлено напоминание на общий созвон')
