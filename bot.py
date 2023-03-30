@@ -364,11 +364,11 @@ def block(message):
 
 # Обработка каждого сообщения на гея/лешу
 @bot.message_handler(func=lambda m: True)
-def faggot(message):
+def faggot_func(message):
     try:
-        if random.random() < 0:
+        if random.random() < 0.3:
             faggotEUCountry = faggot.getFaggotEUCountryRequest(message.text,
-                                                               ['гей', 'пидор', 'педик', 'гомо', 'гомосек', 'глиномес', 'пидераст', 'леша', 'путин', 'путен', 'путейн', 'маргарин', 'путена'])
+                                                               ['гей', 'пидор', 'пидр', 'педик', 'гомо', 'гомосек', 'глиномес', 'пидераст', 'леша', 'путин', 'путен', 'путейн', 'маргарин', 'путена'])
             if faggotEUCountry[0]:
                 location = faggotEUCountry[1]['coords']
                 bot.reply_to(message, 'Ты что то сказал про гея? Держи...')
