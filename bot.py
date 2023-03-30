@@ -372,7 +372,7 @@ def faggot_func(message):
             if faggotEUCountry[0]:
                 location = faggotEUCountry[1]['coords']
                 bot.reply_to(message, 'Ты что то сказал про гея? Держи...')
-                bot.send_location(secret.tg_chat_id, location['lat'], location['lng'])
+                bot.send_location(message.chat.id, location['lat'], location['lng'])
         kirov(message)
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[25], e))
