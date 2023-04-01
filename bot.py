@@ -145,8 +145,7 @@ def statistics(message):
                                                                      activity_count[cur_mnth]['help'], activity_count[cur_mnth]['who'],
                                                                      activity_count[cur_mnth]['rapid'], activity_count[cur_mnth]['/29'],
                                                                      activity_count[cur_mnth]['kirov'], activity_count[cur_mnth]['damage'],
-                                                                     activity_count[cur_mnth]['sozvon'])
-
+                                                                     activity_count[cur_mnth]['sozvon'], activity_count[cur_mnth]['transl'])
                 bot.send_message(message.chat.id, month_statistics.replace('прошлый', 'текущий'), parse_mode='MarkdownV2')
             else:
                 bot.send_message(message.chat.id, '⭐ У вас нет премиум подписки для использования данной команды')
@@ -385,7 +384,7 @@ def kirov(message):
     try:
         if find_words.wordInMessage(message.text, constants.kirov):
             audio = open(constants.kirov_audio_path, 'rb')
-            bot.send_audio(secret.tg_chat_id, audio, reply_to_message_id=message.message_id)
+            bot.send_audio(message.chat.id, audio, reply_to_message_id=message.message_id)
             update_activity('kirov')
         send_text(message)
     except Exception as e:
@@ -424,7 +423,7 @@ def send_text(message):
         if translitsky.isTranslitsky(text) and text[0:4] != 'http':
             answer = translitsky.doTranslitskyRollback(text)
             bot.send_message(message.chat.id, "`{}`".format(answer), parse_mode='MarkdownV2', reply_to_message_id=message.message_id)
-
+            update_activity('transl')
         # Если это попытка запинить сообщение
         if message.reply_to_message is not None and text == '@shoblabot' and message.chat.id == secret.tg_chat_id:
             try:
@@ -556,7 +555,7 @@ def sdr():
                                                                  activity_count[cur_mnth]['help'], activity_count[cur_mnth]['who'],
                                                                  activity_count[cur_mnth]['rapid'], activity_count[cur_mnth]['/29'],
                                                                  activity_count[cur_mnth]['kirov'], activity_count[cur_mnth]['damage'],
-                                                                 activity_count[cur_mnth]['sozvon'])
+                                                                 activity_count[cur_mnth]['sozvon'], activity_count[cur_mnth]['transl'])
             bot.send_message(secret.tg_chat_id, month_statistics, parse_mode='Markdown')
             # Рассылка по 10челлендж
             challenge = bot.send_message(secret.tg_chat_id, '📸 Шоблятки, время для #10челлендж и ваших фоточек за месяц!', parse_mode='Markdown')
