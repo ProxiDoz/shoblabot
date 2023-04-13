@@ -396,7 +396,7 @@ def kirov(message):
 @bot.poll_handler(func=lambda poll: True)
 def poll_results(poll):
     try:
-        if poll.is_closed == 1 and str(poll.id) == curr_sozvon_poll['poll_id'] and poll.total_voter_count > 0:
+        if poll.is_closed == 1 and str(poll.id) == curr_sozvon_poll['poll_id'] and poll.total_voter_count > 1:
             i = 0
             for item in poll.options:
                 sozvon_results[i] = int(item.voter_count)
