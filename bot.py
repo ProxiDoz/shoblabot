@@ -305,7 +305,7 @@ def rapid(message):
         value = 'help' if size == 1 else data[1]
 
         # Ну тут почти без изменений, тока data[1] became value
-        response = urllib2.urlopen('https://bot.zhuykovkb.ru:81/rapid?data=' + quote(value) + '&memberid=' + str(message.from_user.id))
+        response = urllib2.urlopen('https://rapid.zhuykovkb.ru/rapid?data=' + quote(value) + '&memberid=' + str(message.from_user.id))
         answer = json.loads(str(response.read(), 'utf-8'))
         if message.from_user.is_premium and random.random() < 0.3:
             bot.send_message(message.chat.id, '🤡 Да вот тебе не насрать на рапиды, ||псина|| премиумная?', parse_mode='MarkdownV2')
