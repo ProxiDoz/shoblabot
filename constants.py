@@ -179,7 +179,7 @@ wrong_stop = 'Остановить опрос может только его с�
 
 # Для созвона
 sozvon_options = ['Го в ЧТ', 'Го в ПТ', 'Го в СБ', 'Го в ВС', 'в 18:00 по МСК', 'в 19:00 по МСК', 'в 20:00 по МСК', 'в 21:00 по МСК']
-sozvon_link = 'https://meet.google.com/tnj-dfkq-bpk (Админ Тарс) или https://meet.google.com/eky-ocyw-yhf (Админ Апол)'
+sozvon_link = 'Дискорд https://discord.gg/NzW4fSac\nИли Гугл Миит для запасного аэродрома\nhttps://meet.google.com/tnj-dfkq-bpk (Админ Тарс) или https://meet.google.com/eky-ocyw-yhf (Админ Апол)'
 sozvon_pic = 'AgACAgIAAxkBAAJGiWP0of-RR4nekhlpNJdKUhywMV4NAALzyTEbiNKQS6LhqdN3LBprAQADAgADeAADLgQ'
 
 # Ошибки
