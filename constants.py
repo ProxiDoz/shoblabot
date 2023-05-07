@@ -63,23 +63,22 @@ buttons[0] = ['О\'КЕЙ 🛒',  # 0
               'Пятерочка 🛒',  # 4
               'Магнит 🛒',  # 5
               'Дикси 🛒',  # 6
-              'Prisma 🛒',  # 7
-              'Ашан 🛒',  # 8
-              'Верный 🛒',  # 9
-              'Улыбка 🌈',  # 10
-              'Достаевский 🍕',  # 11
-              'Буше 🥐',  # 12
-              'Домовой 🛠',  # 13
-              'Подружка 💅',  # 14
-              'Л\'этуль 💛',  # 15
-              'Sephora 🖤',  # 16
-              'Озерки 💊',  # 17
-              'Столички 💊']  # 18
+              'Ашан 🛒',  # 7
+              'Верный 🛒',  # 8
+              'Достаевский 🍕',  # 9
+              'Буше 🥐',  # 10
+              'Вита 💊',  # 13
+              'Столички 💊']  # 14
 # 'Икеа 🛋'
 # 'Лайм 🛒'
+# 'Л\'этуль 💛'
+# 'Sephora 🖤'
+# 'Улыбка 🌈'    
+# 'Prisma 🛒'
+# 'Домовой 🛠'
+# 'Подружка 💅
 
-buttons[1] = ['disc_0', 'disc_1', 'disc_2', 'disc_3', 'disc_4', 'disc_5', 'disc_6', 'disc_7', 'disc_8', 'disc_9', 'disc_10', 'disc_11', 'disc_12',
-              'disc_13', 'disc_14', 'disc_15', 'disc_16', 'disc_17', 'disc_18']
+buttons[1] = ['disc_0', 'disc_1', 'disc_2', 'disc_3', 'disc_4', 'disc_5', 'disc_6', 'disc_7', 'disc_8', 'disc_9', 'disc_10', 'disc_11', 'disc_12']
 
 buttons[2] = ['🛒 [О\'кей](https://i.imgur.com/zhx9CkA.png)',
               '🛒 [Лента](https://i.imgur.com/SVq4ILS.png)',
@@ -88,20 +87,21 @@ buttons[2] = ['🛒 [О\'кей](https://i.imgur.com/zhx9CkA.png)',
               '🛒 [Пятерочка](https://i.imgur.com/yTuhGWH.jpg)',
               '🛒 [Магнит](https://i.imgur.com/cbVdBnv.png)',
               '🛒 [Дикси](https://i.imgur.com/FIQdWAh.png)',
-              '🛒 [Prisma](https://i.imgur.com/tcFfgho.jpg)',
               '🛒 [Ашан](https://i.imgur.com/iGsQ2Ds.jpg)',
               '🛒 [Верный](https://i.imgur.com/Dxg7owo.png)',
-              '🌈 [Улыбка](https://i.imgur.com/bpcYZ2v.jpg)',
               '🍕 [Достаевский](https://i.imgur.com/LTx5ztX.jpg)\n*ТОЛЬКО ПРИ ЗАКАЗЕ ПО ТЕЛЕФОНУ*',
               '🥐 [Буше](https://i.imgur.com/H6ins0K.jpg)',
-              '🛠 [Домовой](https://i.imgur.com/Tnn5WTG.jpg)',
-              '💅 [Подружка](https://i.imgur.com/0NGsUpZ.jpg)',
-              '💛 [Л\'этуль](https://i.imgur.com/CqWU2vj.jpg)',
-              '🖤 [Sephora](https://i.imgur.com/qm2RlMr.jpg)',
-              '💊 [Озерки](https://i.imgur.com/6bDnAK4.jpg)',
+              '💊 [Вита](https://i.imgur.com/37nibRA.png)',
               '💊 [Столички](https://i.imgur.com/vImCtCv.png)']
+
 # '🛋 [Икеа](https://i.imgur.com/ThL03zt.jpg)'
 # '🛒 [Лайм](https://i.imgur.com/hq39niT.jpg)'
+# '💛 [Л\'этуль](https://i.imgur.com/CqWU2vj.jpg)'
+# '🖤 [Sephora](https://i.imgur.com/qm2RlMr.jpg)'
+# '🌈 [Улыбка](https://i.imgur.com/bpcYZ2v.jpg)'
+# '🛒 [Prisma](https://i.imgur.com/tcFfgho.jpg)'
+# '🛠 [Домовой](https://i.imgur.com/Tnn5WTG.jpg)'
+# '💅 [Подружка](https://i.imgur.com/0NGsUpZ.jpg)'
 
 # Девка
 dvk = ['а', 'аа', 'a', 'aa']
