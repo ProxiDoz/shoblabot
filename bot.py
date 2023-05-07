@@ -494,7 +494,7 @@ def callback_buttons(call):
                 keyboard_update.add(telebot.types.InlineKeyboardButton(text=buttons_text[i], callback_data=buttons_callback_data[i]),
                                     telebot.types.InlineKeyboardButton(text=buttons_text[i + 1], callback_data=buttons_callback_data[i + 1]))
                 i += 2
-            keyboard_update.add(constants.discounts, constants.channel)
+            # keyboard_update.add(constants.discounts, constants.channel)
             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text=constants.buttons[2][discount_id],
                                   parse_mode='MarkdownV2', reply_markup=keyboard_update)
     except Exception as e:
