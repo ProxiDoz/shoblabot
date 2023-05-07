@@ -81,16 +81,16 @@ buttons[0] = ['О\'КЕЙ 🛒',  # 0
 buttons[1] = ['disc_0', 'disc_1', 'disc_2', 'disc_3', 'disc_4', 'disc_5', 'disc_6', 'disc_7', 'disc_8', 'disc_9', 'disc_10', 'disc_11', 'disc_12',
               'disc_13', 'disc_14', 'disc_15', 'disc_16', 'disc_17', 'disc_18']
 
-buttons[2] = ['🛒 [О\'кей](https://i.imgur.com/TZV4nCd.jpg)',
-              '🛒 [Лента](https://i.imgur.com/PE9txx0.jpg)',
-              '🛒 [Перекресток](https://i.imgur.com/my5Q8RF.jpg)',
+buttons[2] = ['🛒 [О\'кей](https://i.imgur.com/zhx9CkA.png)',
+              '🛒 [Лента](https://i.imgur.com/SVq4ILS.png)',
+              '🛒 [Перекресток](https://i.imgur.com/5wra693.png)',
               '🛒 [Карусель](https://i.imgur.com/vwY6SB3.jpg)',
               '🛒 [Пятерочка](https://i.imgur.com/yTuhGWH.jpg)',
-              '🛒 [Магнит](https://i.imgur.com/Nmn5pTt.png)',
+              '🛒 [Магнит](https://i.imgur.com/cbVdBnv.png)',
               '🛒 [Дикси](https://i.imgur.com/FIQdWAh.png)',
               '🛒 [Prisma](https://i.imgur.com/tcFfgho.jpg)',
               '🛒 [Ашан](https://i.imgur.com/iGsQ2Ds.jpg)',
-              '🛒 [Верный](https://i.imgur.com/o2Bedfy.jpg)',
+              '🛒 [Верный](https://i.imgur.com/Dxg7owo.png)',
               '🌈 [Улыбка](https://i.imgur.com/bpcYZ2v.jpg)',
               '🍕 [Достаевский](https://i.imgur.com/LTx5ztX.jpg)\n*ТОЛЬКО ПРИ ЗАКАЗЕ ПО ТЕЛЕФОНУ*',
               '🥐 [Буше](https://i.imgur.com/H6ins0K.jpg)',
@@ -99,7 +99,7 @@ buttons[2] = ['🛒 [О\'кей](https://i.imgur.com/TZV4nCd.jpg)',
               '💛 [Л\'этуль](https://i.imgur.com/CqWU2vj.jpg)',
               '🖤 [Sephora](https://i.imgur.com/qm2RlMr.jpg)',
               '💊 [Озерки](https://i.imgur.com/6bDnAK4.jpg)',
-              '💊 [Столички](https://i.imgur.com/dhWmZdf.jpg)']
+              '💊 [Столички](https://i.imgur.com/vImCtCv.png)']
 # '🛋 [Икеа](https://i.imgur.com/ThL03zt.jpg)'
 # '🛒 [Лайм](https://i.imgur.com/hq39niT.jpg)'
 
