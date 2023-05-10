@@ -25,14 +25,15 @@ help_text = '🤖 *Shobla Bot* используется для:\n\n' \
             '🌐 По кнопкам ниже доступны полезные ссылки'
 
 # Полезные ссылки и клавиатуры к ним
-cool_guys = telebot.types.InlineKeyboardButton(text='Полезные люди 🛠', url='https://docs.google.com/spreadsheets/d/1-0wBt89xTOXyCcmLLesnWnMxZPsL3j6gRMz9l60MKt4/edit')
-signal_link = telebot.types.InlineKeyboardButton(text='Шобла в Signal 📟', url='https://signal.group/#CjQKIIGG0r5wKd81QpgnP-EpeYa2W7zHdbIxK80HwzQWmLFqEhCiyeF6zPiQ0n-2D__7vMaj')
-film_photo = telebot.types.InlineKeyboardButton(text='Шобла в плёнке 📸', url='https://t.me/c/1126587083/247976')
-help_keyboard = telebot.types.InlineKeyboardMarkup(row_width=1)
-help_keyboard.add(cool_guys, signal_link, film_photo)
+cool_guys = telebot.types.InlineKeyboardButton(text='🛠 Полезные люди', url='https://docs.google.com/spreadsheets/d/1-0wBt89xTOXyCcmLLesnWnMxZPsL3j6gRMz9l60MKt4/edit')
+discord_link = telebot.types.InlineKeyboardButton(text='🎧 Наш Discord', url='https://discord.gg/sDKJSg2d9q')
+signal_link = telebot.types.InlineKeyboardButton(text='📟 Наш Signal', url='https://signal.group/#CjQKIIGG0r5wKd81QpgnP-EpeYa2W7zHdbIxK80HwzQWmLFqEhCiyeF6zPiQ0n-2D__7vMaj')
+film_photo = telebot.types.InlineKeyboardButton(text='📸 Шобла в плёнке', url='https://t.me/c/1126587083/247976')
+help_keyboard = telebot.types.InlineKeyboardMarkup(row_width=2)
+help_keyboard.add(cool_guys, discord_link, signal_link, film_photo)
 
 # Строка для месячной статистики
-month_statistics = '🤖 Статистика по боту за прошлый месяц:\n\n' \
+month_statistics = '🤖 *Статистика по боту за прошлый месяц:*\n\n' \
                    '✅❌ Создано опросов: *{0} шт*\n' \
                    '🛍  Запрошено скидок: *{1} раз*\n' \
                    '💁‍♀️🚗 Обнаружено девок за рулём: *{2} шт*\n' \
@@ -54,20 +55,20 @@ month_statistics = '🤖 Статистика по боту за прошлый 
                    '/rapid: *{12} раз*'
 
 # Данные для команды /discount
-discounts = telebot.types.InlineKeyboardButton(text='Все скидки 💰', url='https://photos.app.goo.gl/Xu4UQWqhSTcBVwt27')
-channel = telebot.types.InlineKeyboardButton(text='Канал 💳', url='https://t.me/joinchat/AAAAAEk6NVud6BKc7YzZ2g')
+discounts = telebot.types.InlineKeyboardButton(text='💰 Все скидки', url='https://photos.app.goo.gl/Xu4UQWqhSTcBVwt27')
+channel = telebot.types.InlineKeyboardButton(text='💳 Канал', url='https://t.me/joinchat/AAAAAEk6NVud6BKc7YzZ2g')
 buttons = {}
-buttons[0] = ['О\'КЕЙ 🛒',  # 0
-              'Лента 🛒',  # 1
-              'Перекресток 🛒',  # 2
-              'Пятерочка 🛒',  # 3
-              'Магнит 🛒',  # 4
-              'Дикси 🛒',  # 5
-              'Ашан 🛒',  # 6
-              'Верный 🛒',  # 7
-              'Буше 🥐',  # 8
-              'Вита 💊',  # 9
-              'Столички 💊']  # 10
+buttons[0] = ['🛒 О\'кей',  # 0
+              '🛒 Лента',  # 1
+              '🛒 Перекресток',  # 2
+              '🛒 Пятерочка',  # 3
+              '🛒 Магнит',  # 4
+              '🛒 Дикси',  # 5
+              '🛒 Ашан',  # 6
+              '🛒 Верный',  # 7
+              '🥐 Буше',  # 8
+              '💊 Вита',  # 9
+              '💊 Столички']  # 10
 # 'Икеа 🛋'
 # 'Лайм 🛒'
 # 'Л\'этуль 💛'
@@ -180,7 +181,7 @@ wrong_stop = 'Остановить опрос может только его с�
 
 # Для созвона
 sozvon_options = ['Го в ЧТ', 'Го в ПТ', 'Го в СБ', 'Го в ВС', 'в 18:00 по МСК', 'в 19:00 по МСК', 'в 20:00 по МСК', 'в 21:00 по МСК']
-sozvon_link = 'Дискорд https://discord.gg/NzW4fSac\nИли Гугл Миит для запасного аэродрома\nhttps://meet.google.com/tnj-dfkq-bpk (Админ Тарс) или https://meet.google.com/eky-ocyw-yhf (Админ Апол)'
+sozvon_link = '🎧[Дискорд](https://discord.gg/sDKJSg2d9q)\nИли Гугл Миит для запасного аэродрома\nhttps://meet.google.com/tnj-dfkq-bpk (Админ Тарс) или https://meet.google.com/eky-ocyw-yhf (Админ Апол)'
 sozvon_pic = 'AgACAgIAAxkBAAJGiWP0of-RR4nekhlpNJdKUhywMV4NAALzyTEbiNKQS6LhqdN3LBprAQADAgADeAADLgQ'
 
 # Ошибки
