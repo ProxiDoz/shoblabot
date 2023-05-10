@@ -165,7 +165,7 @@ def share_log(message):
             if message.from_user.id == secret.apple_id or message.from_user.is_premium:  # Это Апол или премиумный пользователь
                 try:
                     log('вызов команды /log by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
-                    bot.send_document(message.chat.id, open(constants.log_file, 'rb'))
+                    bot.send_document(message.chat.id, open(constants.log_file, 'rb'), caption='🤖📋')
                 except Exception as e:
                     send_error(message, 23, e)
             else:
@@ -184,7 +184,7 @@ def sozvon(message):
     try:
         if message.from_user.id in constants.tg_ids:
             log('вызов команды /sozvon by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
-            bot.send_photo(message.chat.id, constants.sozvon_pic, caption='*Го созвон: *' + constants.sozvon_link, parse_mode='Markdown')
+            bot.send_photo(message.chat.id, constants.sozvon_pic, caption='🤖 *Го созвон: *' + constants.sozvon_link, parse_mode='Markdown')
             update_activity('sozvon')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[28], e))
@@ -198,7 +198,7 @@ def server_info(message):
         if message.from_user.id == secret.apple_id:
             try:
                 log('отправка статуса памяти сервера')
-                bot.send_message(message.chat.id, '💿 RAM: {0}% из 512Мбайт'.format(psutil.virtual_memory()[2])) if message.text == '/s' else bot.send_message(secret.tg_chat_id,
+                bot.send_message(message.chat.id, '🤖 RAM: {0}% из 512Мбайт'.format(psutil.virtual_memory()[2])) if message.text == '/s' else bot.send_message(secret.tg_chat_id,
                                                                                                                                                                message.text[
                                                                                                                                                                3:len(message.text)])
             except Exception as e:
