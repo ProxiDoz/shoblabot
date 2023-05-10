@@ -25,10 +25,10 @@ help_text = '🤖 *Shobla Bot* используется для:\n\n' \
             '🌐 По кнопкам ниже доступны полезные ссылки'
 
 # Полезные ссылки и клавиатуры к ним
-cool_guys = telebot.types.InlineKeyboardButton(text='🛠 Полезные люди', url='https://docs.google.com/spreadsheets/d/1-0wBt89xTOXyCcmLLesnWnMxZPsL3j6gRMz9l60MKt4/edit')
-discord_link = telebot.types.InlineKeyboardButton(text='🎧 Наш Discord', url='https://discord.gg/sDKJSg2d9q')
-signal_link = telebot.types.InlineKeyboardButton(text='📟 Наш Signal', url='https://signal.group/#CjQKIIGG0r5wKd81QpgnP-EpeYa2W7zHdbIxK80HwzQWmLFqEhCiyeF6zPiQ0n-2D__7vMaj')
-film_photo = telebot.types.InlineKeyboardButton(text='📸 Шобла в плёнке', url='https://t.me/c/1126587083/247976')
+cool_guys = telebot.types.InlineKeyboardButton(text='🛠Полезные люди', url='https://docs.google.com/spreadsheets/d/1-0wBt89xTOXyCcmLLesnWnMxZPsL3j6gRMz9l60MKt4/edit')
+discord_link = telebot.types.InlineKeyboardButton(text='🎧Наш Discord', url='https://discord.gg/sDKJSg2d9q')
+signal_link = telebot.types.InlineKeyboardButton(text='📟Наш Signal', url='https://signal.group/#CjQKIIGG0r5wKd81QpgnP-EpeYa2W7zHdbIxK80HwzQWmLFqEhCiyeF6zPiQ0n-2D__7vMaj')
+film_photo = telebot.types.InlineKeyboardButton(text='📸Шобла в плёнке', url='https://t.me/c/1126587083/247976')
 help_keyboard = telebot.types.InlineKeyboardMarkup(row_width=2)
 help_keyboard.add(cool_guys, discord_link, signal_link, film_photo)
 
