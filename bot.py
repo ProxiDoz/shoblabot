@@ -38,7 +38,7 @@ def handle_start_help(message):
             log('вызов команды {0} by {1}'.format(message.text, constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
             bot.send_message(message.chat.id, constants.help_text, reply_markup=constants.help_keyboard, parse_mode='Markdown')
             if message.from_user.is_premium and random.random() < 0.3:
-                bot.send_message(message.chat.id, '🤡 Ебать ты команду выбрал, ||псина|| премиумная', parse_mode='MarkdownV2')
+                bot.send_message(message.chat.id, '🤗 Держи ответ на команду, ||пусечка|| премиумная', parse_mode='MarkdownV2')
             update_activity('start') if message.text == '/start' else update_activity('help')
         else:
             log('вызов команды {0}\n{1}: User ID - {2}, user_name - @{3}'.format(message.text, constants.errors[6], message.from_user.id, message.from_user.username))
@@ -80,7 +80,7 @@ def send_discount(message):
             # keyboard_start.add(constants.discounts, constants.channel)
             bot.send_message(message.chat.id, constants.buttons[2][0], reply_markup=keyboard_start, parse_mode='MarkdownV2')
             # if message.from_user.is_premium and random.random() < 0.3:
-            #     bot.send_message(message.chat.id, '🤡 Сэкономить решил, ||псина|| премиумная?', parse_mode='MarkdownV2')
+            #     bot.send_message(message.chat.id, '🤗 Экономить всегда полезно, ||пусечка|| премиумная', parse_mode='MarkdownV2')
             update_activity('discount')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[8], e))
@@ -219,7 +219,7 @@ def aaa(message):
     try:
         bot.send_message(secret.tg_chat_id, 'Девка за рулём') if len(message.text) > 2 else bot.send_message(secret.tg_chat_id, 'Двк з рлм')
         if message.from_user.is_premium and random.random() < 0.3:
-            bot.send_message(message.chat.id, '🤡 Получай свою девку, ||псина|| премиумная', parse_mode='MarkdownV2')
+            bot.send_message(message.chat.id, '🤗 Аккуратнее за рулем, ||пусечка|| премиумная', parse_mode='MarkdownV2')
         update_activity('devka')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[9], e))
@@ -241,7 +241,7 @@ def damage(message):
 @bot.message_handler(func=lambda message: message.text and message.text.lower().replace(' ', '').replace('\n', '') in constants.russia and message.chat.id == secret.tg_chat_id)
 def russia(message):
     try:
-        bot.send_voice(secret.tg_chat_id, constants.anthem, '🫡 Ебать ты патриот, ||псина|| премиумная',
+        bot.send_voice(secret.tg_chat_id, constants.anthem, '🤗 А наша ||пусечка|| премиумная патриот',
                        parse_mode='MarkdownV2') if message.from_user.is_premium and random.random() < 0.3 else bot.send_voice(secret.tg_chat_id, constants.anthem, '🫡')
         update_activity('russia')
     except Exception as e:
@@ -255,7 +255,7 @@ def vracha(message):
     try:
         bot.send_document(secret.tg_chat_id, 'CgADAgADRgIAAkbDcEn-Ox-uqrgsHgI', caption='@oxy_genium')
         if message.from_user.is_premium and random.random() < 0.3:
-            bot.send_message(message.chat.id, '🤡 А что подписка не лечит от всех болезней, ||псина|| премиумная?', parse_mode='MarkdownV2')
+            bot.send_message(message.chat.id, '🤗 Пожалуйста, не болей, ||пусечка|| премиумная', parse_mode='MarkdownV2')
         update_activity('vracha')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[12], e))
@@ -268,7 +268,7 @@ def git(message):
     try:
         bot.send_message(secret.tg_chat_id, 'Хуит')
         if message.from_user.is_premium and random.random() < 0.3:
-            bot.send_message(message.chat.id, '🤡 Ебать ты програмес, ||псина|| премиумная', parse_mode='MarkdownV2')
+            bot.send_message(message.chat.id, '🤗 Да ты айтишник, ||пусечка|| премиумная', parse_mode='MarkdownV2')
         update_activity('git')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[13], e))
@@ -282,7 +282,7 @@ def team(message):
         bot.send_message(chat_id=secret.tg_chat_id, disable_notification=False, reply_to_message_id=message.message_id, text=constants.team_text, disable_web_page_preview=True,
                          parse_mode='Markdown')
         if message.from_user.is_premium and random.random() < 0.3:
-            bot.send_message(message.chat.id, '🤡 Ты тут никому не упёрся, ||псина|| премиумная', parse_mode='MarkdownV2')
+            bot.send_message(message.chat.id, '🤗 Шоблят вызывает ||пусечка|| премиумная', parse_mode='MarkdownV2')
         update_activity('team')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[14], e))
@@ -308,7 +308,7 @@ def rapid(message):
         response = urllib2.urlopen('https://rapid.zhuykovkb.ru/rapid?data=' + quote(value) + '&memberid=' + str(message.from_user.id))
         answer = json.loads(str(response.read(), 'utf-8'))
         if message.from_user.is_premium and random.random() < 0.3:
-            bot.send_message(message.chat.id, '🤡 Да вот тебе не насрать на рапиды, ||псина|| премиумная?', parse_mode='MarkdownV2')
+            bot.send_message(message.chat.id, '🤗 Обязательно учту этот Рапид, ||пусечка|| премиумная', parse_mode='MarkdownV2')
         bot.send_message(secret.tg_chat_id, answer['message'], parse_mode='Markdown')
         if answer['message'] == 'Номер успешно добавлен':
             log('добавлен новый номер Рапида by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
@@ -324,7 +324,7 @@ def rapid(message):
 def barsuk(message):
     try:
         if message.from_user.is_premium and random.random() < 0.3:
-            bot.send_message(message.chat.id, '🤡 Хуй тебе, а не барсука, ||псина|| премиумная', parse_mode='MarkdownV2')
+            bot.send_message(message.chat.id, '🤗 Барсук не доступен, ||пусечка|| премиумная', parse_mode='MarkdownV2')
         else:
             bot.send_message(secret.tg_chat_id, 'Барсук')
             update_activity('cyk')
@@ -338,7 +338,7 @@ def barsuk(message):
 def barsyuk(message):
     try:
         if message.from_user.is_premium and random.random() < 0.3:
-            bot.send_message(message.chat.id, '🤡 Хуй тебе, а не барсюка, ||псина|| премиумная', parse_mode='MarkdownV2')
+            bot.send_message(message.chat.id, '🤗 Барсюк недоступен, ||пусечка|| премиумная', parse_mode='MarkdownV2')
         else:
             bot.send_message(secret.tg_chat_id, 'Барсюк')
             update_activity('cyk')
@@ -352,7 +352,7 @@ def barsyuk(message):
 def block(message):
     try:
         if message.from_user.is_premium and random.random() < 0.3:
-            bot.send_message(message.chat.id, '🤡 Значит так, \- сразу нахуй, ||псина|| премиумная', parse_mode='MarkdownV2')
+            bot.send_message(message.chat.id, '🤗 Пожалуй не будем так, ||пусечка|| премиумная', parse_mode='MarkdownV2')
         else:
             bot.send_message(secret.tg_chat_id, '*Значит так, \- сразу ||нахуй||\!*', parse_mode='MarkdownV2')
         update_activity('/29')
@@ -428,7 +428,7 @@ def send_text(message):
         if message.reply_to_message is not None and text == '@shoblabot' and message.chat.id == secret.tg_chat_id:
             try:
                 if message.from_user.is_premium and random.random() < 0.3:
-                    bot.send_message(message.chat.id, '🤡 Жопу себе запинь, ||псина|| премиумная', parse_mode='MarkdownV2')
+                    bot.send_message(message.chat.id, '🤗 Всё запинил, ||пусечка|| премиумная', parse_mode='MarkdownV2')
                 bot.pin_chat_message(chat_id=secret.tg_chat_id, message_id=message.reply_to_message.message_id, disable_notification=False)
                 log('пин сообщения by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
                 update_activity('pin')
@@ -449,7 +449,7 @@ def send_text(message):
                         keyboard_opros_stop = telebot.types.InlineKeyboardMarkup(row_width=1)
                         keyboard_opros_stop.add(stop_button)
                         if message.from_user.is_premium and random.random() < 0.3:
-                            bot.send_message(message.chat.id, '🤡 Да всем насрать на твой опрос, ||псина|| премиумная', parse_mode='MarkdownV2')
+                            bot.send_message(message.chat.id, '🤗 Интересный опрос, ||пусечка|| премиумная', parse_mode='MarkdownV2')
                         bot.delete_message(secret.tg_chat_id, message.reply_to_message.message_id)
                         bot.edit_message_reply_markup(secret.tg_chat_id, poll.message_id, reply_markup=keyboard_opros_stop)
                         bot.delete_message(secret.tg_chat_id, message.message_id)
@@ -484,7 +484,7 @@ def callback_buttons(call):
         # Обработка запроса скидок
         elif call.data[0:4] == 'disc':
             if call.from_user.is_premium and random.random() < 0.3:
-                bot.answer_callback_query(call.id, '🤡 Псина премиумная')
+                bot.answer_callback_query(call.id, '🤗 Пусечка премиумная')
             discount_id = int(call.data.split('_')[1])
             buttons_text = constants.buttons[0][0:discount_id] + constants.buttons[0][discount_id + 1:len(constants.buttons[0])]
             buttons_callback_data = constants.buttons[1][0:discount_id] + constants.buttons[1][discount_id + 1:len(constants.buttons[1])]
