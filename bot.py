@@ -145,7 +145,8 @@ def statistics(message):
                                                                      activity_count[cur_mnth]['help'], activity_count[cur_mnth]['who'],
                                                                      activity_count[cur_mnth]['rapid'], activity_count[cur_mnth]['/29'],
                                                                      activity_count[cur_mnth]['kirov'], activity_count[cur_mnth]['damage'],
-                                                                     activity_count[cur_mnth]['sozvon'], activity_count[cur_mnth]['transl'])
+                                                                     activity_count[cur_mnth]['sozvon'], activity_count[cur_mnth]['transl'],
+                                                                     activity_count[cur_mnth]['mamma'])
                 bot.send_message(message.chat.id, month_statistics.replace('прошлый', 'текущий'), parse_mode='MarkdownV2')
             else:
                 bot.send_message(message.chat.id, '⭐ У вас нет премиум подписки для использования данной команды')
@@ -235,6 +236,18 @@ def damage(message):
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[10], e))
         send_error(message, 10, e)
+        
+
+# Обработка mamma mia
+@bot.message_handler(func=lambda message: message.text and message.text.lower().replace(' ', '').replace('\n', '') in constants.mammamia and message.chat.id == secret.tg_chat_id)
+def mammamia(message):
+    try:
+        audio = open(constants.mamma_audio_path, 'rb')
+        bot.send_audio(message.chat.id, audio, reply_to_message_id=message.message_id)
+        update_activity('mamma')
+    except Exception as e:
+        log('{0}\nТекст ошибки: {1}'.format(constants.errors[30], e))
+        send_error(message, 30, e)
 
 
 # Обработка РАСИЯ
@@ -555,7 +568,8 @@ def sdr():
                                                                  activity_count[cur_mnth]['help'], activity_count[cur_mnth]['who'],
                                                                  activity_count[cur_mnth]['rapid'], activity_count[cur_mnth]['/29'],
                                                                  activity_count[cur_mnth]['kirov'], activity_count[cur_mnth]['damage'],
-                                                                 activity_count[cur_mnth]['sozvon'], activity_count[cur_mnth]['transl'])
+                                                                 activity_count[cur_mnth]['sozvon'], activity_count[cur_mnth]['transl'],
+                                                                 activity_count[cur_mnth]['mamma'])
             bot.send_message(secret.tg_chat_id, month_statistics, parse_mode='Markdown')
             # Рассылка по 10челлендж
             challenge = bot.send_message(secret.tg_chat_id, '📸 Шоблятки, время для #10челлендж и ваших фоточек за месяц!', parse_mode='Markdown')
