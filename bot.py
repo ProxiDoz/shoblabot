@@ -529,7 +529,7 @@ def sdr():
         if os.path.isfile(constants.sozvon_file):
             with open(constants.sozvon_file, 'r') as lang:
                 curr_sozvon_poll = json.loads(lang.read())
-        if now_time.hour != 9 and now_time.day <= 21:
+        if now_time.hour != 9 and now_time.day < 12:
             if now_time.weekday() - 3 == curr_sozvon_poll['max_date'] and now_time.hour - 13 == curr_sozvon_poll['max_time']:
                 reminder = bot.send_message(secret.tg_chat_id, 'Сегодня шоблосозвон будет через час. Ожидайте ссылку.', parse_mode='Markdown')
                 bot.pin_chat_message(secret.tg_chat_id, reminder.message_id, disable_notification=False)
@@ -539,7 +539,7 @@ def sdr():
                 bot.pin_chat_message(secret.tg_chat_id, photo.message_id, disable_notification=False)
                 log('Отправлено приглашение на общий созвон')
             return
-        if now_time.weekday() == 3 and now_time.day <= 14:  # День (четверг) для отправки опроса о принятии участия в созвоне
+        if now_time.weekday() == 3 and now_time.day <= 7:  # День (четверг) для отправки опроса о принятии участия в созвоне
             opros = 'Когда проведём шоблосозвон? Выбирайте день и ниже укажите время (относительно 🇷🇺: 🇫🇷-1, 🇬🇪+1, 🇰🇿+3). Опрос закроется через сутки'
             sozvon_poll = bot.send_poll(secret.tg_chat_id, opros, constants.sozvon_options, is_anonymous=False, allows_multiple_answers=True)
             bot.pin_chat_message(secret.tg_chat_id, sozvon_poll.message_id, disable_notification=False)
@@ -549,7 +549,7 @@ def sdr():
             curr_sozvon_poll['max_time'] = 10
             with open(constants.sozvon_file, 'w') as lang:  # Записываем данные в файл sozvon_file
                 lang.write(json.dumps(curr_sozvon_poll))
-        if now_time.weekday() == 4 and now_time.day <= 14:  # День (пятница) для остановки опроса о принятии участия в созвоне
+        if now_time.weekday() == 4 and now_time.day <= 7:  # День (пятница) для остановки опроса о принятии участия в созвоне
             if os.path.isfile(constants.sozvon_file):
                 with open(constants.sozvon_file, 'r') as lang:
                     curr_sozvon_poll = json.loads(lang.read())
@@ -579,7 +579,7 @@ def sdr():
             bot.send_photo(secret.tg_chat_id, 'AgACAgIAAxkBAAJFzWLeYTbQ2ENcXEwoPOrRZprGCCUUAALHuTEb6BT4ShJZvIDQxNjZAQADAgADcwADKQQ', caption='🪗 Шобла, поздравляю с Днём Баяна!')
         # Отправка поздравлений с ДР
         for item in constants.tg_drs:
-            if item[:-5] == dr:
+            if item[:-5] == dr now_time.hour == 9:
                 if (now_time.year - int(item[-4:])) % 10 == 0:
                     bot.send_message(secret.tg_chat_id, '🥳 [{0}](tg://user?id={1}), с др\!\nДобро пожаловать в клуб кому '
                                                         'за {2} 😏'.format(constants.tg_names[i], constants.tg_ids[i], now_time.year - int(item[-4:])),
