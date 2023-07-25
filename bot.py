@@ -579,7 +579,7 @@ def sdr():
             bot.send_photo(secret.tg_chat_id, 'AgACAgIAAxkBAAJFzWLeYTbQ2ENcXEwoPOrRZprGCCUUAALHuTEb6BT4ShJZvIDQxNjZAQADAgADcwADKQQ', caption='🪗 Шобла, поздравляю с Днём Баяна!')
         # Отправка поздравлений с ДР
         for item in constants.tg_drs:
-            if item[:-5] == dr and now_time.hour == 10:
+            if item[:-5] == dr and now_time.hour == 9:
                 if (now_time.year - int(item[-4:])) % 10 == 0:
                     bot.send_message(secret.tg_chat_id, '🥳 [{0}](tg://user?id={1}), с др\!\nДобро пожаловать в клуб кому '
                                                         'за {2} 😏'.format(constants.tg_names[i], constants.tg_ids[i], now_time.year - int(item[-4:])),
