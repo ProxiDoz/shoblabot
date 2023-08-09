@@ -376,7 +376,7 @@ def block(message):
 
 # Обработка ДОЛЛОРА
 @bot.message_handler(func=lambda message: message.text and message.text.lower() == '/usd' and message.chat.id == secret.tg_chat_id)
-def block(message):
+def usd(message):
     try:
         bot.send_message(message.chat.id, "`{}`".format(cbr.getUSD()), parse_mode='MarkdownV2')
     except Exception as e:
