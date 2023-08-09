@@ -378,10 +378,10 @@ def block(message):
 @bot.message_handler(func=lambda message: message.text and message.text.lower() == '/usd' and message.chat.id == secret.tg_chat_id)
 def block(message):
     try:
-        bot.send_message(message.chat.id, "`{}`".format(cbr.), parse_mode='MarkdownV2')
+        bot.send_message(message.chat.id, "`{}`".format(cbr.getUSD()), parse_mode='MarkdownV2')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[18], e))
-        send_error(message, 18, e)
+        send_error(message, 19, e)
 
 # Обработка каждого сообщения на гея/лешу
 @bot.message_handler(func=lambda m: True)
