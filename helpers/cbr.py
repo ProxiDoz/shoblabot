@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 
 url = 'https://www.cbr.ru/currency_base/daily/'
 
-def wordInMessage():
+def getUSD():
   response = requests.get(url)
   soup = BeautifulSoup(response.content, 'html.parser')
   
