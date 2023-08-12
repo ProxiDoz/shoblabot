@@ -440,6 +440,15 @@ def poll_results(poll):
         bot.send_message(secret.apple_id, '❌ Ошибка в функции poll_results:\n*Сообщение: *{0}\n*Текст ошибки:*\n{1}'.format(poll, e), parse_mode='MarkdownV2')
 
 
+# # # # # # Получаение file_id медиа файлов # # # # # #
+@bot.message_handler(content_types=['photo'])
+def send_photo(message):
+    try:
+        bot.send_message(secret.apple_id, message.photo[2].file_id)
+    except Exception as e:
+        bot.send_message(secret.apple_id, '❌ Ошибка в функции send_photo:\n*Сообщение: *{0}\n*Текст ошибки:*\n{1}'.format(message, e), parse_mode='MarkdownV2')
+
+
 # # # # # # Обработка реплаев # # # # # #
 @bot.message_handler(content_types=['text'])
 def send_text(message):
