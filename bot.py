@@ -193,6 +193,16 @@ def sozvon(message):
         send_error(message, 28, e)
 
 
+# Обработка ДОЛЛОРА
+@bot.message_handler(commands=['usd'])
+def usd(message):
+    try:
+        bot.send_message(message.chat.id, "`{}`".format(cbr.getUSD()), parse_mode='MarkdownV2')
+    except Exception as e:
+        log('{0}\nТекст ошибки: {1}'.format(constants.errors[31], e))
+        send_error(message, 31, e)
+        
+
 # Вызов информации о сервере
 @bot.message_handler(commands=['s'])
 def server_info(message):
@@ -374,14 +384,6 @@ def block(message):
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[18], e))
         send_error(message, 18, e)
 
-# Обработка ДОЛЛОРА
-@bot.message_handler(func=lambda message: message.text and message.text.lower() == '/usd' and message.chat.id == secret.tg_chat_id)
-def usd(message):
-    try:
-        bot.send_message(message.chat.id, "`{}`".format(cbr.getUSD()), parse_mode='MarkdownV2')
-    except Exception as e:
-        log('{0}\nТекст ошибки: {1}'.format(constants.errors[18], e))
-        send_error(message, 19, e)
 
 # Обработка каждого сообщения на гея/лешу
 @bot.message_handler(func=lambda m: True)
