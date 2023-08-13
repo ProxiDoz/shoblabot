@@ -201,7 +201,15 @@ def usd(message):
         float_dol = f"{float(dollar.replace(',', '.')):.{2}f}"
         euro = cbr.getUSD("EUR")
         float_eur = f"{float(euro.replace(',', '.')):.{2}f}"
-        bot.send_photo(message.chat.id, "AgACAgIAAxkBAAKQ42TXmfKFmOU0INjgdXx5SE6ZR2OMAAIczDEb5I3AStxd0R3rX5hCAQADAgADeAADMAQ", caption="💵 *Курс рубля на* _{0}_:\n`1$ = {1}₽`\n`1€ = {2}₽`".format(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"), float_dol, float_eur), parse_mode='MarkdownV2')
+        lari = cbr.getUSD("GEL")
+        float_lar = f"{float(lari.replace(',', '.')):.{2}f}"
+        tenge = cbr.getUSD("KZT")
+        float_ten = f"{float(tenge.replace(',', '.')):.{2}f}"
+        bot.send_photo(message.chat.id, "AgACAgIAAxkBAAKQ42TXmfKFmOU0INjgdXx5SE6ZR2OMAAIczDEb5I3AStxd0R3rX5hCAQADAgADeAADMAQ", caption="💵 *Курс рубля на* _{0}_:\n"
+                                                                                                                                       "`1$ = {1}₽`\n"
+                                                                                                                                       "`1€ = {2}₽`\n"
+                                                                                                                                       "`1 лари = {3}₽`\n"
+                                                                                                                                       "`100 тенге = {4}₽`".format(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"), float_dol, float_eur, float_lar, float_ten), parse_mode='MarkdownV2')
         update_activity('usd')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[31], e))
