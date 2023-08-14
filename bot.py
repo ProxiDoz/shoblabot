@@ -205,7 +205,14 @@ def usd(message):
         float_lar = f"{float(lari.replace(',', '.')):.{2}f}"
         tenge = cbr.getUSD("KZT")
         float_ten = f"{float(tenge.replace(',', '.')):.{2}f}"
-        bot.send_photo(message.chat.id, "AgACAgIAAxkBAAJHhmTaCE6SoWoEh5banay5zgbROoO9AAIkyDEbrm3RSh-zi8Myj9vvAQADAgADeQADMAQ", caption="💵 *Курс рубля на* _{0}_:\n"
+        if random.random() < 0.5:
+            bot.send_photo(message.chat.id, "AgACAgIAAxkBAAJHhmTaCE6SoWoEh5banay5zgbROoO9AAIkyDEbrm3RSh-zi8Myj9vvAQADAgADeQADMAQ", caption="💵 *Курс рубля на* _{0}_:\n"
+                                                                                                                                       "`1$ = {1}₽`\n"
+                                                                                                                                       "`1€ = {2}₽`\n"
+                                                                                                                                       "`1 лари = {3}₽`\n"
+                                                                                                                                       "`100 тенге = {4}₽`".format(datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"), float_dol, float_eur, float_lar, float_ten), parse_mode='MarkdownV2')
+        else:
+            bot.send_photo(message.chat.id, "AgACAgIAAxkBAAJHbmTXm8165Ly6JWal4toSumUYtZgJAAIczDEb5I3ASo6qASduHbZkAQADAgADeAADMAQ", caption="💵 *Курс рубля на* _{0}_:\n"
                                                                                                                                        "`1$ = {1}₽`\n"
                                                                                                                                        "`1€ = {2}₽`\n"
                                                                                                                                        "`1 лари = {3}₽`\n"
