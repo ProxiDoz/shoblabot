@@ -205,7 +205,7 @@ def usd(message):
         float_lar = f"{float(lari.replace(',', '.')):.{2}f}"
         tenge = cbr.getUSD("KZT")
         float_ten = f"{float(tenge.replace(',', '.')):.{2}f}"
-        bot.send_photo(message.chat.id, "AgACAgIAAxkBAAKQ42TXmfKFmOU0INjgdXx5SE6ZR2OMAAIczDEb5I3AStxd0R3rX5hCAQADAgADeAADMAQ", caption="💵 *Курс рубля на* _{0}_:\n"
+        bot.send_photo(message.chat.id, "AgACAgIAAxkBAAJHhmTaCE6SoWoEh5banay5zgbROoO9AAIkyDEbrm3RSh-zi8Myj9vvAQADAgADeQADMAQ", caption="💵 *Курс рубля на* _{0}_:\n"
                                                                                                                                        "`1$ = {1}₽`\n"
                                                                                                                                        "`1€ = {2}₽`\n"
                                                                                                                                        "`1 лари = {3}₽`\n"
