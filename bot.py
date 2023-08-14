@@ -205,12 +205,11 @@ def usd(message):
         float_lar = f"{float(lari.replace(',', '.')):.{2}f}"
         tenge = cbr.getUSD("KZT")
         float_ten = f"{float(tenge.replace(',', '.')):.{2}f}"
-        photo_id = "AgACAgIAAxkBAAJHhmTaCE6SoWoEh5banay5zgbROoO9AAIkyDEbrm3RSh-zi8Myj9vvAQADAgADeQADMAQ" if random.random() < 0.5 else "AgACAgIAAxkBAAJHbmTXm8165Ly6JWal4toSumUYtZgJAAIczDEb5I3ASo6qASduHbZkAQADAgADeAADMAQ"
-        bot.send_photo(message.chat.id, photo_id, caption="💵 *Курс рубля по данным сайта [ЦБР](https://www.cbr.ru/currency_base/daily/)*:\n"
-                                                          "`1$ = {0}₽`\n"
-                                                          "`1€ = {1}₽`\n"
-                                                          "`1 лари = {2}₽`\n"
-                                                          "`100 тенге = {3}₽`".format(float_dol, float_eur, float_lar, float_ten), parse_mode='MarkdownV2')
+        bot.send_photo(message.chat.id, constants.usd_pic[random.randint(0, 2)], caption="💵 *Курс рубля по данным сайта [ЦБР](https://www.cbr.ru/currency_base/daily/)*:\n"
+                                                                                         "`1$ = {0}₽`\n"
+                                                                                         "`1€ = {1}₽`\n"
+                                                                                         "`1 лари = {2}₽`\n"
+                                                                                         "`100 тенге = {3}₽`".format(float_dol, float_eur, float_lar, float_ten), parse_mode='MarkdownV2')
         update_activity('usd')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[31], e))
