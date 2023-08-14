@@ -205,7 +205,7 @@ def usd(message):
         float_lar = f"{float(lari.replace(',', '.')):.{2}f}"
         tenge = cbr.getUSD("KZT")
         float_ten = f"{float(tenge.replace(',', '.')):.{2}f}"
-        photo_id = "AgACAgIAAxkBAAJHhmTaCE6SoWoEh5banay5zgbROoO9AAIkyDEbrm3RSh-zi8Myj9vvAQADAgADeQADMAQ" if random.random() < 0.5 else = "AgACAgIAAxkBAAJHbmTXm8165Ly6JWal4toSumUYtZgJAAIczDEb5I3ASo6qASduHbZkAQADAgADeAADMAQ"
+        photo_id = "AgACAgIAAxkBAAJHhmTaCE6SoWoEh5banay5zgbROoO9AAIkyDEbrm3RSh-zi8Myj9vvAQADAgADeQADMAQ" if random.random() < 0.5 else "AgACAgIAAxkBAAJHbmTXm8165Ly6JWal4toSumUYtZgJAAIczDEb5I3ASo6qASduHbZkAQADAgADeAADMAQ"
         bot.send_photo(message.chat.id, photo_id, caption="💵 *Курс рубля по данным сайта [ЦБР](https://www.cbr.ru/currency_base/daily/)*:\n"
                                                           "`1$ = {0}₽`\n"
                                                           "`1€ = {1}₽`\n"
