@@ -188,6 +188,11 @@ sozvon_options = ['Го в ЧТ', 'Го в ПТ', 'Го в СБ', 'Го в ВС'
 sozvon_link = '🎧[Дискорд](https://discord.gg/sDKJSg2d9q)\nИли Гугл Миит для запасного аэродрома\nhttps://meet.google.com/tnj-dfkq-bpk (Админ Тарс) или https://meet.google.com/eky-ocyw-yhf (Админ Апол)'
 sozvon_pic = 'AgACAgIAAxkBAAJGiWP0of-RR4nekhlpNJdKUhywMV4NAALzyTEbiNKQS6LhqdN3LBprAQADAgADeAADLgQ'
 
+# Для команды /usd
+usd_pic = ["AgACAgIAAxkBAAJHhmTaCE6SoWoEh5banay5zgbROoO9AAIkyDEbrm3RSh-zi8Myj9vvAQADAgADeQADMAQ",
+           "AgACAgIAAxkBAAJHbmTXm8165Ly6JWal4toSumUYtZgJAAIczDEb5I3ASo6qASduHbZkAQADAgADeAADMAQ",
+           "AgACAgIAAxkBAAJHlmTaS9AZ49OJjA_5O-0AAcfw6i1Y1gACTMkxG65t0Uo5j_RIetD_YQEAAwIAA3gAAzAE"]
+            
 # Ошибки
 errors = ['Ошибка команды /start',  # 0
           'Ошибка команды /help',  # 1
