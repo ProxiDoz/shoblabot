@@ -207,7 +207,7 @@ def usd(message):
         float_ten = f"{float(tenge.replace(',', '.')):.{2}f}"
         bot.send_photo(message.chat.id, constants.usd_pic[random.randint(0, len(constants.usd_pic)-1)],
                        caption="💵 *Курс рубля по данным сайта [ЦБР](https://www.cbr.ru/currency_base/daily/)*:\n"
-                               "`1$ = {0}₽`\n`1€ = {1}₽`\n`1 лари = {2}₽`\n`100 тенге = {3}₽`".format(float_dol, float_eur, float_lar, float_ten), parse_mode='MarkdownV2')
+                               "`1$ = {0}₽`\n`1€ = {1}₽`\n`1₾ = {2}₽`\n`100₸ = {3}₽`".format(float_dol, float_eur, float_lar, float_ten), parse_mode='MarkdownV2')
         update_activity('usd')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[31], e))
