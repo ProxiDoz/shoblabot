@@ -454,7 +454,7 @@ def poll_results(poll):
 @bot.message_handler(content_types=['photo'])
 def send_photo(message):
     try:
-        if message.from_user.id == secret.apple_id:
+        if message.chat.id == secret.apple_id:
             bot.send_message(secret.apple_id, message.photo[2].file_id)
     except Exception as e:
         bot.send_message(secret.apple_id, '❌ Ошибка в функции send_photo:\n*Сообщение: *{0}\n*Текст ошибки:*\n{1}'.format(message, e), parse_mode='MarkdownV2')
@@ -463,7 +463,7 @@ def send_photo(message):
 @bot.message_handler(content_types=['voice'])
 def send_voice(message):
     try:
-        if message.from_user.id == secret.apple_id:
+        if message.chat.id == secret.apple_id:
             bot.send_message(secret.apple_id, message.voice.file_id)
     except Exception as e:
         bot.send_message(secret.apple_id, '❌ Ошибка в функции send_audio:\n*Сообщение: *{0}\n*Текст ошибки:*\n{1}'.format(message, e), parse_mode='MarkdownV2')
