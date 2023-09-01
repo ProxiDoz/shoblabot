@@ -622,15 +622,15 @@ def sdr():
         for item in constants.tg_drs:
             if item[:-5] == dr and now_time.hour == 9:
                 if (now_time.year - int(item[-4:])) % 10 == 0:
-                    bot.send_message(secret.tg_chat_id, '🥳 [{0}](tg://user?id={1}), с др\!\nДобро пожаловать в клуб кому '
+                    bot.send_message(secret.tg_chat_id, '🥳 [{0}](tg://user?id={1}), с др!\nДобро пожаловать в клуб кому '
                                                         'за {2} 😏'.format(constants.tg_names[i], constants.tg_ids[i], now_time.year - int(item[-4:])),
-                                     parse_mode='MarkdownV2')
+                                     parse_mode='Markdown')
                 else:
                     bot.send_message(secret.tg_chat_id, '🥳 [{0}](tg://user?id={1}), с др\!'.format(constants.tg_names[i], constants.tg_ids[i]), parse_mode='MarkdownV2')
             i += 1
     except Exception as e:
         log('Ошибка в функции отправки поздравления в Шоблу sdr:\nТекст ошибки: ' + str(e))
-        bot.send_message(secret.apple_id, '❌ Ошибка в функции отправки поздравления в Шоблу sdr\n*Текст ошибки:*\n' + str(e), parse_mode='MarkdownV2')
+        bot.send_message(secret.apple_id, '❌ Ошибка в функции отправки поздравления в Шоблу sdr\n*Текст ошибки:*\n' + str(e), parse_mode='Markdown')
 
 
 # # # # # # Запуск функций # # # # # #
