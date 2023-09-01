@@ -594,7 +594,11 @@ def sdr():
             if os.path.isfile(constants.sozvon_file):
                 with open(constants.sozvon_file, 'r') as lang:
                     curr_sozvon_poll = json.loads(lang.read())
-            bot.stop_poll(secret.tg_chat_id, curr_sozvon_poll['msg_id'])
+            try:
+                bot.stop_poll(secret.tg_chat_id, curr_sozvon_poll['msg_id'])
+            except Exception as e:
+                log('Ошибка при закрытии опроса в sdr:\nТекст ошибки: ' + str(e))
+                bot.send_message(secret.apple_id, '❌ Ошибка при закрытии опроса а sdr\n*Текст ошибки:*\n' + str(e), parse_mode='Markdown')
         if now_time.day == 1:  # День для статистики по боту выкладывания фоток за месяц Месечная десятка челлендж
             cur_mnth = str(now_time.year - 1) + '.12' if now_time.month == 1 else str(now_time.year) + '.' + str(now_time.month - 1)
             # Загружаем данные из файла activity_count
