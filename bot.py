@@ -570,7 +570,7 @@ def sdr():
         if os.path.isfile(constants.sozvon_file):
             with open(constants.sozvon_file, 'r') as lang:
                 curr_sozvon_poll = json.loads(lang.read())
-        if now_time.hour != 9 and now_time.day < 12:
+        if now_time.hour != 9 and curr_sozvon_poll['first_poll'] == 1:
             if now_time.weekday() - 3 == curr_sozvon_poll['max_date'] and now_time.hour - 13 == curr_sozvon_poll['max_time']:
                 reminder = bot.send_message(secret.tg_chat_id, 'Сегодня шоблосозвон будет через час. Ожидайте ссылку.', parse_mode='Markdown')
                 bot.pin_chat_message(secret.tg_chat_id, reminder.message_id, disable_notification=False)
@@ -578,60 +578,67 @@ def sdr():
             if now_time.weekday() - 3 == curr_sozvon_poll['max_date'] and now_time.hour - 14 == curr_sozvon_poll['max_time']:
                 photo = bot.send_photo(secret.tg_chat_id, constants.sozvon_pic, caption='*Го созвон: *' + constants.sozvon_link, parse_mode='Markdown')
                 bot.pin_chat_message(secret.tg_chat_id, photo.message_id, disable_notification=False)
+                curr_sozvon_poll['first_poll'] = 0  # Флаг, что это первый опрос в этом месяце
+                with open(constants.sozvon_file, 'w') as lang:  # Записываем данные в файл sozvon_file
+                    lang.write(json.dumps(curr_sozvon_poll))
                 log('Отправлено приглашение на общий созвон')
             return
-        if now_time.weekday() == 3 and now_time.day <= 7:  # День (четверг) для отправки опроса о принятии участия в созвоне
-            opros = 'Когда проведём шоблосозвон? Выбирайте день и ниже укажите время (относительно 🇷🇺: 🇫🇷-1, 🇬🇪+1, 🇰🇿+3). Опрос закроется через сутки'
-            sozvon_poll = bot.send_poll(secret.tg_chat_id, opros, constants.sozvon_options, is_anonymous=False, allows_multiple_answers=True)
-            bot.pin_chat_message(secret.tg_chat_id, sozvon_poll.message_id, disable_notification=False)
-            curr_sozvon_poll['msg_id'] = sozvon_poll.id
-            curr_sozvon_poll['poll_id'] = sozvon_poll.poll.id
-            curr_sozvon_poll['max_date'] = 10
-            curr_sozvon_poll['max_time'] = 10
-            with open(constants.sozvon_file, 'w') as lang:  # Записываем данные в файл sozvon_file
-                lang.write(json.dumps(curr_sozvon_poll))
-        if now_time.weekday() == 4 and now_time.day <= 7:  # День (пятница) для остановки опроса о принятии участия в созвоне
-            if os.path.isfile(constants.sozvon_file):
-                with open(constants.sozvon_file, 'r') as lang:
-                    curr_sozvon_poll = json.loads(lang.read())
-            try:
-                bot.stop_poll(secret.tg_chat_id, curr_sozvon_poll['msg_id'])
-            except Exception as e:
-                log('Ошибка при закрытии опроса в sdr:\nТекст ошибки: ' + str(e))
-                bot.send_message(secret.apple_id, '❌ Ошибка при закрытии опроса а sdr\n*Текст ошибки:*\n' + str(e), parse_mode='Markdown')
-        if now_time.day == 1:  # День для статистики по боту выкладывания фоток за месяц Месечная десятка челлендж
-            cur_mnth = str(now_time.year - 1) + '.12' if now_time.month == 1 else str(now_time.year) + '.' + str(now_time.month - 1)
-            # Загружаем данные из файла activity_count
-            if os.path.isfile(constants.activity_file):
-                with open(constants.activity_file, 'r') as lang:
-                    activity_count = json.loads(lang.read())
-            month_statistics = constants.month_statistics.format(activity_count[cur_mnth]['opros'], activity_count[cur_mnth]['discount'],
-                                                                 activity_count[cur_mnth]['devka'], activity_count[cur_mnth]['vracha'],
-                                                                 activity_count[cur_mnth]['pin'], activity_count[cur_mnth]['rapid_new'],
-                                                                 activity_count[cur_mnth]['cyk'], activity_count[cur_mnth]['russia'],
-                                                                 activity_count[cur_mnth]['team'], activity_count[cur_mnth]['start'],
-                                                                 activity_count[cur_mnth]['help'], activity_count[cur_mnth]['who'],
-                                                                 activity_count[cur_mnth]['rapid'], activity_count[cur_mnth]['/29'],
-                                                                 activity_count[cur_mnth]['kirov'], activity_count[cur_mnth]['damage'],
-                                                                 activity_count[cur_mnth]['sozvon'], activity_count[cur_mnth]['transl'],
-                                                                 activity_count[cur_mnth]['mamma'], activity_count[cur_mnth]['usd'])
-            bot.send_message(secret.tg_chat_id, month_statistics, parse_mode='Markdown')
-            # Рассылка по 10челлендж
-            challenge = bot.send_message(secret.tg_chat_id, '📸 Шоблятки, время для #10челлендж и ваших фоточек за месяц!', parse_mode='Markdown')
-            bot.pin_chat_message(secret.tg_chat_id, challenge.message_id, disable_notification=False)
-        # День Баяна в Шобле отмечается 28 мая
-        if dr == str(28.5):
-            bot.send_photo(secret.tg_chat_id, 'AgACAgIAAxkBAAJFzWLeYTbQ2ENcXEwoPOrRZprGCCUUAALHuTEb6BT4ShJZvIDQxNjZAQADAgADcwADKQQ', caption='🪗 Шобла, поздравляю с Днём Баяна!')
-        # Отправка поздравлений с ДР
-        for item in constants.tg_drs:
-            if item[:-5] == dr and now_time.hour == 9:
-                if (now_time.year - int(item[-4:])) % 10 == 0:
-                    bot.send_message(secret.tg_chat_id, '🥳 [{0}](tg://user?id={1}), с др!\nДобро пожаловать в клуб кому '
-                                                        'за {2} 😏'.format(constants.tg_names[i], constants.tg_ids[i], now_time.year - int(item[-4:])),
-                                     parse_mode='Markdown')
-                else:
-                    bot.send_message(secret.tg_chat_id, '🥳 [{0}](tg://user?id={1}), с др\!'.format(constants.tg_names[i], constants.tg_ids[i]), parse_mode='MarkdownV2')
-            i += 1
+        else:
+            if now_time.weekday() == 3 and now_time.day <= 7:  # День (четверг) для отправки опроса о принятии участия в созвоне
+                sozvon_poll = bot.send_poll(secret.tg_chat_id, constants.opros, constants.sozvon_options, is_anonymous=False, allows_multiple_answers=True)
+                bot.pin_chat_message(secret.tg_chat_id, sozvon_poll.message_id, disable_notification=False)
+                curr_sozvon_poll['msg_id'] = sozvon_poll.id
+                curr_sozvon_poll['poll_id'] = sozvon_poll.poll.id
+                curr_sozvon_poll['max_date'] = 10
+                curr_sozvon_poll['max_time'] = 10
+                curr_sozvon_poll['first_poll'] = 1  # Флаг, что это первый опрос в этом месяце
+                with open(constants.sozvon_file, 'w') as lang:  # Записываем данные в файл sozvon_file
+                    lang.write(json.dumps(curr_sozvon_poll))
+            if now_time.weekday() == 4 and now_time.day <= 7:  # День (пятница) для остановки опроса о принятии участия в созвоне
+                if os.path.isfile(constants.sozvon_file):
+                    with open(constants.sozvon_file, 'r') as lang:
+                        curr_sozvon_poll = json.loads(lang.read())
+                try:
+                    bot.stop_poll(secret.tg_chat_id, curr_sozvon_poll['msg_id'])
+                    curr_sozvon_poll['first_poll'] = 0  # Флаг, что опросов в этом месяце больше не будет
+                    with open(constants.sozvon_file, 'w') as lang:  # Записываем данные в файл sozvon_file
+                        lang.write(json.dumps(curr_sozvon_poll))
+                except Exception as e:
+                    log('Ошибка при закрытии опроса в sdr:\nТекст ошибки: ' + str(e))
+                    bot.send_message(secret.apple_id, '❌ Ошибка при закрытии опроса в sdr\n*Текст ошибки:*\n' + str(e), parse_mode='Markdown')
+            if now_time.day == 1:  # День для статистики по боту выкладывания фоток за месяц Месечная десятка челлендж
+                cur_mnth = str(now_time.year - 1) + '.12' if now_time.month == 1 else str(now_time.year) + '.' + str(now_time.month - 1)
+                # Загружаем данные из файла activity_count
+                if os.path.isfile(constants.activity_file):
+                    with open(constants.activity_file, 'r') as lang:
+                        activity_count = json.loads(lang.read())
+                month_statistics = constants.month_statistics.format(activity_count[cur_mnth]['opros'], activity_count[cur_mnth]['discount'],
+                                                                     activity_count[cur_mnth]['devka'], activity_count[cur_mnth]['vracha'],
+                                                                     activity_count[cur_mnth]['pin'], activity_count[cur_mnth]['rapid_new'],
+                                                                     activity_count[cur_mnth]['cyk'], activity_count[cur_mnth]['russia'],
+                                                                     activity_count[cur_mnth]['team'], activity_count[cur_mnth]['start'],
+                                                                     activity_count[cur_mnth]['help'], activity_count[cur_mnth]['who'],
+                                                                     activity_count[cur_mnth]['rapid'], activity_count[cur_mnth]['/29'],
+                                                                     activity_count[cur_mnth]['kirov'], activity_count[cur_mnth]['damage'],
+                                                                     activity_count[cur_mnth]['sozvon'], activity_count[cur_mnth]['transl'],
+                                                                     activity_count[cur_mnth]['mamma'], activity_count[cur_mnth]['usd'])
+                bot.send_message(secret.tg_chat_id, month_statistics, parse_mode='Markdown')
+                # Рассылка по 10челлендж
+                challenge = bot.send_message(secret.tg_chat_id, '📸 Шоблятки, время для #10челлендж и ваших фоточек за месяц!', parse_mode='Markdown')
+                bot.pin_chat_message(secret.tg_chat_id, challenge.message_id, disable_notification=False)
+            # День Баяна в Шобле отмечается 28 мая
+            if dr == str(28.5):
+                bot.send_photo(secret.tg_chat_id, 'AgACAgIAAxkBAAJFzWLeYTbQ2ENcXEwoPOrRZprGCCUUAALHuTEb6BT4ShJZvIDQxNjZAQADAgADcwADKQQ', caption='🪗 Шобла, поздравляю с Днём Баяна!')
+            # Отправка поздравлений с ДР
+            for item in constants.tg_drs:
+                if item[:-5] == dr and now_time.hour == 9:
+                    if (now_time.year - int(item[-4:])) % 10 == 0:
+                        bot.send_message(secret.tg_chat_id, '🥳 [{0}](tg://user?id={1}), с др!\nДобро пожаловать в клуб кому '
+                                                            'за {2} 😏'.format(constants.tg_names[i], constants.tg_ids[i], now_time.year - int(item[-4:])),
+                                         parse_mode='Markdown')
+                    else:
+                        bot.send_message(secret.tg_chat_id, '🥳 [{0}](tg://user?id={1}), с др\!'.format(constants.tg_names[i], constants.tg_ids[i]), parse_mode='MarkdownV2')
+                i += 1
     except Exception as e:
         log('Ошибка в функции отправки поздравления в Шоблу sdr:\nТекст ошибки: ' + str(e))
         bot.send_message(secret.apple_id, '❌ Ошибка в функции отправки поздравления в Шоблу sdr\n*Текст ошибки:*\n' + str(e), parse_mode='Markdown')
