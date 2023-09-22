@@ -38,8 +38,6 @@ def handle_start_help(message):
         if message.chat.id == secret.tg_chat_id or message.from_user.id in constants.tg_ids:
             log('вызов команды {0} by {1}'.format(message.text, constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
             bot.send_message(message.chat.id, constants.help_text, reply_markup=constants.help_keyboard, parse_mode='Markdown')
-            if message.from_user.is_premium and random.random() < 0.3:
-                bot.send_message(message.chat.id, '🤗 Держи ответ на команду, ||пусечка|| премиумная', parse_mode='MarkdownV2')
             update_activity('start') if message.text == '/start' else update_activity('help')
         else:
             log('вызов команды {0}\n{1}: User ID - {2}, user_name - @{3}'.format(message.text, constants.errors[6], message.from_user.id, message.from_user.username))
@@ -80,8 +78,6 @@ def send_discount(message):
                 i += 2
             # keyboard_start.add(constants.discounts, constants.channel)
             bot.send_message(message.chat.id, constants.buttons[2][0], reply_markup=keyboard_start, parse_mode='MarkdownV2')
-            if message.from_user.is_premium and random.random() < 0.3:
-                bot.send_message(message.chat.id, '🤗 Экономить всегда полезно, ||пусечка|| премиумная', parse_mode='MarkdownV2')
             update_activity('discount')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[8], e))
@@ -132,25 +128,22 @@ def log(text):
 def statistics(message):
     try:
         if message.chat.id == secret.tg_chat_id or message.from_user.id in constants.tg_ids:  # Это Шобла или человек из Шоблы
-            if message.from_user.id == secret.apple_id or message.from_user.is_premium:  # Это Апол или премиумный пользователь
-                now_time = datetime.datetime.now()
-                cur_mnth = str(now_time.year) + '.' + str(now_time.month)
-                if os.path.isfile(constants.activity_file):  # Загружаем данные из файла activity_count
-                    with open(constants.activity_file, 'r') as lang:
-                        activity_count = json.loads(lang.read())
-                month_statistics = constants.month_statistics.format(activity_count[cur_mnth]['opros'], activity_count[cur_mnth]['discount'],
-                                                                     activity_count[cur_mnth]['devka'], activity_count[cur_mnth]['vracha'],
-                                                                     activity_count[cur_mnth]['pin'], activity_count[cur_mnth]['rapid_new'],
-                                                                     activity_count[cur_mnth]['cyk'], activity_count[cur_mnth]['russia'],
-                                                                     activity_count[cur_mnth]['team'], activity_count[cur_mnth]['start'],
-                                                                     activity_count[cur_mnth]['help'], activity_count[cur_mnth]['who'],
-                                                                     activity_count[cur_mnth]['rapid'], activity_count[cur_mnth]['/29'],
-                                                                     activity_count[cur_mnth]['kirov'], activity_count[cur_mnth]['damage'],
-                                                                     activity_count[cur_mnth]['sozvon'], activity_count[cur_mnth]['transl'],
-                                                                     activity_count[cur_mnth]['mamma'], activity_count[cur_mnth]['usd'])
-                bot.send_message(message.chat.id, month_statistics.replace('прошлый', 'текущий'), parse_mode='MarkdownV2')
-            else:
-                bot.send_message(message.chat.id, '⭐ У вас нет премиум подписки для использования данной команды')
+            now_time = datetime.datetime.now()
+            cur_mnth = str(now_time.year) + '.' + str(now_time.month)
+            if os.path.isfile(constants.activity_file):  # Загружаем данные из файла activity_count
+                with open(constants.activity_file, 'r') as lang:
+                    activity_count = json.loads(lang.read())
+            month_statistics = constants.month_statistics.format(activity_count[cur_mnth]['opros'], activity_count[cur_mnth]['discount'],
+                                                                 activity_count[cur_mnth]['devka'], activity_count[cur_mnth]['vracha'],
+                                                                 activity_count[cur_mnth]['pin'], activity_count[cur_mnth]['rapid_new'],
+                                                                 activity_count[cur_mnth]['cyk'], activity_count[cur_mnth]['russia'],
+                                                                 activity_count[cur_mnth]['team'], activity_count[cur_mnth]['start'],
+                                                                 activity_count[cur_mnth]['help'], activity_count[cur_mnth]['who'],
+                                                                 activity_count[cur_mnth]['rapid'], activity_count[cur_mnth]['/29'],
+                                                                 activity_count[cur_mnth]['kirov'], activity_count[cur_mnth]['damage'],
+                                                                 activity_count[cur_mnth]['sozvon'], activity_count[cur_mnth]['transl'],
+                                                                 activity_count[cur_mnth]['mamma'], activity_count[cur_mnth]['usd'])
+            bot.send_message(message.chat.id, month_statistics.replace('прошлый', 'текущий'), parse_mode='MarkdownV2')
         else:
             log('вызов команды /stat\n{0}: User ID - {1}, user_name - @{2}'.format(constants.errors[6], message.from_user.id, message.from_user.username))
             send_error(message, 6, 'N/A')
@@ -164,14 +157,11 @@ def statistics(message):
 def share_log(message):
     try:
         if message.chat.id == secret.tg_chat_id or message.from_user.id in constants.tg_ids:  # Это Шобла или человек из Шоблы
-            if message.from_user.id == secret.apple_id or message.from_user.is_premium:  # Это Апол или премиумный пользователь
-                try:
-                    log('вызов команды /log by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
-                    bot.send_document(message.chat.id, open(constants.log_file, 'rb'), caption='🤖📋')
-                except Exception as e:
-                    send_error(message, 23, e)
-            else:
-                bot.send_message(message.chat.id, '⭐ У вас нет премиум подписки для использования данной команды')
+            try:
+                log('вызов команды /log by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
+                bot.send_document(message.chat.id, open(constants.log_file, 'rb'), caption='🤖📋')
+            except Exception as e:
+                send_error(message, 23, e)
         else:
             log('вызов команды /log\n{0}: User ID - {1}, user_name - @{2}'.format(constants.errors[6], message.from_user.id, message.from_user.username))
             send_error(message, 6, 'N/A')
@@ -205,14 +195,14 @@ def usd(message):
         float_lar = f"{float(lari.replace(',', '.')):.{2}f}"
         tenge = cbr.getUSD("KZT")
         float_ten = f"{float(tenge.replace(',', '.')):.{2}f}"
-        bot.send_photo(message.chat.id, constants.usd_pic[random.randint(0, len(constants.usd_pic)-1)],
+        bot.send_photo(message.chat.id, constants.usd_pic[random.randint(0, len(constants.usd_pic) - 1)],
                        caption="💵 *Курс рубля по данным сайта [ЦБР](https://www.cbr.ru/currency_base/daily/)*:\n"
                                "`1$ = {0}₽`\n`1€ = {1}₽`\n`1₾ = {2}₽`\n`100₸ = {3}₽`".format(float_dol, float_eur, float_lar, float_ten), parse_mode='MarkdownV2')
         update_activity('usd')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[31], e))
         send_error(message, 31, e)
-        
+
 
 # Вызов информации о сервере
 @bot.message_handler(commands=['s'])
@@ -222,8 +212,8 @@ def server_info(message):
             try:
                 log('отправка статуса памяти сервера')
                 bot.send_message(message.chat.id, '🤖 RAM free: {0}% из 512Мбайт'.format(psutil.virtual_memory()[2])) if message.text == '/s' else bot.send_message(secret.tg_chat_id,
-                                                                                                                                                               message.text[
-                                                                                                                                                               3:len(message.text)])
+                                                                                                                                                                    message.text[
+                                                                                                                                                                    3:len(message.text)])
             except Exception as e:
                 log('{0}\nТекст ошибки: {1}'.format(constants.errors[21], e))
                 send_error(message, 21, e)
@@ -241,8 +231,6 @@ def server_info(message):
 def aaa(message):
     try:
         bot.send_message(secret.tg_chat_id, 'Девка за рулём') if len(message.text) > 2 else bot.send_message(secret.tg_chat_id, 'Двк з рлм')
-        if message.from_user.is_premium and random.random() < 0.3:
-            bot.send_message(message.chat.id, '🤗 Аккуратнее за рулем, ||пусечка|| премиумная', parse_mode='MarkdownV2')
         update_activity('devka')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[9], e))
@@ -258,7 +246,7 @@ def damage(message):
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[10], e))
         send_error(message, 10, e)
-        
+
 
 # Обработка mamma mia
 @bot.message_handler(func=lambda message: message.text and message.text.lower().replace(' ', '').replace('\n', '') in constants.mammamia and message.chat.id == secret.tg_chat_id)
@@ -276,8 +264,7 @@ def mammamia(message):
 @bot.message_handler(func=lambda message: message.text and message.text.lower().replace(' ', '').replace('\n', '') in constants.russia and message.chat.id == secret.tg_chat_id)
 def russia(message):
     try:
-        bot.send_voice(secret.tg_chat_id, constants.anthem, '🤗 А наша ||пусечка|| премиумная патриот',
-                       parse_mode='MarkdownV2') if message.from_user.is_premium and random.random() < 0.3 else bot.send_voice(secret.tg_chat_id, constants.anthem, '🫡')
+        bot.send_voice(secret.tg_chat_id, constants.anthem, '🫡')
         update_activity('russia')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[11], e))
@@ -289,8 +276,6 @@ def russia(message):
 def vracha(message):
     try:
         bot.send_document(secret.tg_chat_id, 'CgADAgADRgIAAkbDcEn-Ox-uqrgsHgI', caption='@oxy_genium')
-        if message.from_user.is_premium and random.random() < 0.3:
-            bot.send_message(message.chat.id, '🤗 Пожалуйста, не болей, ||пусечка|| премиумная', parse_mode='MarkdownV2')
         update_activity('vracha')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[12], e))
@@ -302,8 +287,6 @@ def vracha(message):
 def git(message):
     try:
         bot.send_message(secret.tg_chat_id, 'Хуит')
-        if message.from_user.is_premium and random.random() < 0.3:
-            bot.send_message(message.chat.id, '🤗 Да ты айтишник, ||пусечка|| премиумная', parse_mode='MarkdownV2')
         update_activity('git')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[13], e))
@@ -316,8 +299,6 @@ def team(message):
     try:
         bot.send_message(chat_id=secret.tg_chat_id, disable_notification=False, reply_to_message_id=message.message_id, text=constants.team_text, disable_web_page_preview=True,
                          parse_mode='Markdown')
-        if message.from_user.is_premium and random.random() < 0.3:
-            bot.send_message(message.chat.id, '🤗 Шоблят вызывает ||пусечка|| премиумная', parse_mode='MarkdownV2')
         update_activity('team')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[14], e))
@@ -342,8 +323,6 @@ def rapid(message):
         # Ну тут почти без изменений, тока data[1] became value
         response = urllib2.urlopen('https://rapid.zhuykovkb.ru/rapid?data=' + quote(value) + '&memberid=' + str(message.from_user.id))
         answer = json.loads(str(response.read(), 'utf-8'))
-        if message.from_user.is_premium and random.random() < 0.3:
-            bot.send_message(message.chat.id, '🤗 Обязательно учту этот Рапид, ||пусечка|| премиумная', parse_mode='MarkdownV2')
         bot.send_message(secret.tg_chat_id, answer['message'], parse_mode='Markdown')
         if answer['message'] == 'Номер успешно добавлен':
             log('добавлен новый номер Рапида by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
@@ -358,11 +337,8 @@ def rapid(message):
 @bot.message_handler(func=lambda message: message.text and message.text.lower() in constants.suk and message.chat.id == secret.tg_chat_id)
 def barsuk(message):
     try:
-        if message.from_user.is_premium and random.random() < 0.3:
-            bot.send_message(message.chat.id, '🤗 Барсук не доступен, ||пусечка|| премиумная', parse_mode='MarkdownV2')
-        else:
-            bot.send_message(secret.tg_chat_id, 'Барсук')
-            update_activity('cyk')
+        bot.send_message(secret.tg_chat_id, 'Барсук')
+        update_activity('cyk')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[16], e))
         send_error(message, 16, e)
@@ -372,11 +348,8 @@ def barsuk(message):
 @bot.message_handler(func=lambda message: message.text and message.text.lower() in constants.syuk and message.chat.id == secret.tg_chat_id)
 def barsyuk(message):
     try:
-        if message.from_user.is_premium and random.random() < 0.3:
-            bot.send_message(message.chat.id, '🤗 Барсюк недоступен, ||пусечка|| премиумная', parse_mode='MarkdownV2')
-        else:
-            bot.send_message(secret.tg_chat_id, 'Барсюк')
-            update_activity('cyk')
+        bot.send_message(secret.tg_chat_id, 'Барсюк')
+        update_activity('cyk')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[17], e))
         send_error(message, 17, e)
@@ -386,10 +359,7 @@ def barsyuk(message):
 @bot.message_handler(func=lambda message: message.text and message.text.lower() == constants.ip_block and message.chat.id == secret.tg_chat_id)
 def block(message):
     try:
-        if message.from_user.is_premium and random.random() < 0.3:
-            bot.send_message(message.chat.id, '🤗 Пожалуй не будем так, ||пусечка|| премиумная', parse_mode='MarkdownV2')
-        else:
-            bot.send_message(secret.tg_chat_id, '*Значит так, \- сразу ||нахуй||\!*', parse_mode='MarkdownV2')
+        bot.send_message(secret.tg_chat_id, '*Значит так, \- сразу ||нахуй||\!*', parse_mode='MarkdownV2')
         update_activity('/29')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[18], e))
@@ -402,7 +372,8 @@ def faggot_func(message):
     try:
         if random.random() < 0.3:
             faggotEUCountry = faggot.getFaggotEUCountryRequest(message.text,
-                                                               ['гей', 'пидор', 'пидр', 'педик', 'гомо', 'гомосек', 'глиномес', 'пидераст', 'леша', 'путин', 'путен', 'путейн', 'маргарин', 'путена'])
+                                                               ['гей', 'пидор', 'пидр', 'педик', 'гомо', 'гомосек', 'глиномес', 'пидераст', 'леша', 'путин', 'путен', 'путейн', 'маргарин',
+                                                                'путена'])
             if faggotEUCountry[0]:
                 location = faggotEUCountry[1]['coords']
                 bot.reply_to(message, 'Ты что то сказал про гея? Держи...')
@@ -443,7 +414,8 @@ def poll_results(poll):
             with open(constants.sozvon_file, 'w') as lang:  # Записываем данные в файл sozvon_file
                 lang.write(json.dumps(curr_sozvon_poll))
             log('Приглашение на общий созвон будет отправлено в ' + constants.sozvon_options[max_time] + ' ' + constants.sozvon_options[max_date][4:])
-            poll_results = bot.send_message(secret.tg_chat_id, 'Шоблятки, созвон на этой неделе будет в ' + constants.sozvon_options[max_date][4:] + ' ' + constants.sozvon_options[max_time], parse_mode='Markdown')
+            poll_results = bot.send_message(secret.tg_chat_id, 'Шоблятки, созвон на этой неделе будет в ' + constants.sozvon_options[max_date][4:] + ' ' + constants.sozvon_options[max_time],
+                                            parse_mode='Markdown')
             bot.pin_chat_message(secret.tg_chat_id, poll_results.message_id, disable_notification=False)
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[29], e))
@@ -481,8 +453,6 @@ def send_text(message):
         # Если это попытка запинить сообщение
         if message.reply_to_message is not None and text == '@shoblabot' and message.chat.id == secret.tg_chat_id:
             try:
-                if message.from_user.is_premium and random.random() < 0.3:
-                    bot.send_message(message.chat.id, '🤗 Всё запинил, ||пусечка|| премиумная', parse_mode='MarkdownV2')
                 bot.pin_chat_message(chat_id=secret.tg_chat_id, message_id=message.reply_to_message.message_id, disable_notification=False)
                 log('пин сообщения by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
                 update_activity('pin')
@@ -502,8 +472,6 @@ def send_text(message):
                                                                              poll.message_id, message.from_user.id))
                         keyboard_opros_stop = telebot.types.InlineKeyboardMarkup(row_width=1)
                         keyboard_opros_stop.add(stop_button)
-                        if message.from_user.is_premium and random.random() < 0.3:
-                            bot.send_message(message.chat.id, '🤗 Интересный опрос, ||пусечка|| премиумная', parse_mode='MarkdownV2')
                         bot.delete_message(secret.tg_chat_id, message.reply_to_message.message_id)
                         bot.edit_message_reply_markup(secret.tg_chat_id, poll.message_id, reply_markup=keyboard_opros_stop)
                         bot.delete_message(secret.tg_chat_id, message.message_id)
@@ -537,8 +505,6 @@ def callback_buttons(call):
                 send_error(call.message, 22, e)
         # Обработка запроса скидок
         elif call.data[0:4] == 'disc':
-            if call.from_user.is_premium and random.random() < 0.3:
-                bot.answer_callback_query(call.id, '🤗 Пусечка премиумная')
             discount_id = int(call.data.split('_')[1])
             buttons_text = constants.buttons[0][0:discount_id] + constants.buttons[0][discount_id + 1:len(constants.buttons[0])]
             buttons_callback_data = constants.buttons[1][0:discount_id] + constants.buttons[1][discount_id + 1:len(constants.buttons[1])]
