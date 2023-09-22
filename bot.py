@@ -595,6 +595,8 @@ def sdr():
             # День Баяна в Шобле отмечается 28 мая
             if dr == str(28.5):
                 bot.send_photo(secret.tg_chat_id, 'AgACAgIAAxkBAAJFzWLeYTbQ2ENcXEwoPOrRZprGCCUUAALHuTEb6BT4ShJZvIDQxNjZAQADAgADcwADKQQ', caption='🪗 Шобла, поздравляю с Днём Баяна!')
+            if dr == str(24.11):
+                bot.send_message(secret.tg_chat_id, '🥳 Сегодня ботику уже *{0} лет*!'.format(now_time.year - 2016), parse_mode='Markdown')
             # Отправка поздравлений с ДР
             for item in constants.tg_drs:
                 if item[:-5] == dr and now_time.hour == 9:
