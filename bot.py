@@ -536,12 +536,12 @@ def sdr():
         if os.path.isfile(constants.sozvon_file):
             with open(constants.sozvon_file, 'r') as lang:
                 curr_sozvon_poll = json.loads(lang.read())
-        if now_time.hour != 9 and curr_sozvon_poll['first_poll'] == 1:
-            if now_time.weekday() - 3 == curr_sozvon_poll['max_date'] and now_time.hour - 13 == curr_sozvon_poll['max_time']:
+        if now_time.hour != 9:
+            if now_time.weekday() - 3 == curr_sozvon_poll['max_date'] and now_time.hour - 13 == curr_sozvon_poll['max_time'] and curr_sozvon_poll['first_poll'] == 1:
                 reminder = bot.send_message(secret.tg_chat_id, 'Сегодня шоблосозвон будет через час. Ожидайте ссылку.', parse_mode='Markdown')
                 bot.pin_chat_message(secret.tg_chat_id, reminder.message_id, disable_notification=False)
                 log('Отправлено напоминание на общий созвон')
-            if now_time.weekday() - 3 == curr_sozvon_poll['max_date'] and now_time.hour - 14 == curr_sozvon_poll['max_time']:
+            if now_time.weekday() - 3 == curr_sozvon_poll['max_date'] and now_time.hour - 14 == curr_sozvon_poll['max_time'] and curr_sozvon_poll['first_poll'] == 1:
                 photo = bot.send_photo(secret.tg_chat_id, constants.sozvon_pic, caption='*Го созвон: *' + constants.sozvon_link, parse_mode='Markdown')
                 bot.pin_chat_message(secret.tg_chat_id, photo.message_id, disable_notification=False)
                 curr_sozvon_poll['first_poll'] = 0  # Флаг, что это первый опрос в этом месяце
