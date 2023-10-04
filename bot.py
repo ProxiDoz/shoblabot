@@ -605,7 +605,7 @@ def sdr():
                                                             'за {2} 😏'.format(constants.tg_names[i], constants.tg_ids[i], now_time.year - int(item[-4:])),
                                          parse_mode='Markdown')
                     else:
-                        bot.send_message(secret.tg_chat_id, '🥳 [{0}](tg://user?id={1}), с др\!'.format(constants.tg_names[i], constants.tg_ids[i]), parse_mode='MarkdownV2')
+                        bot.send_message(secret.tg_chat_id, '🥳 [{0}](tg://user?id={1}), с др!'.format(constants.tg_names[i], constants.tg_ids[i]), parse_mode='MarkdownV2')
                 i += 1
     except Exception as e:
         log('Ошибка в функции отправки поздравления в Шоблу sdr:\nТекст ошибки: ' + str(e))
