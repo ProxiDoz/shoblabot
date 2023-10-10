@@ -411,10 +411,11 @@ def poll_results(poll):
             max_time = sozvon_results[4:].index(max(sozvon_results[4:])) + 4
             curr_sozvon_poll['max_date'] = max_date
             curr_sozvon_poll['max_time'] = max_time
+            curr_sozvon_poll['first_poll'] = 0  # Флаг, что опросов в этом месяце больше не будет
             with open(constants.sozvon_file, 'w') as lang:  # Записываем данные в файл sozvon_file
                 lang.write(json.dumps(curr_sozvon_poll))
-            log('Приглашение на общий созвон будет отправлено в ' + constants.sozvon_options[max_time] + ' ' + constants.sozvon_options[max_date][4:])
-            poll_results = bot.send_message(secret.tg_chat_id, 'Шоблятки, созвон на этой неделе будет в ' + constants.sozvon_options[max_date][4:] + ' ' + constants.sozvon_options[max_time],
+            log('Приглашение на общий созвон будет отправлено' + constants.sozvon_options[max_time] + constants.sozvon_options[max_date][4:])
+            poll_results = bot.send_message(secret.tg_chat_id, 'Шоблятки, созвон на этой неделе будет в' + constants.sozvon_options[max_date][4:] + ' ' + constants.sozvon_options[max_time],
                                             parse_mode='Markdown')
             bot.pin_chat_message(secret.tg_chat_id, poll_results.message_id, disable_notification=False)
     except Exception as e:
@@ -566,9 +567,6 @@ def sdr():
                         curr_sozvon_poll = json.loads(lang.read())
                 try:
                     bot.stop_poll(secret.tg_chat_id, curr_sozvon_poll['msg_id'])
-                    curr_sozvon_poll['first_poll'] = 0  # Флаг, что опросов в этом месяце больше не будет
-                    with open(constants.sozvon_file, 'w') as lang:  # Записываем данные в файл sozvon_file
-                        lang.write(json.dumps(curr_sozvon_poll))
                 except Exception as e:
                     log('Ошибка при закрытии опроса в sdr:\nТекст ошибки: ' + str(e))
                     bot.send_message(secret.apple_id, '❌ Ошибка при закрытии опроса в sdr\n*Текст ошибки:*\n' + str(e), parse_mode='Markdown')
