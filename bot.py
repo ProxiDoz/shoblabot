@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # # # # # # Импортозамещение # # # # # #
+import re  # Для поиска ссылки в тексте
 import os  # Для проверки на существование файла
 import json  # Представляет словарь в строку
 import time  # Для представления времени в читаемом формате
@@ -29,8 +30,22 @@ if os.path.isfile(constants.sozvon_file):  # Загружаем данные и�
         curr_sozvon_poll = json.loads(lang.read())
 sozvon_results = [0, 0, 0, 0, 0, 0, 0, 0]
 
-
 # # # # # # Доступные команды # # # # # #
+# Функция для замены домена на ddinstagram.com
+def replace_domain(url):
+    return re.sub(r'instagram\.com', 'ddinstagram.com', url)
+
+# Обработчик сообщений
+@bot.message_handler(func=lambda message: 'https://instagram.com/reel/' in message.text)
+def handle_instagram_link(message):
+    # Ищем ссылку в тексте сообщения
+    match = re.search(r'(https://instagram\.com/reel/\S+)', message.text)
+    if match:
+        # Заменяем домен на ddinstagram.com
+        new_url = replace_domain(match.group(1))
+        # Отправляем сообщение с новой ссылкой
+        bot.send_message(message.chat.id, new_url)
+
 # Вызов стартового сообщения / справки
 @bot.message_handler(commands=['start', 'help'])
 def handle_start_help(message):
