@@ -283,17 +283,6 @@ def vracha(message):
         send_error(message, 12, e)
 
 
-# Обработка гита
-@bot.message_handler(func=lambda message: message.text and message.text.lower() in constants.git and message.chat.id == secret.tg_chat_id)
-def git(message):
-    try:
-        bot.send_message(secret.tg_chat_id, 'Хуит')
-        update_activity('git')
-    except Exception as e:
-        log('{0}\nТекст ошибки: {1}'.format(constants.errors[13], e))
-        send_error(message, 13, e)
-
-
 # Обработка @team
 @bot.message_handler(func=lambda message: message.text and constants.team in message.text.lower() and message.chat.id == secret.tg_chat_id)
 def team(message):
