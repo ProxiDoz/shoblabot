@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # # # # # # Импортозамещение # # # # # #
+import re  # Для поиска ссылки в тексте
 import os  # Для проверки на существование файла
 import json  # Представляет словарь в строку
 import time  # Для представления времени в читаемом формате
@@ -447,6 +448,7 @@ def send_voice(message):
 def send_text(message):
     try:
         text = message.text
+        match = re.search(r'(https://instagram\.com/reel/\S+)', message.text)
         if translitsky.isTranslitsky(text) and text[0:4] != 'http':
             answer = translitsky.doTranslitskyRollback(text)
             bot.send_message(message.chat.id, "`{}`".format(answer), parse_mode='MarkdownV2', reply_to_message_id=message.message_id)
@@ -486,6 +488,10 @@ def send_text(message):
                 except Exception as e:
                     log('{0}\nТекст ошибки: {1}'.format(constants.errors[19], e))
                     send_error(message, 19, e)
+        #  Если это ссылка из Instagram
+        elif match:
+            new_url = re.sub(r'instagram\.com', 'ddinstagram.com', match.group(1))  # Заменяем домен на ddinstagram.com
+            bot.send_message(message.chat.id, new_url, reply_to_message_id=message.message_id)  # Отправляем сообщение с новой ссылкой
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[20], e))
         send_error(message, 20, e)
