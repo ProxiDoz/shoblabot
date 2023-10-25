@@ -62,11 +62,11 @@ month_statistics = '🤖 *Статистика по боту за прошлый
 discounts = telebot.types.InlineKeyboardButton(text='💰 Все скидки', url='https://photos.app.goo.gl/Xu4UQWqhSTcBVwt27')
 channel = telebot.types.InlineKeyboardButton(text='💳 Канал', url='https://t.me/joinchat/AAAAAEk6NVud6BKc7YzZ2g')
 buttons = {}
-buttons[0] = ['🛒 О\'кей',  # 0
-              '🛒 Лента',  # 1
-              '🛒 Перекресток',  # 2
-              '🛒 Пятерочка',  # 3
-              '🛒 Магнит',  # 4
+buttons[0] = ['🆗 О\'кей',  # 0
+              '🎗 Лента',  # 1
+              '❎ Перекресток',  # 2
+              '5️⃣ Пятерочка',  # 3
+              '🧲 Магнит',  # 4
               '🛒 Дикси',  # 5
               '🛒 Ашан',  # 6
               '🛒 Верный',  # 7
@@ -86,11 +86,11 @@ buttons[0] = ['🛒 О\'кей',  # 0
 
 buttons[1] = ['disc_0', 'disc_1', 'disc_2', 'disc_3', 'disc_4', 'disc_5', 'disc_6', 'disc_7', 'disc_8', 'disc_9', 'disc_10']
 
-buttons[2] = ['🛒 [О\'кей](https://i.imgur.com/zhx9CkA.png)',
-              '🛒 [Лента](https://i.imgur.com/SVq4ILS.png)',
-              '🛒 [Перекресток](https://i.imgur.com/5wra693.png)',
-              '🛒 [Пятерочка](https://i.imgur.com/yTuhGWH.jpg)',
-              '🛒 [Магнит](https://i.imgur.com/cbVdBnv.png)',
+buttons[2] = ['🆗 [О\'кей](https://i.imgur.com/zhx9CkA.png)',
+              '🎗 [Лента](https://i.imgur.com/SVq4ILS.png)',
+              '❎ [Перекресток](https://i.imgur.com/5wra693.png)',
+              '5️⃣ [Пятерочка](https://i.imgur.com/yTuhGWH.jpg)',
+              '🧲 [Магнит](https://i.imgur.com/cbVdBnv.png)',
               '🛒 [Дикси](https://i.imgur.com/FIQdWAh.png)',
               '🛒 [Ашан](https://i.imgur.com/iGsQ2Ds.jpg)',
               '🛒 [Верный](https://i.imgur.com/Dxg7owo.png)',
@@ -210,7 +210,7 @@ errors = ['Ошибка команды /start',  # 0
           'ошибка в функции emotional daaamage',  # 10
           'Ошибка в функции russia',  # 11
           'Ошибка в функции vracha',  # 12
-          'Ошибка в функции git',  # 13
+          '---',  # 13
           'Ошибка в функции team',  # 14
           'Ошибка в функции rapid',  # 15
           'Ошибка в функции barsuk',  # 16
