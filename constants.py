@@ -89,7 +89,7 @@ buttons[1] = ['disc_0', 'disc_1', 'disc_2', 'disc_3', 'disc_4', 'disc_5', 'disc_
 buttons[2] = ['🆗 [О\'кей](https://i.imgur.com/zhx9CkA.png)',
               '🎗 [Лента](https://i.imgur.com/SVq4ILS.png)',
               '❎ [Перекресток](https://i.imgur.com/5wra693.png)',
-              '5️⃣ [Пятерочка](https://i.imgur.com/yTuhGWH.jpg)',
+              '5️⃣ [Пятерочка](https://i.imgur.com/9sJyYcx.png)',
               '🧲 [Магнит](https://i.imgur.com/cbVdBnv.png)',
               '🛒 [Дикси](https://i.imgur.com/FIQdWAh.png)',
               '🛒 [Ашан](https://i.imgur.com/iGsQ2Ds.jpg)',
