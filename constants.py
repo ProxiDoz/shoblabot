@@ -1,6 +1,5 @@
 #!/usr/bin/python3.8.9
 # -*- coding: utf-8 -*-
-
 import telebot
 
 # Пути к файлам
@@ -59,8 +58,6 @@ month_statistics = '🤖 *Статистика по боту за прошлый
                    '/rapid: *{12} раз*'
 
 # Данные для команды /discount
-# discounts = telebot.types.InlineKeyboardButton(text='💰 Все скидки', url='https://photos.app.goo.gl/Xu4UQWqhSTcBVwt27')
-# channel = telebot.types.InlineKeyboardButton(text='💳 Канал', url='https://t.me/joinchat/AAAAAEk6NVud6BKc7YzZ2g')
 buttons = {}
 buttons[0] = ['🆗 О\'кей',  # 0
               '🎗 Лента',  # 1
@@ -73,9 +70,7 @@ buttons[0] = ['🆗 О\'кей',  # 0
               '🥐 Буше',  # 8
               '💊 Вита',  # 9
               '💊 Столички']  # 10
-
 buttons[1] = ['disc_0', 'disc_1', 'disc_2', 'disc_3', 'disc_4', 'disc_5', 'disc_6', 'disc_7', 'disc_8', 'disc_9', 'disc_10']
-
 buttons[2] = ['🆗 [О\'кей](https://i.imgur.com/zhx9CkA.png)',
               '🎗 [Лента](https://i.imgur.com/SVq4ILS.png)',
               '❎ [Перекресток](https://i.imgur.com/5wra693.png)',
@@ -104,17 +99,13 @@ vracha = ['врача', 'врачаа', 'врачааа', 'врачаааа', '�
 # РАСИЯ
 russia = ['расия', 'расея', 'раися', 'раеся',
           'рассия', 'рассея', 'раисся', 'раесся',
-
           'росия', 'росея', 'роися', 'роеся',
           'россия', 'россея', 'роисся', 'роесся',
-
           'русия', 'русея', 'руися', 'руеся',
           'руссия', 'руссея', 'руисся', 'руесся', '🫡']
 
 kirov = ['киров', 'Киров', 'кирове', 'кировский', 'кировское', 'кировчане', 'кировчанское', 'кирова', 'кирову']
-
 anthem = 'AwACAgIAAxkBAAJDIWLGyK15Ym3bMc0u5PU9YXtDDxHnAALtHAACbJI4SiCUtXmDfvoxKQQ'
-
 mammamia = '🤌️️️️️️'
 damage = '🥺'
 emotional_daaamage = 'BAACAgIAAxkBAAJGdmPsjA5d_xkOhjrnmm6YYnkRPRx_AAJCJAAClVdoS2h9XwZuAAF-QS4E'
@@ -122,27 +113,10 @@ emotional_daaamage = 'BAACAgIAAxkBAAJGdmPsjA5d_xkOhjrnmm6YYnkRPRx_AAJCJAAClVdoS2
 # team
 team = '@team'
 team_text = '⚠️ *Внимание, Шобла*\n\n' \
-            '[Тарс](t.me/shackoor), ' \
-            '[Апол](t.me/apoll), ' \
-            '[Ивановский](t.me/ivanovmm), ' \
-            '[Конатик](t.me/KanatoF), ' \
-            '[Кир](t.me/zhuykovkb), ' \
-            '[Катя](tg://user?id=434756061), ' \
-            '[Максон](t.me/MrGogu), ' \
-            '[Носик](tg://user?id=51994109), ' \
-            '[Окз](t.me/oxy_genium), ' \
-            '[Паузеньк](t.me/Pausenk), ' \
-            '[НТЩ](t.me/ntshch), ' \
-            '[Толяновский](t.me/toliyansky), ' \
-            '[Виктор](t.me/FrelVick), ' \
-            '[Морго](t.me/margoiv_a), ' \
-            '[Мишаня](t.me/Mich37), ' \
-            '[Ксю](t.me/ksenia_boorda), ' \
-            '[Ромолэ](t.me/Roman_Kazitskiy), ' \
-            '[Эльтос](t.me/elvira_aes), ' \
-            '[Аня](t.me/kebushka), ' \
-            '[Таня](t.me/KostinaT), ' \
-            '[Деннис](tg://user?id=503404575)'
+            '[Тарс](t.me/shackoor), [Апол](t.me/apoll), [Ивановский](t.me/ivanovmm), [Конатик](t.me/KanatoF), [Кир](t.me/zhuykovkb), [Катя](tg://user?id=434756061), [Максон](t.me/MrGogu), ' \
+            '[Носик](tg://user?id=51994109), [Окз](t.me/oxy_genium), [Паузеньк](t.me/Pausenk), [НТЩ](t.me/ntshch), [Толяновский](t.me/toliyansky), [Виктор](t.me/FrelVick), ' \
+            '[Морго](t.me/margoiv_a), [Мишаня](t.me/Mich37), [Ксю](t.me/ksenia_boorda), [Ромолэ](t.me/Roman_Kazitskiy), [Эльтос](t.me/elvira_aes), [Аня](t.me/kebushka), ' \
+            '[Таня](t.me/KostinaT), [Деннис](tg://user?id=503404575)'
 
 # rapid
 rapid = '/rapid'
@@ -167,10 +141,10 @@ sozvon_link = '🎧[Дискорд](https://discord.gg/sDKJSg2d9q)\nИли Гу�
 sozvon_pic = 'AgACAgIAAxkBAAJGiWP0of-RR4nekhlpNJdKUhywMV4NAALzyTEbiNKQS6LhqdN3LBprAQADAgADeAADLgQ'
 
 # Для команды /usd
-usd_pic = ["AgACAgIAAxkBAAJHhmTaCE6SoWoEh5banay5zgbROoO9AAIkyDEbrm3RSh-zi8Myj9vvAQADAgADeQADMAQ",
-           "AgACAgIAAxkBAAJHbmTXm8165Ly6JWal4toSumUYtZgJAAIczDEb5I3ASo6qASduHbZkAQADAgADeAADMAQ",
-           "AgACAgIAAxkBAAJHlmTaS9AZ49OJjA_5O-0AAcfw6i1Y1gACTMkxG65t0Uo5j_RIetD_YQEAAwIAA3gAAzAE",
-            "AgACAgIAAxkBAAJHomTbnPNMcPKjuOLlrYL2dy4lx0gZAAJ-0jEbtWPZSoA36V56k08-AQADAgADeAADMAQ"]
+usd_pic = ['AgACAgIAAxkBAAJHhmTaCE6SoWoEh5banay5zgbROoO9AAIkyDEbrm3RSh-zi8Myj9vvAQADAgADeQADMAQ',
+           'AgACAgIAAxkBAAJHbmTXm8165Ly6JWal4toSumUYtZgJAAIczDEb5I3ASo6qASduHbZkAQADAgADeAADMAQ',
+           'AgACAgIAAxkBAAJHlmTaS9AZ49OJjA_5O-0AAcfw6i1Y1gACTMkxG65t0Uo5j_RIetD_YQEAAwIAA3gAAzAE',
+           'AgACAgIAAxkBAAJHomTbnPNMcPKjuOLlrYL2dy4lx0gZAAJ-0jEbtWPZSoA36V56k08-AQADAgADeAADMAQ']
             
 # Ошибки
 errors = ['Ошибка команды /start',  # 0
@@ -208,6 +182,8 @@ errors = ['Ошибка команды /start',  # 0
           ]
 
 # ID участниеов Шобла - ReBorn в Telegram
+tg_names = ['Апол', 'Витя', 'Кирюха', 'Максон', 'Ксю', 'Пауза', 'Мишаня', 'Лёха', 'Роман', 'Толян', 'Максончик', 'Аня Б.', 'Тарс', 'Канатик', 'Эля', 'Нтщ', 'Катя', 'Окс', 'Марго', 'Аня', 'Деннис', 'Таня', '🇲🇽 Seb']
+
 tg_ids = [740100,  # Я
           155680674,  # Виктор
           873863,  # Кирилл
@@ -231,30 +207,6 @@ tg_ids = [740100,  # Я
           503404575,  # Деннис
           778173995,  # Таня
           959656923]  # Seb
-
-tg_names = ['Апол',
-            'Витя',
-            'Кирюха',
-            'Максон',
-            'Ксю',
-            'Пауза',
-            'Мишаня',
-            'Лёха',
-            'Роман',
-            'Толян',
-            'Максончик',
-            'Аня Б.',
-            'Тарс',
-            'Канатик',
-            'Эля',
-            'Нтщ',
-            'Катя',
-            'Окс',
-            'Марго',
-            'Аня',
-            'Деннис',
-            'Таня',
-            '🇲🇽 Seb']
 
 tg_drs = ['2.2.1993',  # Я
           '29.3.1994',  # Виктор
