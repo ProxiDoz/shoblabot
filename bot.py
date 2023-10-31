@@ -1,6 +1,5 @@
 #!/usr/bin/python3.8.9
 # -*- coding: utf-8 -*-
-import g4f
 # # # # # # Импортозамещение # # # # # #
 import telebot                              # Библиотека piTelegramBotAPI
 import re                                   # Для поиска ссылки в тексте
@@ -20,8 +19,7 @@ import helpers.faggot as faggot             # Файл для функции fag
 import helpers.find_words as find_words     # Файл для функции kirov
 import helpers.translitsky as translitsky   # Файл для функции транслитского
 import helpers.cbr as cbr                   # Файл для команды запросв курса рубля
-from gpt4free import usesless
-
+import g4f
 
 # # # # # # Инициализация # # # # # #
 bot = telebot.TeleBot(secret.tg_token)  # Token бота
