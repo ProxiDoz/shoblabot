@@ -556,7 +556,7 @@ def send_text(message):
                 except Exception as poll_reply_error:
                     log('{0}\nТекст ошибки: {1}'.format(constants.errors[19], poll_reply_error))
                     send_error(message, 19, poll_reply_error)
-            elif message.reply_to_message.text == constants.enter_question:
+            elif message.reply_to_message.text == constants.enter_question_gpt:
                 try:
                     response = g4f.ChatCompletion.create(
                         model='gpt-3.5-turbo-16k',
