@@ -566,8 +566,8 @@ def send_text(message):
 
                     bot.send_message(message.chat.id, response, parse_mode='Markdown')
                 except Exception as e:
-                    log('{0}\nТекст ошибки: {1}'.format(constants.errors[19], e))
-                    send_error(message, 19, e)
+                    log('{0}\nТекст ошибки: {1}'.format(constants.errors[32], e))
+                    send_error(message, 32, e)
         # Если это ссылка из Instagram
         elif match:
             new_url = re.sub(r'instagram\.com', 'ddinstagram.com', match.group(1))  # Заменяем домен на ddinstagram.com
