@@ -175,7 +175,7 @@ def send_discount(message):
             bot.send_message(message.chat.id, constants.buttons[2][0], reply_markup=keyboard_start, parse_mode='Markdown')
             if message.from_user.is_premium and random.random() < 0.3:
                 bot.send_message(message.chat.id, '🤗 Экономить всегда полезно, ||пусечка|| премиумная',
-                                 parse_mode='Markdown')
+                                 parse_mode='MarkdownV2')
             update_activity('discount')
     except Exception as e:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[8], e))
