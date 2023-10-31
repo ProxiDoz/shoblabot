@@ -5,3 +5,6 @@ __pycache__
 
 *.iml
 .idea/
+
+activity_count
+log.sample.txt

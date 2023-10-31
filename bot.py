@@ -1,6 +1,5 @@
 #!/usr/bin/python3.8.9
 # -*- coding: utf-8 -*-
-
 # # # # # # Импортозамещение # # # # # #
 import telebot                              # Библиотека piTelegramBotAPI
 import re                                   # Для поиска ссылки в тексте
@@ -20,10 +19,23 @@ import helpers.faggot as faggot             # Файл для функции fag
 import helpers.find_words as find_words     # Файл для функции kirov
 import helpers.translitsky as translitsky   # Файл для функции транслитского
 import helpers.cbr as cbr                   # Файл для команды запросв курса рубля
-
+import g4f
 
 # # # # # # Инициализация # # # # # #
 bot = telebot.TeleBot(secret.tg_token)  # Token бота
+bot.set_my_commands([
+    telebot.types.BotCommand("/discount", "🤑Скидки"),
+    telebot.types.BotCommand("/usd", "💵 Курс рубля"),
+    telebot.types.BotCommand("/who", "✅❌Создать опрос"),
+    telebot.types.BotCommand("/help", "❓Полезная информация"),
+    telebot.types.BotCommand("/meeting", "🎧Ссылка шоблосозвона"),
+    telebot.types.BotCommand("/log", "📋Вывод логов бота"),
+    telebot.types.BotCommand("/stat", "🤖Статистика по использованию бота"),
+    telebot.types.BotCommand("/rapid", "✅ Зеленый Rapid"),
+    telebot.types.BotCommand("/yapoznaumir", "🧐 Задай вопрос")
+
+
+])
 activity_count = {}  # Переменная для сбора статистики по командам
 curr_meeting_poll = {}  # Переменная для сбора данных по опросу
 if os.path.isfile(constants.meeting_file):  # Загружаем данные из файла meeting_file
@@ -95,6 +107,21 @@ def server_info(message):
 
 
 # # # # # # Доступные команды # # # # # #
+# Вызов команды для задания вопросов
+@bot.message_handler(commands=['yapoznaumir'])
+def yapoznaumir(message):
+    try:
+        # update_activity('yapoznaumir')
+        log('вызов команды /yapoznaumir by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
+        message_id = message.message_id
+        bot.send_message(message.chat.id, constants.enter_question_gpt, reply_to_message_id=message_id,
+                         reply_markup=telebot.types.ForceReply(True))
+        bot.delete_message(message.chat.id, message.message_id)
+    except Exception as e:
+        log('{0}\nТекст ошибки: {1}'.format(constants.errors[32], e))
+        send_error(message, 32, e)
+
+
 # Вызов стартового сообщения / справки
 @bot.message_handler(commands=['start', 'help'])
 def handle_start_help(message):
@@ -133,19 +160,72 @@ def who_will(message):
 @bot.message_handler(commands=['discount'])
 def send_discount(message):
     try:
-        if message.from_user.id in constants.tg_ids:  # Это человек из Шоблы
-            log('вызов команды /discount by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
+        if message.from_user.id in constants.tg_ids:
+            log('вызов команды /discount by {0}'.format(
+                constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
             i = 0
             keyboard_start = telebot.types.InlineKeyboardMarkup(row_width=2)
             while i < len(constants.buttons[0]) - 1:
-                keyboard_start.add(telebot.types.InlineKeyboardButton(text=constants.buttons[0][i + 1], callback_data=constants.buttons[1][i + 1]),
-                                   telebot.types.InlineKeyboardButton(text=constants.buttons[0][i + 2], callback_data=constants.buttons[1][i + 2]))
+                keyboard_start.add(telebot.types.InlineKeyboardButton(text=constants.buttons[0][i + 1],
+                                                                      callback_data=constants.buttons[1][i + 1]),
+                                   telebot.types.InlineKeyboardButton(text=constants.buttons[0][i + 2],
+                                                                      callback_data=constants.buttons[1][i + 2]))
                 i += 2
-            bot.send_message(message.chat.id, constants.buttons[2][0], reply_markup=keyboard_start, parse_mode='MarkdownV2')
+            # keyboard_start.add(constants.discounts, constants.channel)
+            bot.send_message(message.chat.id, constants.buttons[2][0], reply_markup=keyboard_start, parse_mode='Markdown')
+            if message.from_user.is_premium and random.random() < 0.3:
+                bot.send_message(message.chat.id, '🤗 Экономить всегда полезно, ||пусечка|| премиумная',
+                                 parse_mode='MarkdownV2')
             update_activity('discount')
-    except Exception as send_discount_error:
-        log('{0}\nТекст ошибки: {1}'.format(constants.errors[8], send_discount_error))
-        send_error(message, 8, send_discount_error)
+    except Exception as e:
+        log('{0}\nТекст ошибки: {1}'.format(constants.errors[8], e))
+        send_error(message, 8, e)
+
+
+# # # # # # Служебные функции и команды # # # # # #
+# Функция сбора статистики по командам и функциям
+def update_activity(field):
+    try:
+        now_time = datetime.datetime.now()
+        current_month = str(now_time.year) + '.' + str(now_time.month)
+        if os.path.isfile(constants.activity_file):  # Загружаем данные из файла activity_count
+            with open(constants.activity_file, 'r') as lang:
+                activity_count = json.loads(lang.read())
+        activity_count[current_month][field] += 1
+        with open(constants.activity_file, 'w') as lang:  # Записываем данные в файл activity_count
+            lang.write(json.dumps(activity_count))
+    except Exception as e:
+        log('Ошибка в функции update_activity:\nПоле: {0}\nТекст ошибки: {1}'.format(field, e))
+        bot.send_message(secret.apple_id,
+                         '❌ Ошибка в функции update_activity:\n*Поле: *{0}\n*Текст ошибки:*\n{1}'.format(field, e),
+                         parse_mode='Markdown')
+
+
+# Функция отправки ошибки
+def send_error(message, error_id, error):
+    try:
+        bot.send_message(secret.apple_id,
+                         '❌ *{0}\nОт:* {1} {2}\n*Username:* @{3}\n*Чат:* {4} {5} {6}\n*id:* {7}\n*Сообщение:* {8}\n*Время:* _{9}_\n*Текст ошибки:* '
+                         '_{10}_'.format(constants.errors[error_id], message.from_user.first_name,
+                                         message.from_user.last_name, message.from_user.username,
+                                         message.chat.title, message.chat.first_name, message.chat.last_name,
+                                         message.chat.id, message.text,
+                                         time.ctime(time.time()), error), parse_mode='Markdown')
+    except Exception as e:
+        log('Ошибка в функции send_error:\nСообщение: {0}\nТекст ошибки: {1}'.format(message.text, e))
+        bot.send_message(secret.apple_id,
+                         '❌ Ошибка в функции send_error:\n*Сообщение: *{0}\n*Текст ошибки:*\n{1}'.format(message.text,
+                                                                                                         e),
+                         parse_mode='Markdown')
+
+
+# Запись лога в файл log.txt
+def log(text):
+    try:
+        with open(constants.log_file, 'a') as log_file:
+            log_file.write(time.ctime(time.time()) + ' - ' + text + '\n')
+    except Exception as e:
+        bot.send_message(secret.apple_id, '❌ Ошибка при записи лога\n*Текст ошибки:*\n' + str(e), parse_mode='Markdown')
 
 
 # Вызов статистики
@@ -171,7 +251,9 @@ def statistics(message):
                                                                  activity_count[cur_month]['mamma'], activity_count[cur_month]['usd'])
             bot.send_message(message.chat.id, month_statistics.replace('прошлый', 'текущий'), parse_mode='MarkdownV2')
         else:
-            log('вызов команды /stat\n{0}: User ID - {1}, user_name - @{2}'.format(constants.errors[6], message.from_user.id, message.from_user.username))
+            log('вызов команды /stat\n{0}: User ID - {1}, user_name - @{2}'.format(constants.errors[6],
+                                                                                   message.from_user.id,
+                                                                                   message.from_user.username))
             send_error(message, 6, 'N/A')
     except Exception as statistics_error:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[4], statistics_error))
@@ -317,11 +399,16 @@ def rapid(message):
         value = 'help' if size == 1 else data[1]
 
         # Ну тут почти без изменений, тока data[1] became value
-        response = urllib2.urlopen('https://rapid.zhuykovkb.ru/rapid?data=' + quote(value) + '&memberid=' + str(message.from_user.id))
+        response = urllib2.urlopen(
+            'https://rapid.zhuykovkb.ru/rapid?data=' + quote(value) + '&memberid=' + str(message.from_user.id))
         answer = json.loads(str(response.read(), 'utf-8'))
+        if message.from_user.is_premium and random.random() < 0.3:
+            bot.send_message(message.chat.id, '🤗 Обязательно учту этот Рапид, ||пусечка|| премиумная',
+                             parse_mode='Markdown')
         bot.send_message(secret.tg_chat_id, answer['message'], parse_mode='Markdown')
         if answer['message'] == 'Номер успешно добавлен':
-            log('добавлен новый номер Рапида by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
+            log('добавлен новый номер Рапида by {0}'.format(
+                constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
             update_activity('rapid_new')
     except Exception as rapid_error:
         bot.send_message(secret.zhuykovkb_apple_id, 'Ошибка в функции rapid:\n\nДанные ' + quote(value) + '\n\nТекст ошибки ' + str(rapid_error))
@@ -469,6 +556,18 @@ def send_text(message):
                 except Exception as poll_reply_error:
                     log('{0}\nТекст ошибки: {1}'.format(constants.errors[19], poll_reply_error))
                     send_error(message, 19, poll_reply_error)
+            elif message.reply_to_message.text == constants.enter_question_gpt:
+                try:
+                    response = g4f.ChatCompletion.create(
+                        model='gpt-3.5-turbo-16k',
+                        messages=[{"role": "user", "content": message.text}],
+                        stream=False,
+                    )
+
+                    bot.send_message(message.chat.id, response, parse_mode='Markdown')
+                except Exception as e:
+                    log('{0}\nТекст ошибки: {1}'.format(constants.errors[19], e))
+                    send_error(message, 19, e)
         # Если это ссылка из Instagram
         elif match:
             new_url = re.sub(r'instagram\.com', 'ddinstagram.com', match.group(1))  # Заменяем домен на ddinstagram.com
@@ -604,7 +703,7 @@ try:
     sdr()
 except Exception as e:
     log('Ошибка при запуске sdr:\nТекст ошибки: ' + str(e))
-    bot.send_message(secret.apple_id, '❌ Ошибка при запуске sdr\n*Текст ошибки:*\n' + str(e), parse_mode='MarkdownV2')
+    bot.send_message(secret.apple_id, '❌ Ошибка при запуске sdr\n*Текст ошибки:*\n' + str(e), parse_mode='Markdown')
 
 try:
     log('Попытка запуска bot.infinity_polling()')
@@ -613,7 +712,7 @@ except Exception as e:
     with open(constants.log_file, 'a') as log_file_stream:
         traceback.print_exc(file=log_file_stream)
     log('Ошибка при запуске bot.polling:\nТекст ошибки: ' + str(e))
-    bot.send_message(secret.apple_id, '❌ Ошибка при запуске bot.polling\n*Текст ошибки:*\n' + str(e), parse_mode='MarkdownV2')
+    bot.send_message(secret.apple_id, '❌ Ошибка при запуске bot.polling\n*Текст ошибки:*\n' + str(e), parse_mode='Markdown')
 
 try:
     with open(constants.log_file, 'a') as log_file_flow:
