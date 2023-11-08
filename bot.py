@@ -433,7 +433,6 @@ def poll_results(poll):
             max_time = meeting_results[4:].index(max(meeting_results[4:])) + 4
             curr_meeting_poll['max_date'] = max_date
             curr_meeting_poll['max_time'] = max_time
-            curr_meeting_poll['first_poll'] = 0  # Флаг, что опросов в этом месяце больше не будет
             with open(constants.meeting_file, 'w') as meeting_file:  # Записываем данные в файл meeting_file
                 meeting_file.write(json.dumps(curr_meeting_poll))
             log('Приглашение на общий созвон будет отправлено' + constants.meeting_options[max_time] + constants.meeting_options[max_date][4:])
