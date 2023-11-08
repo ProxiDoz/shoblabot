@@ -4,14 +4,15 @@
 import telebot                              # Библиотека piTelegramBotAPI
 import re                                   # Для поиска ссылки в тексте
 import os                                   # Для проверки на существование файла
+import g4f                                  # Для работы с нейронкой
 import json                                 # Представляет словарь в строку
 import time                                 # Для представления времени в читаемом формате
 import datetime                             # ---//---
 import psutil                               # Для вытаскивания данных по ОЗУ сервера
 import random                               # Присвятой рандом
 import threading                            # Для отсчета времени для отправки сообщений
-import urllib.request as urllib2
-from urllib.parse import quote
+import urllib.request as urllib2            # Для Кирюхиного Rapid'a
+from urllib.parse import quote              # ---//---
 import traceback                            # Для записи в лог файл при траблах бота
 import constants                            # Файл с константами
 import secret                               # Файл с токенами
@@ -19,7 +20,6 @@ import helpers.faggot as faggot             # Файл для функции fag
 import helpers.find_words as find_words     # Файл для функции kirov
 import helpers.translitsky as translitsky   # Файл для функции транслитского
 import helpers.cbr as cbr                   # Файл для команды запросв курса рубля
-import g4f
 
 # # # # # # Инициализация # # # # # #
 bot = telebot.TeleBot(secret.tg_token)  # Token бота
@@ -33,8 +33,6 @@ bot.set_my_commands([
     telebot.types.BotCommand("/stat", "🤖Статистика по использованию бота"),
     telebot.types.BotCommand("/rapid", "✅ Зеленый Rapid"),
     telebot.types.BotCommand("/yapoznaumir", "🧐 Задай вопрос")
-
-
 ])
 activity_count = {}  # Переменная для сбора статистики по командам
 curr_meeting_poll = {}  # Переменная для сбора данных по опросу
@@ -90,9 +88,9 @@ def server_info(message):
     try:
         if message.from_user.id == secret.apple_id:  # Это Апол
             try:
-                log('Отправка статуса памяти сервера')
                 if message.text == '/s':
-                    bot.send_message(message.chat.id, '🤖 RAM free: {0}% из 512Мбайт'.format(psutil.virtual_memory()[2]))
+                    bot.send_message(secret.apple_id, '🤖 RAM free: {0}% из 512Мбайт'.format(psutil.virtual_memory()[2]))
+                    log('Отправка статуса памяти сервера')
                 else:
                     bot.send_message(secret.tg_chat_id, message.text[3:len(message.text)])
             except Exception as ram_error:
@@ -113,9 +111,7 @@ def yapoznaumir(message):
     try:
         update_activity('yapoznaumir')
         log('вызов команды /yapoznaumir by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
-        message_id = message.message_id
-        bot.send_message(message.chat.id, constants.enter_question_gpt, reply_to_message_id=message_id,
-                         reply_markup=telebot.types.ForceReply(True))
+        bot.send_message(message.chat.id, constants.enter_question_gpt, reply_to_message_id=message.message_id, reply_markup=telebot.types.ForceReply(True))
         bot.delete_message(message.chat.id, message.message_id)
     except Exception as yapoznaumir_error:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[32], yapoznaumir_error))
@@ -146,8 +142,7 @@ def who_will(message):
         update_activity('who')
         if message.chat.id == secret.tg_chat_id:  # Это Шобла
             log('вызов команды /who by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
-            force_reply = telebot.types.ForceReply(True)
-            bot.send_message(secret.tg_chat_id, constants.enter_question_new, reply_to_message_id=message.message_id, reply_markup=force_reply)
+            bot.send_message(secret.tg_chat_id, constants.enter_question_new, reply_to_message_id=message.message_id, reply_markup=telebot.types.ForceReply(True))
             bot.delete_message(secret.tg_chat_id, message.message_id)
         elif message.chat.id in constants.tg_ids:
             bot.send_message(message.chat.id, '❌ Опрос создается только в [Шобле](https://t.me/c/1126587083/)', parse_mode='Markdown')
@@ -161,15 +156,12 @@ def who_will(message):
 def send_discount(message):
     try:
         if message.from_user.id in constants.tg_ids:
-            log('вызов команды /discount by {0}'.format(
-                constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
+            log('вызов команды /discount by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
             i = 0
             keyboard_start = telebot.types.InlineKeyboardMarkup(row_width=2)
             while i < len(constants.buttons[0]) - 1:
-                keyboard_start.add(telebot.types.InlineKeyboardButton(text=constants.buttons[0][i + 1],
-                                                                      callback_data=constants.buttons[1][i + 1]),
-                                   telebot.types.InlineKeyboardButton(text=constants.buttons[0][i + 2],
-                                                                      callback_data=constants.buttons[1][i + 2]))
+                keyboard_start.add(telebot.types.InlineKeyboardButton(text=constants.buttons[0][i + 1], callback_data=constants.buttons[1][i + 1]),
+                                   telebot.types.InlineKeyboardButton(text=constants.buttons[0][i + 2], callback_data=constants.buttons[1][i + 2]))
                 i += 2
             bot.send_message(message.chat.id, constants.buttons[2][0], reply_markup=keyboard_start, parse_mode='Markdown')
             update_activity('discount')
@@ -247,13 +239,10 @@ def meeting(message):
 def usd(message):
     try:
         if message.from_user.id in constants.tg_ids:  # Это человек из Шоблы
-            dollar = cbr.getUSD("USD")
+            dollar, euro, lari, tenge = cbr.getUSD("USD"), cbr.getUSD("EUR"), cbr.getUSD("GEL"), cbr.getUSD("KZT")
             float_dol = f"{float(dollar.replace(',', '.')):.{2}f}"
-            euro = cbr.getUSD("EUR")
             float_eur = f"{float(euro.replace(',', '.')):.{2}f}"
-            lari = cbr.getUSD("GEL")
             float_lar = f"{float(lari.replace(',', '.')):.{2}f}"
-            tenge = cbr.getUSD("KZT")
             float_ten = f"{float(tenge.replace(',', '.')):.{2}f}"
             bot.send_photo(message.chat.id, constants.usd_pic[random.randint(0, len(constants.usd_pic) - 1)],
                            caption="💵 *Курс рубля по данным сайта [ЦБР](https://www.cbr.ru/currency_base/daily/)*:\n"
@@ -325,8 +314,8 @@ def hey_doc(message):
 @bot.message_handler(func=lambda message: message.text and constants.team in message.text.lower() and message.chat.id == secret.tg_chat_id)
 def team(message):
     try:
-        bot.send_message(chat_id=secret.tg_chat_id, disable_notification=False, reply_to_message_id=message.message_id, text=constants.team_text, disable_web_page_preview=True,
-                         parse_mode='Markdown')
+        bot.send_message(chat_id=secret.tg_chat_id, disable_notification=False, reply_to_message_id=message.message_id,
+                         text=constants.team_text, disable_web_page_preview=True, parse_mode='Markdown')
         update_activity('team')
     except Exception as team_error:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[14], team_error))
@@ -431,8 +420,7 @@ def poll_results(poll):
                 i += 1
             max_date = meeting_results[0:4].index(max(meeting_results[0:4]))
             max_time = meeting_results[4:].index(max(meeting_results[4:])) + 4
-            curr_meeting_poll['max_date'] = max_date
-            curr_meeting_poll['max_time'] = max_time
+            curr_meeting_poll['max_date'], curr_meeting_poll['max_time'] = max_date, max_time
             with open(constants.meeting_file, 'w') as meeting_file:  # Записываем данные в файл meeting_file
                 meeting_file.write(json.dumps(curr_meeting_poll))
             log('Приглашение на общий созвон будет отправлено' + constants.meeting_options[max_time] + constants.meeting_options[max_date][4:])
@@ -483,7 +471,7 @@ def send_text(message):
                 send_error(message, 26, pin_error)
         # Если это реплай на сообщение бота
         elif message.reply_to_message is not None and message.reply_to_message.from_user.id == secret.bot_id:
-            # Запрос внесения опроса
+            # Если вводится текст для опроса
             if message.reply_to_message.text == constants.enter_question_new or message.reply_to_message.text == constants.too_large_question:
                 try:
                     if len(text) <= 291:
@@ -506,14 +494,10 @@ def send_text(message):
                 except Exception as poll_reply_error:
                     log('{0}\nТекст ошибки: {1}'.format(constants.errors[19], poll_reply_error))
                     send_error(message, 19, poll_reply_error)
+            # Если вводится вопрос к нейронке
             elif message.reply_to_message.text == constants.enter_question_gpt:
                 try:
-                    response = g4f.ChatCompletion.create(
-                        model='gpt-3.5-turbo-16k',
-                        messages=[{"role": "user", "content": message.text}],
-                        stream=False,
-                    )
-
+                    response = g4f.ChatCompletion.create(model='gpt-3.5-turbo-16k', messages=[{"role": "user", "content": message.text}], stream=False)
                     bot.send_message(message.chat.id, response, parse_mode='Markdown')
                 except Exception as g4f_error:
                     log('{0}\nТекст ошибки: {1}'.format(constants.errors[32], g4f_error))
@@ -629,10 +613,9 @@ def sdr():
                 # Рассылка по 10челлендж
                 challenge = bot.send_message(secret.tg_chat_id, '📸 Шоблятки, время для #10челлендж и ваших фоточек за месяц!', parse_mode='Markdown')
                 bot.pin_chat_message(secret.tg_chat_id, challenge.message_id, disable_notification=False)
-            # День Баяна в Шобле отмечается 28 мая
-            if dr == str(28.5):
+            if dr == str(28.5):  # День Баяна в Шобле отмечается 28 мая
                 bot.send_photo(secret.tg_chat_id, 'AgACAgIAAxkBAAJFzWLeYTbQ2ENcXEwoPOrRZprGCCUUAALHuTEb6BT4ShJZvIDQxNjZAQADAgADcwADKQQ', caption='🪗 Шобла, поздравляю с Днём Баяна!')
-            if dr == str(24.11):
+            if dr == str(24.11):  # День Рождения бота
                 bot.send_message(secret.tg_chat_id, '🥳 Сегодня ботику уже *{0} лет*!'.format(now_time.year - 2016), parse_mode='Markdown')
             # Отправка поздравлений с ДР
             for item in constants.tg_drs:
