@@ -4,10 +4,10 @@ import telebot
 
 # Пути к файлам
 log_file = '/root/log.txt'
-activity_file = '/root/router/shoblabot/activity_count'
+activity_file = '/root/router/shoblabot/activity_count.json'
+meeting_file = '/root/router/shoblabot/meeting_poll.json'
 kirov_audio_path = '/root/router/shoblabot/audio/kirov.mp3'
 mamma_audio_path = '/root/router/shoblabot/audio/mammamia.mp3'
-meeting_file = '/root/router/shoblabot/meeting_poll'
 
 # Тексты при командах /start и /help
 help_text_light = '⛔ Вы не участник чата Шобла - ReBorn'
@@ -56,7 +56,7 @@ month_statistics = '🤖 *Статистика по боту за прошлый
                    '/start: *{9} раз*\n' \
                    '/help: *{10} раз*\n' \
                    '/who: *{11} раз*\n' \
-                   '/sozvon: *{16} раз*\n' \
+                   '/meeting: *{16} раз*\n' \
                    '/rapid: *{12} раз*'
 
 # Данные для команды /discount
