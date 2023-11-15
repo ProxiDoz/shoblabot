@@ -3,7 +3,6 @@
 # # # # # # Импортозамещение # # # # # #
 import telebot                              # Библиотека piTelegramBotAPI
 import re                                   # Для поиска ссылки в тексте
-import os                                   # Для проверки на существование файла
 import g4f                                  # Для работы с нейронкой
 import json                                 # Представляет словарь в строку
 import time                                 # Для представления времени в читаемом формате
@@ -35,11 +34,8 @@ bot.set_my_commands([
     telebot.types.BotCommand("/yapoznaumir", "🧐 Задай вопрос")
 ])
 activity_count = {}  # Переменная для сбора статистики по командам
-curr_meeting_poll = {}  # Переменная для сбора данных по опросу
-if os.path.isfile(constants.meeting_file):  # Загружаем данные из файла meeting_file
-    with open(constants.meeting_file, 'r') as lang:
-        curr_meeting_poll = json.loads(lang.read())
-meeting_results = [0, 0, 0, 0, 0, 0, 0, 0]  # Массив для подсчета кол-ва голосов опроса по созвону
+with open(constants.meeting_file, 'r') as lang:  # Переменная для сбора данных по опросу
+    curr_meeting_poll = json.loads(lang.read())
 
 
 # # # # # # Служебные функции и миниадминка /s # # # # # #
@@ -48,10 +44,9 @@ def update_activity(field):
     global activity_count
     try:
         now_time = datetime.datetime.now()
-        current_month = str(now_time.year) + '.' + str(now_time.month)
-        if os.path.isfile(constants.activity_file):  # Загружаем данные из файла activity_count
-            with open(constants.activity_file, 'r') as activity_file:
-                activity_count = json.loads(activity_file.read())
+        current_month = f'{now_time.year}.{now_time.month}'
+        with open(constants.activity_file, 'r') as activity_file:  # Загружаем данные из файла activity_count
+            activity_count = json.loads(activity_file.read())
         activity_count[current_month][field] += 1
         with open(constants.activity_file, 'w') as activity_file:  # Записываем данные в файл activity_count
             activity_file.write(json.dumps(activity_count))
@@ -69,17 +64,17 @@ def send_error(message, error_id, error_text):
                                        message.chat.title, message.chat.first_name, message.chat.last_name, message.chat.id, message.text,
                                        time.ctime(time.time()), error_text))
     except Exception as send_error_error:
-        log('Ошибка в функции send_error:\nСообщение: {0}\nТекст ошибки: {1}'.format(message.text, send_error_error))
-        bot.send_message(secret.apple_id, '❌ Ошибка в функции send_error:\nСообщение: {0}\nТекст ошибки:\n{1}'.format(message.text, send_error_error))
+        log(f'Ошибка в функции send_error:\nСообщение: {message.text}\nТекст ошибки: {send_error_error}')
+        bot.send_message(secret.apple_id, f'❌ Ошибка в функции send_error:\nСообщение: {message.text}\nТекст ошибки:\n{send_error_error}')
 
 
 # Запись событий в файл log.txt
 def log(text):
     try:
         with open(constants.log_file, 'a') as log_file:
-            log_file.write(time.ctime(time.time()) + ' - ' + text + '\n')
+            log_file.write(f"{time.ctime(time.time())} - {text}\n")
     except Exception as log_error:
-        bot.send_message(secret.apple_id, '❌ Ошибка при записи лога\nТекст ошибки:\n' + str(log_error))
+        bot.send_message(secret.apple_id, f'❌ Ошибка при записи лога\nТекст ошибки:\n{log_error}')
 
 
 # Вызов информации о сервере и пересылка сообщения в Шоблу (доступно только Аполу)
@@ -88,19 +83,19 @@ def server_info(message):
     try:
         if message.from_user.id == secret.apple_id:  # Это Апол
             try:
-                if message.text == '/s':
-                    bot.send_message(secret.apple_id, '🤖 RAM free: {0}% из 512Мбайт'.format(psutil.virtual_memory()[2]))
+                if message.text.len() > 2:
+                    bot.send_message(secret.apple_id, f'🤖 RAM free: {psutil.virtual_memory()[2]}% из 512Мбайт')
                     log('Отправка статуса памяти сервера')
                 else:
-                    bot.send_message(secret.tg_chat_id, message.text[3:len(message.text)])
+                    bot.send_message(secret.tg_chat_id, message.text[3:message.text.len()])
             except Exception as ram_error:
-                log('{0}\nТекст ошибки: {1}'.format(constants.errors[21], ram_error))
+                log(f'{constants.errors[21]}\nТекст ошибки: {ram_error}')
                 send_error(message, 21, ram_error)
         else:
-            log('вызов команды /s\n{0}: User ID - {1}, user_name - @{2}'.format(constants.errors[6], message.from_user.id, message.from_user.username))
+            log(f'вызов команды /s\n{constants.errors[6]}: User ID - {constants.errors[6]}, user_name - @{message.from_user.username}')
             send_error(message, 6, 'N/A')
     except Exception as server_info_error:
-        log('{0}\nТекст ошибки: {1}'.format(constants.errors[5], server_info_error))
+        log(f'{constants.errors[5]}\nТекст ошибки: {server_info_error}')
         send_error(message, 5, server_info_error)
 
 
@@ -109,12 +104,12 @@ def server_info(message):
 @bot.message_handler(commands=['yapoznaumir'])
 def yapoznaumir(message):
     try:
-        update_activity('yapoznaumir')
         log('вызов команды /yapoznaumir by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
         bot.send_message(message.chat.id, constants.enter_question_gpt, reply_to_message_id=message.message_id, reply_markup=telebot.types.ForceReply(True))
         bot.delete_message(message.chat.id, message.message_id)
+        update_activity('yapoznaumir')
     except Exception as yapoznaumir_error:
-        log('{0}\nТекст ошибки: {1}'.format(constants.errors[32], yapoznaumir_error))
+        log(f'{constants.errors[32]}\nТекст ошибки: {yapoznaumir_error}')
         send_error(message, 32, yapoznaumir_error)
 
 
@@ -123,7 +118,7 @@ def yapoznaumir(message):
 def handle_start_help(message):
     try:
         if message.chat.id == secret.tg_chat_id or message.from_user.id in constants.tg_ids:  # Это Шобла или человек из Шоблы
-            log('вызов команды {0} by {1}'.format(message.text, constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
+            log(f'вызов команды {message.text} by {constants.tg_names[constants.tg_ids.index(message.from_user.id)]}')
             bot.send_message(message.chat.id, constants.help_text, reply_markup=constants.help_keyboard, parse_mode='Markdown')
             update_activity(message.text[1:])
         else:
@@ -139,11 +134,11 @@ def handle_start_help(message):
 @bot.message_handler(commands=['who'])
 def who_will(message):
     try:
-        update_activity('who')
         if message.chat.id == secret.tg_chat_id:  # Это Шобла
             log('вызов команды /who by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
             bot.send_message(secret.tg_chat_id, constants.enter_question_new, reply_to_message_id=message.message_id, reply_markup=telebot.types.ForceReply(True))
             bot.delete_message(secret.tg_chat_id, message.message_id)
+            update_activity('who')
         elif message.chat.id in constants.tg_ids:
             bot.send_message(message.chat.id, '❌ Опрос создается только в [Шобле](https://t.me/c/1126587083/)', parse_mode='Markdown')
     except Exception as who_will_error:
@@ -178,9 +173,8 @@ def statistics(message):
         if message.chat.id == secret.tg_chat_id or message.from_user.id in constants.tg_ids:  # Это Шобла или человек из Шоблы
             now_time = datetime.datetime.now()
             cur_month = str(now_time.year) + '.' + str(now_time.month)
-            if os.path.isfile(constants.activity_file):  # Загружаем данные из файла activity_count
-                with open(constants.activity_file, 'r') as activity_file:
-                    activity_count = json.loads(activity_file.read())
+            with open(constants.activity_file, 'r') as activity_file:  # Загружаем данные из файла activity_count
+                activity_count = json.loads(activity_file.read())
             month_statistics = constants.month_statistics.format(activity_count[cur_month]['opros'], activity_count[cur_month]['discount'],
                                                                  activity_count[cur_month]['car_girl'], activity_count[cur_month]['hey_doc'],
                                                                  activity_count[cur_month]['pin'], activity_count[cur_month]['rapid_new'],
@@ -194,9 +188,7 @@ def statistics(message):
                                                                  activity_count[cur_month]['yapoznaumir'])
             bot.send_message(message.chat.id, month_statistics.replace('прошлый', 'текущий'), parse_mode='Markdown')
         else:
-            log('вызов команды /stat\n{0}: User ID - {1}, user_name - @{2}'.format(constants.errors[6],
-                                                                                   message.from_user.id,
-                                                                                   message.from_user.username))
+            log('вызов команды /stat\n{0}: User ID - {1}, user_name - @{2}'.format(constants.errors[6], message.from_user.id, message.from_user.username))
             send_error(message, 6, 'N/A')
     except Exception as statistics_error:
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[4], statistics_error))
@@ -331,20 +323,14 @@ def rapid(message):
         log('вызов команды /rapid by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
         # Сплитуем строку выпилив предварительно ненужные пробелы по бокам
         data = message.text.lower().strip().split(" ")
-
-        # Получаем количество элементов сплитованой строки
-        # и если тока 1 элемент то значит аргумент не передали
-        # следовательно help по дефолту
+        '''Получаем количество элементов сплитованой строки
+        и если тока 1 элемент то значит аргумент не передали
+        следовательно help по дефолту '''
         size = len(data)
         value = 'help' if size == 1 else data[1]
-
         # Ну тут почти без изменений, тока data[1] became value
-        response = urllib2.urlopen(
-            'https://rapid.zhuykovkb.ru/rapid?data=' + quote(value) + '&memberid=' + str(message.from_user.id))
+        response = urllib2.urlopen('https://rapid.zhuykovkb.ru/rapid?data=' + quote(value) + '&memberid=' + str(message.from_user.id))
         answer = json.loads(str(response.read(), 'utf-8'))
-        if message.from_user.is_premium and random.random() < 0.3:
-            bot.send_message(message.chat.id, '🤗 Обязательно учту этот Рапид, ||пусечка|| премиумная',
-                             parse_mode='Markdown')
         bot.send_message(secret.tg_chat_id, answer['message'], parse_mode='Markdown')
         if answer['message'] == 'Номер успешно добавлен':
             log('добавлен новый номер Рапида by {0}'.format(
@@ -412,12 +398,12 @@ def kirov(message):
 # # # # # # Обработка опросов # # # # # #
 @bot.poll_handler(func=lambda poll: True)
 def poll_results(poll):
+    global curr_meeting_poll
     try:
+        meeting_results = []
         if poll.is_closed == 1 and str(poll.id) == curr_meeting_poll['poll_id'] and poll.total_voter_count > 1:
-            i = 0
             for item in poll.options:
-                meeting_results[i] = int(item.voter_count)
-                i += 1
+                meeting_results.append(item.voter_count)
             max_date = meeting_results[0:4].index(max(meeting_results[0:4]))
             max_time = meeting_results[4:].index(max(meeting_results[4:])) + 4
             curr_meeting_poll['max_date'], curr_meeting_poll['max_time'] = max_date, max_time
@@ -556,9 +542,8 @@ def sdr():
         now_time = datetime.datetime.now()
         dr = str(now_time.day) + '.' + str(now_time.month)
         i = 0
-        if os.path.isfile(constants.meeting_file):
-            with open(constants.meeting_file, 'r') as meeting_file:
-                curr_meeting_poll = json.loads(meeting_file.read())
+        with open(constants.meeting_file, 'r') as meeting_file:
+            curr_meeting_poll = json.loads(meeting_file.read())
         if now_time.hour != 9:
             if now_time.weekday() - 3 == curr_meeting_poll['max_date'] and now_time.hour - 13 == curr_meeting_poll['max_time'] and curr_meeting_poll['first_poll'] == 1:
                 reminder = bot.send_message(secret.tg_chat_id, 'Сегодня шоблосозвон будет через час. Ожидайте ссылку.', parse_mode='Markdown')
@@ -584,9 +569,8 @@ def sdr():
                 with open(constants.meeting_file, 'w') as meeting_file:  # Записываем данные в файл meeting_file
                     meeting_file.write(json.dumps(curr_meeting_poll))
             if now_time.weekday() == 4 and now_time.day <= 7:  # День (пятница) для остановки опроса о принятии участия в созвоне
-                if os.path.isfile(constants.meeting_file):
-                    with open(constants.meeting_file, 'r') as meeting_file:
-                        curr_meeting_poll = json.loads(meeting_file.read())
+                with open(constants.meeting_file, 'r') as meeting_file:
+                    curr_meeting_poll = json.loads(meeting_file.read())
                 try:
                     bot.stop_poll(secret.tg_chat_id, curr_meeting_poll['msg_id'])
                 except Exception as stop_poll_error:
@@ -595,9 +579,8 @@ def sdr():
             if now_time.day == 1:  # День для статистики по боту выкладывания фоток за месяц Месечная десятка челлендж
                 # Загружаем данные из файла activity_count
                 cur_month = str(now_time.year - 1) + '.12' if now_time.month == 1 else str(now_time.year) + '.' + str(now_time.month - 1)
-                if os.path.isfile(constants.activity_file):
-                    with open(constants.activity_file, 'r') as activity_file:
-                        activity_count = json.loads(activity_file.read())
+                with open(constants.activity_file, 'r') as activity_file:
+                    activity_count = json.loads(activity_file.read())
                 month_statistics = constants.month_statistics.format(activity_count[cur_month]['opros'], activity_count[cur_month]['discount'],
                                                                      activity_count[cur_month]['car_girl'], activity_count[cur_month]['hey_doc'],
                                                                      activity_count[cur_month]['pin'], activity_count[cur_month]['rapid_new'],
