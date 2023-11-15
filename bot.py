@@ -455,7 +455,7 @@ def send_media_id(message):
 def send_text(message):
     try:
         text = message.text
-        match = re.search(r'(instagram\.com/reel/\S+)', message.text)
+        match = re.search(r'(instagram\.com/\S+)', message.text)
         if translitsky.isTranslitsky(text) and text[0:4] != 'http':
             answer = translitsky.doTranslitskyRollback(text)
             bot.send_message(message.chat.id, "`{}`".format(answer), parse_mode='Markdown', reply_to_message_id=message.message_id)
