@@ -23,22 +23,44 @@ import helpers.cbr as cbr                   # Файл для команды з�
 # # # # # # Инициализация # # # # # #
 bot = telebot.TeleBot(secret.tg_token)  # Token бота
 bot.set_my_commands([
-    telebot.types.BotCommand("/discount", "🤑Скидки"),
-    telebot.types.BotCommand("/usd", "💵 Курс рубля"),
-    telebot.types.BotCommand("/who", "✅❌Создать опрос"),
-    telebot.types.BotCommand("/help", "❓Полезная информация"),
-    telebot.types.BotCommand("/meeting", "🎧Ссылка шоблосозвона"),
-    telebot.types.BotCommand("/log", "📋Вывод логов бота"),
-    telebot.types.BotCommand("/stat", "🤖Статистика по использованию бота"),
-    telebot.types.BotCommand("/rapid", "✅ Зеленый Rapid"),
-    telebot.types.BotCommand("/yapoznaumir", "🧐 Задай вопрос")
+    telebot.types.BotCommand('/discount', '🤑Скидки'),
+    telebot.types.BotCommand('/usd', '💵 Курс рубля'),
+    telebot.types.BotCommand('/who', '✅❌Создать опрос'),
+    telebot.types.BotCommand('/help', '❓Полезная информация'),
+    telebot.types.BotCommand('/meeting', '🎧Ссылка шоблосозвона'),
+    telebot.types.BotCommand('/log', '📋Вывод логов бота'),
+    telebot.types.BotCommand('/stat', '🤖Статистика по использованию бота'),
+    telebot.types.BotCommand('/rapid', '✅ Зеленый Rapid'),
+    telebot.types.BotCommand('/yapoznaumir', '🧐 Задай вопрос')
 ])
 activity_count = {}  # Переменная для сбора статистики по командам
-with open(constants.meeting_file, 'r') as lang:  # Переменная для сбора данных по опросу
+with open(constants.meeting_file, 'r') as lang:  # Переменная curr_meeting_poll для сбора данных по опросу
     curr_meeting_poll = json.loads(lang.read())
 
 
 # # # # # # Служебные функции и миниадминка /s # # # # # #
+# Запись событий в файл log.txt
+def log(text):
+    try:
+        with open(constants.log_file, 'a') as log_file:
+            log_file.write(f'{time.ctime(time.time())} - {text}\n')
+    except Exception as log_error:
+        bot.send_message(secret.apple_id, f'❌ Ошибка при записи лога\nТекст ошибки:\n{log_error}')
+
+
+# Функция отправки ошибки
+def send_error(message, error_id, error_text):
+    try:
+        text = f'❌ {constants.errors[error_id]}\nFrom user: {message.from_user.first_name} {message.from_user.last_name}\n'\
+               f'Username: @{message.from_user.username}\nChat name: "{message.chat.title}" {message.chat.first_name} {message.chat.last_name}\n'\
+               f'Chat id: {message.chat.id}\nMessage: {message.text}\nTime: {time.ctime(time.time())}\nError text: {error_text}'
+        bot.send_message(secret.apple_id, text)
+        log(text)
+    except Exception as send_error_error:
+        log(f'{constants.errors[13]}:\nСообщение: {message.text}\nТекст ошибки: {send_error_error}')
+        bot.send_message(secret.apple_id, f'❌ {constants.errors[13]}:\nСообщение: {message.text}\nТекст ошибки:\n{send_error_error}')
+
+
 # Функция сбора статистики по командам и функциям
 def update_activity(field):
     global activity_count
@@ -55,51 +77,26 @@ def update_activity(field):
         bot.send_message(secret.apple_id, f'❌ Ошибка в функции update_activity:\nПоле: {field}\nТекст ошибки:\n{update_activity_error}')
 
 
-# Функция отправки ошибки
-def send_error(message, error_id, error_text):
-    try:
-        bot.send_message(secret.apple_id,
-                         '❌ {0}\nОт: {1} {2}\nUsername: @{3}\nЧат: {4} {5} {6}\nid: {7}\nСообщение: {8}\nВремя: {9}\nТекст ошибки: '
-                         '{10}'.format(constants.errors[error_id], message.from_user.first_name, message.from_user.last_name, message.from_user.username,
-                                       message.chat.title, message.chat.first_name, message.chat.last_name, message.chat.id, message.text,
-                                       time.ctime(time.time()), error_text))
-    except Exception as send_error_error:
-        log(f'Ошибка в функции send_error:\nСообщение: {message.text}\nТекст ошибки: {send_error_error}')
-        bot.send_message(secret.apple_id, f'❌ Ошибка в функции send_error:\nСообщение: {message.text}\nТекст ошибки:\n{send_error_error}')
-
-
-# Запись событий в файл log.txt
-def log(text):
-    try:
-        with open(constants.log_file, 'a') as log_file:
-            log_file.write(f"{time.ctime(time.time())} - {text}\n")
-    except Exception as log_error:
-        bot.send_message(secret.apple_id, f'❌ Ошибка при записи лога\nТекст ошибки:\n{log_error}')
-
-
+# # # # # # Доступные команды # # # # # #
 # Вызов информации о сервере и пересылка сообщения в Шоблу (доступно только Аполу)
 @bot.message_handler(commands=['s'])
 def server_info(message):
     try:
         if message.from_user.id == secret.apple_id:  # Это Апол
             try:
-                if message.text.len() > 2:
+                if len(message.text) > 2:
                     bot.send_message(secret.apple_id, f'🤖 RAM free: {psutil.virtual_memory()[2]}% из 512Мбайт')
                     log('Отправка статуса памяти сервера')
                 else:
-                    bot.send_message(secret.tg_chat_id, message.text[3:message.text.len()])
+                    bot.send_message(secret.tg_chat_id, message.text[3:len(message.text)])
             except Exception as ram_error:
-                log(f'{constants.errors[21]}\nТекст ошибки: {ram_error}')
                 send_error(message, 21, ram_error)
         else:
-            log(f'вызов команды /s\n{constants.errors[6]}: User ID - {constants.errors[6]}, user_name - @{message.from_user.username}')
-            send_error(message, 6, 'N/A')
+            send_error(message, 6, 'Вызов команды /s')
     except Exception as server_info_error:
-        log(f'{constants.errors[5]}\nТекст ошибки: {server_info_error}')
         send_error(message, 5, server_info_error)
 
 
-# # # # # # Доступные команды # # # # # #
 # Вызов команды для задания вопросов
 @bot.message_handler(commands=['yapoznaumir'])
 def yapoznaumir(message):
@@ -109,7 +106,6 @@ def yapoznaumir(message):
         bot.delete_message(message.chat.id, message.message_id)
         update_activity('yapoznaumir')
     except Exception as yapoznaumir_error:
-        log(f'{constants.errors[32]}\nТекст ошибки: {yapoznaumir_error}')
         send_error(message, 32, yapoznaumir_error)
 
 
@@ -122,10 +118,9 @@ def handle_start_help(message):
             bot.send_message(message.chat.id, constants.help_text, reply_markup=constants.help_keyboard, parse_mode='Markdown')
             update_activity(message.text[1:])
         else:
-            log(f'вызов команды {message.text}\n{constants.errors[0 if message.text.len() == 6 else 1]}: User ID - {message.from_user.id}, user_name - @{message.from_user.username}')
+            log(f'вызов команды {message.text}\n{constants.errors[0 if len(message.text) == 6 else 1]}: User ID - {message.from_user.id}, user_name - @{message.from_user.username}')
             bot.send_message(message.chat.id, constants.help_text_light, parse_mode='Markdown')
     except Exception as handle_start_help_error:
-        log(f'{constants.errors[0 if message.text.len() == 6 else 1]}\nТекст ошибки: {handle_start_help_error}')
         send_error(message, 0 if message.text == '/start' else 1, handle_start_help_error)
 
 
@@ -141,7 +136,6 @@ def who_will(message):
         elif message.chat.id in constants.tg_ids:
             bot.send_message(message.chat.id, '❌ Опрос создается только в [Шобле](https://t.me/c/1126587083/)', parse_mode='Markdown')
     except Exception as who_will_error:
-        log(f'{constants.errors[7]}\nТекст ошибки: {who_will_error}')
         send_error(message, 7, who_will_error)
 
 
@@ -151,16 +145,13 @@ def send_discount(message):
     try:
         if message.from_user.id in constants.tg_ids:
             log(f'вызов команды /discount by {constants.tg_names[constants.tg_ids.index(message.from_user.id)]}')
-            i = 0
             keyboard_start = telebot.types.InlineKeyboardMarkup(row_width=2)
-            while i < len(constants.buttons[0]) - 1:
+            for i in range(0, len(constants.buttons[0]) - 1, 2):
                 keyboard_start.add(telebot.types.InlineKeyboardButton(text=constants.buttons[0][i + 1], callback_data=constants.buttons[1][i + 1]),
                                    telebot.types.InlineKeyboardButton(text=constants.buttons[0][i + 2], callback_data=constants.buttons[1][i + 2]))
-                i += 2
             bot.send_message(message.chat.id, constants.buttons[2][0], reply_markup=keyboard_start, parse_mode='Markdown')
             update_activity('discount')
     except Exception as send_discount_error:
-        log(f'{constants.errors[8]}\nТекст ошибки: {send_discount_error}')
         send_error(message, 8, send_discount_error)
 
 
@@ -187,10 +178,8 @@ def statistics(message):
                                                                  activity_count[cur_month]['yapoznaumir'])
             bot.send_message(message.chat.id, month_statistics.replace('прошлый', 'текущий'), parse_mode='Markdown')
         else:
-            log(f'вызов команды /stat\n{constants.errors[6]}: User ID - {message.from_user.id}, user_name - @{message.from_user.username}')
-            send_error(message, 6, 'N/A')
+            send_error(message, 6, 'вызов команды /stat')
     except Exception as statistics_error:
-        log(f'{constants.errors[4]}\nТекст ошибки: {statistics_error}')
         send_error(message, 4, statistics_error)
 
 
@@ -205,10 +194,8 @@ def share_log(message):
             except Exception as upload_log_error:
                 send_error(message, 23, upload_log_error)
         else:
-            log(f'вызов команды /log\n{constants.errors[6]}: User ID - {message.from_user.id}, user_name - @{message.from_user.username}')
-            send_error(message, 6, 'N/A')
+            send_error(message, 6, 'вызов команды /log')
     except Exception as share_log_error:
-        log(f'{constants.errors[24]}\nТекст ошибки: {share_log_error}')
         send_error(message, 24, share_log_error)
 
 
@@ -221,7 +208,6 @@ def meeting(message):
             bot.send_photo(message.chat.id, constants.meeting_pic, caption=f'🤖 *Го созвон*\n{constants.meeting_link}', parse_mode='Markdown')
             update_activity('meeting')
     except Exception as meeting_error:
-        log(f'{constants.errors[28]}\nТекст ошибки: {meeting_error}')
         send_error(message, 28, meeting_error)
 
 
@@ -230,18 +216,16 @@ def meeting(message):
 def usd(message):
     try:
         if message.from_user.id in constants.tg_ids:  # Это человек из Шоблы
-            dollar, euro, lari, tenge = cbr.get_usd("USD"), cbr.get_usd("EUR"), cbr.get_usd("GEL"), cbr.get_usd("KZT")
-            float_dol = f"{float(dollar.replace(',', '.')):.{2}f}"
-            float_eur = f"{float(euro.replace(',', '.')):.{2}f}"
-            float_lar = f"{float(lari.replace(',', '.')):.{2}f}"
-            float_ten = f"{float(tenge.replace(',', '.')):.{2}f}"
-            bot.send_photo(message.chat.id, constants.usd_pic[random.randint(0, len(constants.usd_pic) - 1)],                           
-                           caption=(f'💵 *Курс рубля по данным сайта [ЦБР](https://www.cbr.ru/currency_base/daily/)*:\n'
-                                    f'`1$ = {float_dol}₽`\n`1€ = {float_eur}₽`\n`1₾ = {float_lar}₽`\n`100₸ = {float_ten}₽`'), parse_mode='Markdown')
-            update_activity('usd')
+            try:
+                usa_dol, eur, geo_lar, kaz_ten, date = cbr.get_exchange_rates()
+                bot.send_photo(message.chat.id, constants.usd_pic[random.randint(0, len(constants.usd_pic) - 1)],
+                               caption=(f'💵 *Курс рубля по данным сайта* [ЦБР](https://www.cbr.ru/currency_base/daily/) *на {date}*:\n'
+                                        f'`1$ = {usa_dol}₽`\n`1€ = {eur}₽`\n`1₾ = {geo_lar}₽`\n`100₸ = {kaz_ten}₽`'), parse_mode='Markdown')
+                update_activity('usd')
+            except Exception as cbr_parse_error:
+                send_error(message, 18, f'{cbr.get_exchange_rates()}\n\n{cbr_parse_error}')
     except Exception as usd_error:
-        log(f'{constants.errors[28]}\nТекст ошибки: {usd_error}')
-        send_error(message, 28, usd_error)
+        send_error(message, 31, usd_error)
 
 
 # # # # # # Обработка текста # # # # # #
@@ -252,7 +236,6 @@ def aaa(message):
         bot.send_message(secret.tg_chat_id, 'Девка за рулём') if len(message.text) > 2 else bot.send_message(secret.tg_chat_id, 'Двк з рлм')
         update_activity('car_girl')
     except Exception as aaa_error:
-        log('{0}\nТекст ошибки: {1}'.format(constants.errors[9], aaa_error))
         send_error(message, 9, aaa_error)
 
 
@@ -263,7 +246,6 @@ def damage(message):
         bot.send_voice(secret.tg_chat_id, constants.emotional_daaamage)
         update_activity('damage')
     except Exception as damage_error:
-        log('{0}\nТекст ошибки: {1}'.format(constants.errors[10], damage_error))
         send_error(message, 10, damage_error)
 
 
@@ -275,7 +257,6 @@ def mamma_mia(message):
         bot.send_audio(message.chat.id, audio, reply_to_message_id=message.message_id)
         update_activity('mamma')
     except Exception as mamma_mia_error:
-        log('{0}\nТекст ошибки: {1}'.format(constants.errors[30], mamma_mia_error))
         send_error(message, 30, mamma_mia_error)
 
 
@@ -286,7 +267,6 @@ def russia(message):
         bot.send_voice(secret.tg_chat_id, constants.anthem, '🫡')
         update_activity('russia')
     except Exception as russia_error:
-        log('{0}\nТекст ошибки: {1}'.format(constants.errors[11], russia_error))
         send_error(message, 11, russia_error)
 
 
@@ -297,7 +277,6 @@ def hey_doc(message):
         bot.send_document(secret.tg_chat_id, 'CgADAgADRgIAAkbDcEn-Ox-uqrgsHgI', caption='@oxy_genium')
         update_activity('hey_doc')
     except Exception as hey_doc_error:
-        log('{0}\nТекст ошибки: {1}'.format(constants.errors[12], hey_doc_error))
         send_error(message, 12, hey_doc_error)
 
 
@@ -309,7 +288,6 @@ def team(message):
                          text=constants.team_text, disable_web_page_preview=True, parse_mode='Markdown')
         update_activity('team')
     except Exception as team_error:
-        log('{0}\nТекст ошибки: {1}'.format(constants.errors[14], team_error))
         send_error(message, 14, team_error)
 
 
@@ -331,14 +309,12 @@ def rapid(message):
         response = urllib2.urlopen('https://rapid.zhuykovkb.ru/rapid?data=' + quote(value) + '&memberid=' + str(message.from_user.id))
         answer = json.loads(str(response.read(), 'utf-8'))
         bot.send_message(secret.tg_chat_id, answer['message'], parse_mode='Markdown')
+        log(f'добавлен новый номер Рапида by {constants.tg_names[constants.tg_ids.index(message.from_user.id)]}')
         if answer['message'] == 'Номер успешно добавлен':
-            log('добавлен новый номер Рапида by {0}'.format(
-                constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
             update_activity('rapid_new')
     except Exception as rapid_error:
         bot.send_message(secret.zhuykovkb_apple_id, 'Ошибка в функции rapid:\n\nДанные ' + quote(value) + '\n\nТекст ошибки ' + str(rapid_error))
-        log('Ошибка в функции rapid:\nДанные: {0}\nТекст ошибки: {1}'.format(quote(value), rapid_error))
-        send_error(message, 15, rapid_error)
+        send_error(message, 15, f'{rapid_error}\nДанные {quote(value)}')
 
 
 # Обработка барсука
@@ -348,7 +324,6 @@ def badger(message):
         bot.send_message(secret.tg_chat_id, 'Барсук')
         update_activity('cyk')
     except Exception as badger_error:
-        log('{0}\nТекст ошибки: {1}'.format(constants.errors[16], badger_error))
         send_error(message, 16, badger_error)
 
 
@@ -359,7 +334,6 @@ def another_badger(message):
         bot.send_message(secret.tg_chat_id, 'Барсюк')
         update_activity('cyk')
     except Exception as another_badger_error:
-        log('{0}\nТекст ошибки: {1}'.format(constants.errors[17], another_badger_error))
         send_error(message, 17, another_badger_error)
 
 
@@ -376,7 +350,6 @@ def faggot_func(message):
                 bot.send_location(message.chat.id, location['lat'], location['lng'])
         kirov(message)
     except Exception as faggot_func_error:
-        log('{0}\nТекст ошибки: {1}'.format(constants.errors[25], faggot_func_error))
         send_error(message, 25, faggot_func_error)
 
 
@@ -390,7 +363,6 @@ def kirov(message):
             update_activity('kirov')
         send_text(message)
     except Exception as kirov_error:
-        log('{0}\nТекст ошибки: {1}'.format(constants.errors[27], kirov_error))
         send_error(message, 27, kirov_error)
 
 
@@ -452,7 +424,6 @@ def send_text(message):
                 log('пин сообщения by {0}'.format(constants.tg_names[constants.tg_ids.index(message.from_user.id)]))
                 update_activity('pin')
             except Exception as pin_error:
-                log('{0}\nТекст ошибки: {1}'.format(constants.errors[26], pin_error))
                 send_error(message, 26, pin_error)
         # Если это реплай на сообщение бота
         elif message.reply_to_message is not None and message.reply_to_message.from_user.id == secret.bot_id:
@@ -477,22 +448,19 @@ def send_text(message):
                         bot.delete_message(secret.tg_chat_id, message.reply_to_message.message_id)
                         bot.send_message(message.chat.id, constants.too_large_question, reply_to_message_id=message.message_id, reply_markup=force_reply)
                 except Exception as poll_reply_error:
-                    log('{0}\nТекст ошибки: {1}'.format(constants.errors[19], poll_reply_error))
                     send_error(message, 19, poll_reply_error)
             # Если вводится вопрос к нейронке
             elif message.reply_to_message.text == constants.enter_question_gpt:
                 try:
                     response = g4f.ChatCompletion.create(model='gpt-3.5-turbo-16k', messages=[{"role": "user", "content": message.text}], stream=False)
-                    bot.send_message(message.chat.id, response, parse_mode='Markdown')
+                    bot.send_message(message.chat.id, response, reply_to_message_id=message.message_id, parse_mode='Markdown')
                 except Exception as g4f_error:
-                    log('{0}\nТекст ошибки: {1}'.format(constants.errors[32], g4f_error))
                     send_error(message, 32, g4f_error)
         # Если это ссылка из Instagram
         elif match:
             new_url = re.sub(r'instagram\.com', 'ddinstagram.com', match.group(1))  # Заменяем домен на ddinstagram.com
             bot.send_message(message.chat.id, new_url, reply_to_message_id=message.message_id)  # Отправляем сообщение с новой ссылкой
     except Exception as send_text_error:
-        log('{0}\nТекст ошибки: {1}'.format(constants.errors[20], send_text_error))
         send_error(message, 20, send_text_error)
 
 
@@ -507,7 +475,6 @@ def callback_buttons(call):
             try:
                 bot.stop_poll(secret.tg_chat_id, message_id) if call.from_user.id == user_id else bot.answer_callback_query(call.id, constants.wrong_stop, show_alert=True)
             except Exception as stop_opros_error:
-                log('{0}\nТекст ошибки: {1}'.format(constants.errors[22], stop_opros_error))
                 send_error(call.message, 22, stop_opros_error)
         # Обработка запроса скидок
         elif call.data[0:4] == 'disc':
@@ -523,7 +490,6 @@ def callback_buttons(call):
             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text=constants.buttons[2][discount_id],
                                   parse_mode='Markdown', reply_markup=keyboard_update)
     except Exception as callback_buttons_error:
-        log('{0}\nТекст ошибки: {1}'.format(constants.errors[3], callback_buttons_error))
         send_error(call.message, 3, callback_buttons_error)
 
 
@@ -617,16 +583,16 @@ def sdr():
 try:
     sdr()
 except Exception as e:
-    log('Ошибка при запуске sdr:\nТекст ошибки: ' + str(e))
     bot.send_message(secret.apple_id, '❌ Ошибка при запуске sdr\nТекст ошибки:\n' + str(e))
+    log('Ошибка при запуске sdr:\nТекст ошибки: ' + str(e))
 
 try:
     log('Попытка запуска bot.infinity_polling()')
     bot.infinity_polling()
 except Exception as e:
+    log('Ошибка при запуске bot.polling:\nТекст ошибки: ' + str(e))
     with open(constants.log_file, 'a') as log_file_stream:
         traceback.print_exc(file=log_file_stream)
-    log('Ошибка при запуске bot.polling:\nТекст ошибки: ' + str(e))
     bot.send_message(secret.apple_id, '❌ Ошибка при запуске bot.polling\nТекст ошибки:\n' + str(e))
 
 try:
