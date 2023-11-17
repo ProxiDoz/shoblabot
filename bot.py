@@ -266,7 +266,7 @@ def damage(message):
         log('{0}\nТекст ошибки: {1}'.format(constants.errors[10], damage_error))
         send_error(message, 10, damage_error)
 
-
+# new comment
 # Обработка mamma mia
 @bot.message_handler(func=lambda message: message.text and message.text.lower().replace(' ', '').replace('\n', '') in constants.mammamia and message.chat.id == secret.tg_chat_id)
 def mamma_mia(message):
