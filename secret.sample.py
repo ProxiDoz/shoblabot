@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
-# ID's
-apple_id = XXXXXX
-tg_chat_id = -XXXXXXXXXXXXX  
-tg_test_chat_id = -XXXXXXXXXXXXX
-zhuykovkb_apple_id = XXXXXX
+# Telegram ID's of users or Shobla chat
+apol_id = ХХХХХХ
+zhuykovkb_id = ХХХХХХ
+shobla_id = -ХХХХХХХХХХХХХ
+# shobla_id = -ХХХХХХХХХХХХХ  # Test chat for test bot
 
-#  Tokens
-tg_token = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'  # Shobla bot
-bot_id = 243784053  # Shobla bot
-# tg_token = 'XXXXXXXXX:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'  # Test bot
-# bot_id = XXXXXXXXXX  # Test bot
+# Shobla Bot tokens
+bot_id = ХХХХХХХХХ                                              # Shobla bot
+bot_token = 'ХХХХХХХХХ:ХХХХХХХХХХХХХХХХХХХХХХХХХХХХХХХХХХХ'     # Shobla bot
+# bot_id = ХХХХХХХХХ                                            # Test bot
+# bot_token = 'ХХХХХХХХХ:ХХХХХХХХХХХХХХХХХХХХХХХХХХХХХХХХХХХ'   # Test bot
+
+# Translitsky app tokens
+tr_app_id = 'ХХХХХХХХ'
+tr_app_key = 'ХХХХХХХХХХХХХХХХХХХХХХХХХХХХХХХХ'
