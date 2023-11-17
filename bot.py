@@ -261,6 +261,7 @@ def statistics(message):
 
 
 # Запрос отправки логов по боту
+# жопа
 @bot.message_handler(commands=['log'])
 def share_log(message):
     try:
