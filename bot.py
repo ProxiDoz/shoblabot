@@ -466,7 +466,7 @@ def sdr():
         # Отправка статистики 1ого чиса месяца
         with open(constants.meeting_file, 'r') as meeting_file:
             curr_meeting_poll = json.loads(meeting_file.read())
-        if now_time.hour != 2:
+        if now_time.hour != 9:
             if now_time.weekday() - 3 == curr_meeting_poll['max_date'] and now_time.hour - 13 == curr_meeting_poll['max_time'] and curr_meeting_poll['first_poll'] == 1:
                 reminder = bot.send_message(secret.shobla_id, 'Сегодня шоблосозвон будет через час. Ожидайте ссылку.', parse_mode='Markdown')
                 bot.pin_chat_message(secret.shobla_id, reminder.message_id, disable_notification=False)
@@ -526,7 +526,7 @@ def sdr():
             # Отправка поздравлений с ДР
             try:
                 for user_id in constants.shobla_member:
-                    age = now_time.year - constants.shobla_member[user_id]['yyyy']
+                    age = now_time.year - constants.shobla_member[user_id]['year']
                     if constants.shobla_member[user_id]['dd_mm'] == today:
                         if age % 10 == 0:  # Если у человека юбилей
                             bot.send_message(secret.apol_id, constants.happy_anniversary.format(constants.shobla_member[user_id]['name'], user_id, age),
