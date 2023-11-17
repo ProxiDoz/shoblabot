@@ -1,15 +1,19 @@
 import requests
-from bs4 import BeautifulSoup
+from xml.etree import ElementTree
 
-url = 'https://www.cbr.ru/currency_base/daily/'
+cbr_url = 'https://www.cbr.ru/scripts/XML_daily.asp'
 
 
-def get_usd(currency):
-    response = requests.get(url)
-    soup = BeautifulSoup(response.content, 'html.parser')
-    table = soup.find('table', {'class': 'data'})
-    for row in table.find_all('tr'):
-        tds = row.find_all('td')
-        if len(tds) == 5 and tds[1].text.strip() == currency:
-            return tds[-1].text
-    return "Жеппа твоя доллар"
+# Функция парсинга данных по курсу валют с сайти ЦБР с xml-содержимым
+def get_exchange_rates():
+    try:
+        response = requests.get(cbr_url)  # Парсим страницу с xml содержимым
+        tree = ElementTree.fromstring(response.content)  # Конвертируем из строки в дерево
+        usd = '%.2f' % float(tree[13][5].text.replace(',', '.'))
+        eur = '%.2f' % float(tree[14][5].text.replace(',', '.'))
+        lar = '%.2f' % float(tree[10][5].text.replace(',', '.'))
+        ten = '%.2f' % float(tree[18][4].text.replace(',', '.'))
+        date = tree.attrib['Date']
+        return usd, eur, lar, ten, date
+    except Exception as get_exchange_rates_error:
+        return get_exchange_rates_error
