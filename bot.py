@@ -7,15 +7,15 @@ import g4f                                  # Для работы с нейро�
 import json                                 # Представляет словарь в строку
 import time                                 # Для представления времени в читаемом формате
 import datetime                             # ---//---
-import psutil                               # Для вытаскивания данных по ОЗУ сервера
 import random                               # Присвятой рандом
 import threading                            # Для отсчета времени для отправки сообщений
 import urllib.request as urllib2            # Для Кирюхиного Rapid'a
 from urllib.parse import quote              # ---//---
 import traceback                            # Для записи в лог файл при траблах бота
-import helpers.service_func as service_func  # Файл со служебными функциями
 import constants                            # Файл с константами
 import secret                               # Файл с токенами
+import helpers.keyboards as keyboards       # Файл с клавиатурами
+import helpers.service_func as service_func  # Файл со служебными функциями
 import helpers.faggot as faggot             # Файл для функции faggot handler
 import helpers.find_words as find_words     # Файл для функции kirov
 import helpers.translitsky as translitsky   # Файл для функции транслитского
@@ -45,14 +45,7 @@ with open(constants.meeting_file, 'r') as lang:  # Переменная curr_mee
 def server_info(message):
     try:
         if message.from_user.id == secret.apol_id:  # Это Апол
-            try:
-                if len(message.text) > 2:
-                    bot.send_message(secret.apol_id, f'🤖 RAM free: {psutil.virtual_memory()[2]}% из 512Мбайт')
-                    service_func.log(bot, f'Отправка статуса памяти сервера - RAM free: {psutil.virtual_memory()[2]}% из 512Мбайт')
-                else:
-                    bot.send_message(secret.shobla_id, message.text[3:len(message.text)])
-            except Exception as ram_error:
-                service_func.send_error(bot, message, 21, ram_error)
+            service_func.server_status(bot, message)
         else:
             service_func.send_error(bot, message, 6, 'Вызов команды /s')
     except Exception as server_info_error:
@@ -77,11 +70,11 @@ def handle_start_help(message):
     try:
         if message.chat.id == secret.shobla_id or message.from_user.id in constants.shobla_member:  # Это Шобла или человек из Шоблы
             service_func.log(bot, f'вызов команды {message.text} by {constants.shobla_member[message.from_user.id]["name"]}')
-            bot.send_message(message.chat.id, constants.help_text, reply_markup=constants.help_keyboard, parse_mode='Markdown')
+            bot.send_message(message.chat.id, constants.help_text, reply_markup=keyboards.help_keyboard, parse_mode='Markdown')
             service_func.update_activity(bot, message.text[1:])
         else:
             service_func.log(bot, f'вызов команды {message.text}\n{constants.errors[0 if len(message.text) == 6 else 1]}: '
-                                  f'User ID - {message.from_user.id}, user_name - @{message.from_user.username}')
+                             f'User ID - {message.from_user.id}, user_name - @{message.from_user.username}')
             bot.send_message(message.chat.id, constants.help_text_light, parse_mode='Markdown')
     except Exception as handle_start_help_error:
         service_func.send_error(bot, message, 0 if message.text == '/start' else 1, handle_start_help_error)
@@ -108,11 +101,7 @@ def send_discount(message):
     try:
         if message.from_user.id in constants.shobla_member:
             service_func.log(bot, f'вызов команды /discount by {constants.shobla_member[message.from_user.id]["name"]}')
-            keyboard_start = telebot.types.InlineKeyboardMarkup(row_width=2)
-            for i in range(0, len(constants.buttons[0]) - 1, 2):
-                keyboard_start.add(telebot.types.InlineKeyboardButton(text=constants.buttons[0][i + 1], callback_data=constants.buttons[1][i + 1]),
-                                   telebot.types.InlineKeyboardButton(text=constants.buttons[0][i + 2], callback_data=constants.buttons[1][i + 2]))
-            bot.send_message(message.chat.id, constants.buttons[2][0], reply_markup=keyboard_start, parse_mode='Markdown')
+            bot.send_message(message.chat.id, keyboards.buttons[2][0], reply_markup=keyboards.keyboard_start, parse_mode='Markdown')
             service_func.update_activity(bot, 'discount')
     except Exception as send_discount_error:
         service_func.send_error(bot, message, 8, send_discount_error)
@@ -302,7 +291,7 @@ def another_badger(message):
 
 
 # Обработка каждого сообщения на гея/лешу
-@bot.message_handler(func=lambda m: True)
+@bot.message_handler(func=lambda message: True and find_words.word_in_message(message.text, constants.faggot_list))
 def faggot_func(message):
     try:
         if random.random() < 0.3:
@@ -311,45 +300,19 @@ def faggot_func(message):
                 location = eu_country[1]['coords']
                 bot.reply_to(message, 'Ты что то сказал про гея? Держи...')
                 bot.send_location(message.chat.id, location['lat'], location['lng'])
-        kirov(message)
     except Exception as faggot_func_error:
         service_func.send_error(bot, message, 25, faggot_func_error)
 
 
 # Обработка Кирова
-@bot.message_handler(func=lambda m: True)
+@bot.message_handler(func=lambda message: True and find_words.word_in_message(message.text, constants.kirov))
 def kirov(message):
     try:
-        if find_words.wordInMessage(message.text, constants.kirov):
-            audio = open(constants.kirov_audio_path, 'rb')
-            bot.send_audio(message.chat.id, audio, reply_to_message_id=message.message_id)
-            service_func.update_activity(bot, 'kirov')
-        send_text(message)
+        audio = open(constants.kirov_audio_path, 'rb')
+        bot.send_audio(message.chat.id, audio, reply_to_message_id=message.message_id)
+        service_func.update_activity(bot, 'kirov')
     except Exception as kirov_error:
         service_func.send_error(bot, message, 27, kirov_error)
-
-
-# # # # # # Обработка опросов # # # # # #
-@bot.poll_handler(func=lambda poll: True)
-def poll_results(poll):
-    global curr_meeting_poll
-    try:
-        meeting_results = []
-        if poll.is_closed == 1 and str(poll.id) == curr_meeting_poll['poll_id'] and poll.total_voter_count > 1:
-            for item in poll.options:
-                meeting_results.append(item.voter_count)
-            max_date = meeting_results[0:4].index(max(meeting_results[0:4]))
-            max_time = meeting_results[4:].index(max(meeting_results[4:])) + 4
-            curr_meeting_poll['max_date'], curr_meeting_poll['max_time'] = max_date, max_time
-            with open(constants.meeting_file, 'w') as meeting_file:  # Записываем данные в файл meeting_file
-                meeting_file.write(json.dumps(curr_meeting_poll))
-            service_func.log(bot, f'Приглашение на общий созвон будет отправлено{constants.meeting_options[max_time]}{constants.meeting_options[max_date][4:]}')
-            poll_results_msg = bot.send_message(secret.shobla_id, f'Шоблятки, созвон на этой неделе будет в{constants.meeting_options[max_date][4:]} {constants.meeting_options[max_time]}',
-                                                parse_mode='Markdown')
-            bot.pin_chat_message(secret.shobla_id, poll_results_msg.message_id, disable_notification=False)
-    except Exception as poll_results_error:
-        service_func.log(bot, f'{constants.errors[29]}\nТекст ошибки: {poll_results_error}')
-        bot.send_message(secret.apol_id, f'❌ Ошибка в функции poll_results:\nСообщение: {poll}\nТекст ошибки:\n{poll_results_error}')
 
 
 # # # # # # Получаение file_id медиа файлов # # # # # #
@@ -367,6 +330,37 @@ def send_media_id(message):
                 bot.send_message(secret.apol_id, message.animation.file_id)
     except Exception as send_media_id_error:
         service_func.send_error(bot, message, 33, send_media_id_error)
+
+
+# # # # # # Обработчик Call Back Data # # # # # #
+@bot.callback_query_handler(func=lambda call: True)
+def callback_buttons(call):
+    try:
+        keyboards.button_func(bot, call)
+    except Exception as callback_buttons_error:
+        service_func.send_error(bot, call.message, 3, callback_buttons_error)
+
+
+# # # # # # Обработка опросов # # # # # #
+@bot.poll_handler(func=lambda poll: True and poll.is_closed == 1 and str(poll.id) == curr_meeting_poll['poll_id'] and poll.total_voter_count > 1)
+def poll_results(poll):
+    global curr_meeting_poll
+    try:
+        meeting_results = []
+        for item in poll.options:
+            meeting_results.append(item.voter_count)
+        max_date = meeting_results[0:4].index(max(meeting_results[0:4]))
+        max_time = meeting_results[4:].index(max(meeting_results[4:])) + 4
+        curr_meeting_poll['max_date'], curr_meeting_poll['max_time'] = max_date, max_time
+        with open(constants.meeting_file, 'w') as meeting_file:  # Записываем данные в файл meeting_file
+            meeting_file.write(json.dumps(curr_meeting_poll))
+        service_func.log(bot, f'Приглашение на общий созвон будет отправлено{constants.meeting_options[max_time]}{constants.meeting_options[max_date][4:]}')
+        poll_results_msg = bot.send_message(secret.shobla_id, f'Шоблятки, созвон на этой неделе будет в{constants.meeting_options[max_date][4:]} {constants.meeting_options[max_time]}',
+                                            parse_mode='Markdown')
+        bot.pin_chat_message(secret.shobla_id, poll_results_msg.message_id, disable_notification=False)
+    except Exception as poll_results_error:
+        service_func.log(bot, f'{constants.errors[29]}\nТекст ошибки: {poll_results_error}')
+        bot.send_message(secret.apol_id, f'❌ Ошибка в функции poll_results:\nСообщение: {poll}\nТекст ошибки:\n{poll_results_error}')
 
 
 # # # # # # Обработка текста реплаев и # # # # # #
@@ -426,33 +420,6 @@ def send_text(message):
         service_func.send_error(bot, message, 20, send_text_error)
 
 
-# # # # # # Обработчик Call Back Data # # # # # #
-@bot.callback_query_handler(func=lambda call: True)
-def callback_buttons(call):
-    try:
-        # Кнопка остановки опроса
-        if call.data[0:4] == 'stop':
-            message_id = int(call.data.split('_')[1])
-            user_id = int(call.data.split('_')[2])
-            try:
-                bot.stop_poll(secret.shobla_id, message_id) if call.from_user.id == user_id else bot.answer_callback_query(call.id, constants.wrong_stop, show_alert=True)
-            except Exception as stop_opros_error:
-                service_func.send_error(bot, call.message, 22, stop_opros_error)
-        # Обработка запроса скидок
-        elif call.data[0:4] == 'disc':
-            discount_id = int(call.data.split('_')[1])
-            buttons_text = constants.buttons[0][0:discount_id] + constants.buttons[0][discount_id + 1:len(constants.buttons[0])]
-            buttons_callback_data = constants.buttons[1][0:discount_id] + constants.buttons[1][discount_id + 1:len(constants.buttons[1])]
-            keyboard_update = telebot.types.InlineKeyboardMarkup(row_width=2)
-            for i in range(0, len(constants.buttons[0]) - 2, 2):
-                keyboard_update.add(telebot.types.InlineKeyboardButton(text=buttons_text[i], callback_data=buttons_callback_data[i]),
-                                    telebot.types.InlineKeyboardButton(text=buttons_text[i + 1], callback_data=buttons_callback_data[i + 1]))
-            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text=constants.buttons[2][discount_id],
-                                  parse_mode='Markdown', reply_markup=keyboard_update)
-    except Exception as callback_buttons_error:
-        service_func.send_error(bot, call.message, 3, callback_buttons_error)
-
-
 # # # # # # Отправка запланированных сообщений # # # # # #
 def sdr():
     global curr_meeting_poll
@@ -463,9 +430,9 @@ def sdr():
         with open(constants.meeting_file, 'r') as meeting_file:
             curr_meeting_poll = json.loads(meeting_file.read())
         # Отправка предупреждения о загрузке оперативной памяти
-        if psutil.virtual_memory()[2] > 80:
-            bot.send_message(secret.apol_id, f'‼️ *Oh shit, attention* ‼️\n💾 Used RAM: {psutil.virtual_memory()[2]}%', parse_mode='Markdown')
-        if now_time.hour != 9:  # Если сейчас время для рассылки уведомлений о созвоне (все остальные рассылки только в 9 утра)
+        service_func.alarm(bot)
+        # Если сейчас время для рассылки уведомлений о созвоне (все остальные рассылки только в 9 утра)
+        if now_time.hour != 9:
             if now_time.weekday() - 3 == curr_meeting_poll['max_date'] and now_time.hour - 13 == curr_meeting_poll['max_time'] and curr_meeting_poll['first_poll'] == 1:
                 reminder = bot.send_message(secret.shobla_id, 'Сегодня шоблосозвон будет через час. Ожидайте ссылку.', parse_mode='Markdown')
                 bot.pin_chat_message(secret.shobla_id, reminder.message_id, disable_notification=False)
@@ -478,7 +445,8 @@ def sdr():
                     meeting_file.write(json.dumps(curr_meeting_poll))
                 service_func.log(bot, 'отправлено приглашение на общий созвон')
             return
-        else:  # Если сейчас 9 утра (по МСК), то начать различные рассылки
+        # Если сейчас 9 утра (по МСК), то начать различные рассылки
+        else:
             if now_time.weekday() == 3 and now_time.day <= 7:  # День (четверг) для отправки опроса о принятии участия в созвоне
                 meeting_poll = bot.send_poll(secret.shobla_id, constants.opros, constants.meeting_options, is_anonymous=False, allows_multiple_answers=True)
                 bot.pin_chat_message(secret.shobla_id, meeting_poll.message_id, disable_notification=False)
