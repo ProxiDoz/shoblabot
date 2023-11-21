@@ -161,6 +161,7 @@ def share_log(message):
     except Exception as share_log_error:
         service_func.send_error(bot, message, 24, share_log_error)
 
+
 # Запрос на ссылку созвона
 @bot.message_handler(commands=['meeting'])
 def meeting(message):
@@ -327,6 +328,7 @@ def kirov(message):
     except Exception as kirov_error:
         service_func.send_error(bot, message, 27, kirov_error)
 
+
 # # # # # # Обработка опросов # # # # # #
 @bot.poll_handler(func=lambda poll: True)
 def poll_results(poll):
@@ -456,15 +458,14 @@ def sdr():
     global curr_meeting_poll
     global activity_count
     try:
-        now_time = datetime.datetime.now()
         threading.Timer(3600, sdr).start()  # Каждые полчаса - 1800, каждые 10 мин - 600
+        now_time = datetime.datetime.now()
+        with open(constants.meeting_file, 'r') as meeting_file:
+            curr_meeting_poll = json.loads(meeting_file.read())
         # Отправка предупреждения о загрузке оперативной памяти
         if psutil.virtual_memory()[2] > 80:
             bot.send_message(secret.apol_id, f'‼️ *Oh shit, attention* ‼️\n💾 Used RAM: {psutil.virtual_memory()[2]}%', parse_mode='Markdown')
-        # Отправка статистики 1ого чиса месяца
-        with open(constants.meeting_file, 'r') as meeting_file:
-            curr_meeting_poll = json.loads(meeting_file.read())
-        if now_time.hour != 9:
+        if now_time.hour != 9:  # Если сейчас время для рассылки уведомлений о созвоне (все остальные рассылки только в 9 утра)
             if now_time.weekday() - 3 == curr_meeting_poll['max_date'] and now_time.hour - 13 == curr_meeting_poll['max_time'] and curr_meeting_poll['first_poll'] == 1:
                 reminder = bot.send_message(secret.shobla_id, 'Сегодня шоблосозвон будет через час. Ожидайте ссылку.', parse_mode='Markdown')
                 bot.pin_chat_message(secret.shobla_id, reminder.message_id, disable_notification=False)
@@ -477,7 +478,7 @@ def sdr():
                     meeting_file.write(json.dumps(curr_meeting_poll))
                 service_func.log(bot, 'отправлено приглашение на общий созвон')
             return
-        else:  # Если сейчас 9 утра (по МСК)
+        else:  # Если сейчас 9 утра (по МСК), то начать различные рассылки
             if now_time.weekday() == 3 and now_time.day <= 7:  # День (четверг) для отправки опроса о принятии участия в созвоне
                 meeting_poll = bot.send_poll(secret.shobla_id, constants.opros, constants.meeting_options, is_anonymous=False, allows_multiple_answers=True)
                 bot.pin_chat_message(secret.shobla_id, meeting_poll.message_id, disable_notification=False)
@@ -496,7 +497,7 @@ def sdr():
                 except Exception as stop_poll_error:
                     service_func.log(bot, f'Ошибка при закрытии опроса в sdr:\nТекст ошибки:\n{stop_poll_error}')
                     bot.send_message(secret.apol_id, f'❌ Ошибка при закрытии опроса в sdr:\nТекст ошибки:\n{stop_poll_error}')
-            if now_time.day == 1:  # День для статистики по боту выкладывания фоток за месяц Месечная десятка челлендж
+            if now_time.day == 1:  # День для статистики по боту выкладывания фоток за месяц и ежемесечной 10челлендж
                 # Загружаем данные из файла activity_count
                 cur_month = f'{now_time.year - 1}.12' if now_time.month == 1 else f'{now_time.year}.{now_time.month - 1}'
                 with open(constants.activity_file, 'r') as activity_file:
@@ -516,6 +517,7 @@ def sdr():
                 # Рассылка по 10челлендж
                 challenge = bot.send_message(secret.shobla_id, '📸 Шоблятки, время для #10челлендж и ваших фоточек за месяц!', parse_mode='Markdown')
                 bot.pin_chat_message(secret.shobla_id, challenge.message_id, disable_notification=False)
+            # Отправка поздравлений с особым днём
             today = float(f'{now_time.day}.{now_time.month}')
             if today == 28.5:  # День Баяна в Шобле отмечается 28 мая
                 bot.send_photo(secret.shobla_id, constants.bayan_day_pic, caption='🪗 Шобла, поздравляю с Днём Баяна!')
@@ -527,8 +529,7 @@ def sdr():
                     age = now_time.year - constants.shobla_member[user_id]['year']
                     if constants.shobla_member[user_id]['dd_mm'] == today:
                         if age % 10 == 0:  # Если у человека юбилей
-                            bot.send_message(secret.apol_id, constants.happy_anniversary.format(constants.shobla_member[user_id]['name'], user_id, age),
-                                             parse_mode='Markdown')
+                            bot.send_message(secret.apol_id, constants.happy_anniversary.format(constants.shobla_member[user_id]['name'], user_id, age), parse_mode='Markdown')
                         else:
                             bot.send_message(secret.apol_id, f'🥳 [{constants.shobla_member[user_id]["name"]}](tg://user?id={user_id}), с др!', parse_mode='Markdown')
             except Exception as happy_bd_error:
