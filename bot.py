@@ -161,7 +161,6 @@ def share_log(message):
     except Exception as share_log_error:
         service_func.send_error(bot, message, 24, share_log_error)
 
-
 # Запрос на ссылку созвона
 @bot.message_handler(commands=['meeting'])
 def meeting(message):
@@ -327,7 +326,6 @@ def kirov(message):
         send_text(message)
     except Exception as kirov_error:
         service_func.send_error(bot, message, 27, kirov_error)
-
 
 # # # # # # Обработка опросов # # # # # #
 @bot.poll_handler(func=lambda poll: True)
