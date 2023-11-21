@@ -48,7 +48,7 @@ def update_activity(bot, field):
 # Функция отправки статуса загрузки памяти на сервере бота
 def server_status(bot, message):
     try:
-        if len(message.text) > 2:
+        if len(message.text) == 2:
             bot.send_message(apol_id, f'🤖 RAM free: {psutil.virtual_memory()[2]}% из 512Мбайт')
             log(bot, f'Отправка статуса памяти сервера - RAM free: {psutil.virtual_memory()[2]}% из 512Мбайт')
         else:
