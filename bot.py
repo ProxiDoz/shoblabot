@@ -497,9 +497,9 @@ def sdr():
                     age = now_time.year - constants.shobla_member[user_id]['year']
                     if constants.shobla_member[user_id]['dd_mm'] == today:
                         if age % 10 == 0:  # Если у человека юбилей
-                            bot.send_message(secret.apol_id, constants.happy_anniversary.format(constants.shobla_member[user_id]['name'], user_id, age), parse_mode='Markdown')
+                            bot.send_message(secret.shobla_id, constants.happy_anniversary.format(constants.shobla_member[user_id]['name'], user_id, age), parse_mode='Markdown')
                         else:
-                            bot.send_message(secret.apol_id, f'🥳 [{constants.shobla_member[user_id]["name"]}](tg://user?id={user_id}), с др!', parse_mode='Markdown')
+                            bot.send_message(secret.shobla_id, f'🥳 [{constants.shobla_member[user_id]["name"]}](tg://user?id={user_id}), с др!', parse_mode='Markdown')
             except Exception as happy_bd_error:
                 service_func.log(bot, f'{constants.errors[35]}:\nТекст ошибки:\n{happy_bd_error}')
                 bot.send_message(secret.apol_id, f'❌ {constants.errors[35]}\nТекст ошибки:\n{happy_bd_error}')
