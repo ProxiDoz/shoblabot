@@ -457,7 +457,7 @@ def sdr():
                 curr_meeting_poll['first_poll'] = 1  # Флаг, что это первый опрос в этом месяце
                 with open(constants.meeting_file, 'w') as meeting_file:  # Записываем данные в файл meeting_file
                     meeting_file.write(json.dumps(curr_meeting_poll))
-            if now_time.weekday() == 4 and now_time.day <= 7:  # День (пятница) для остановки опроса о принятии участия в созвоне
+            if now_time.weekday() == 4 and now_time.day <= 8:  # День (пятница) для остановки опроса о принятии участия в созвоне
                 with open(constants.meeting_file, 'r') as meeting_file:
                     curr_meeting_poll = json.loads(meeting_file.read())
                 try:
