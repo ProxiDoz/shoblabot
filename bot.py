@@ -369,10 +369,10 @@ def send_text(message):
     try:
         text = message.text
         match = re.search(r'(instagram\.com/\S+)', message.text)
-        if translitsky.isTranslitsky(text) and text[0:4] != 'http':
-            answer = translitsky.doTranslitskyRollback(text)
-            bot.send_message(message.chat.id, f'`{answer}`', parse_mode='Markdown', reply_to_message_id=message.message_id)
-            service_func.update_activity(bot, 'transl')
+        # if translitsky.isTranslitsky(text) and text[0:4] != 'http':
+        #     answer = translitsky.doTranslitskyRollback(text)
+        #     bot.send_message(message.chat.id, f'`{answer}`', parse_mode='Markdown', reply_to_message_id=message.message_id)
+        #     service_func.update_activity(bot, 'transl')
         # Если это попытка запинить сообщение
         if message.reply_to_message is not None and text == '@shoblabot' and message.chat.id == secret.shobla_id:
             try:
