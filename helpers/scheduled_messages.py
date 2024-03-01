@@ -51,7 +51,7 @@ def send_message(bot):
                 except Exception as stop_poll_error:
                     service_func.log(bot, f'Ошибка при закрытии опроса в sdr:\nТекст ошибки:\n{stop_poll_error}')
                     bot.send_message(secret.apol_id, f'❌ Ошибка при закрытии опроса в sdr:\nТекст ошибки:\n{stop_poll_error}')
-            if now_time.day == 2:  # День для статистики по боту выкладывания фоток за месяц и ежемесечной 10челлендж
+            if now_time.day == 1:  # День для статистики по боту выкладывания фоток за месяц и ежемесечной 10челлендж
                 # Загружаем данные из файла activity_count
                 cur_month = f'{now_time.year - 1}.12' if now_time.month == 1 else f'{now_time.year}.{now_time.month - 1}'
                 with open(secret.activity_file, 'r') as activity_file:
