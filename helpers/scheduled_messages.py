@@ -26,10 +26,11 @@ def send_message(bot):
             if now_time.weekday() - 3 == curr_meeting_poll['max_date'] and now_time.hour - 14 == curr_meeting_poll['max_time'] and curr_meeting_poll['first_poll'] == 1:
                 photo = bot.send_photo(secret.shobla_id, constants.meeting_pic, caption=f'*Го созвон: *{constants.meeting_link}', parse_mode='Markdown')
                 bot.pin_chat_message(secret.shobla_id, photo.message_id, disable_notification=False)
-                curr_meeting_poll['first_poll'] = 0  # Флаг, что это первый опрос в этом месяце
+                curr_meeting_poll['first_poll'] = 0  # Флаг, что это не первый опрос в этом месяце
                 with open(secret.meeting_file, 'w') as meeting_file:  # Записываем данные в файл meeting_file
                     meeting_file.write(json.dumps(curr_meeting_poll))
                 service_func.log(bot, 'отправлено приглашение на общий созвон')
+                service_func.log(bot, 'поставлен флаг, что уже был опрос в этом месяце')
             return
         # Если сейчас 9 утра (по МСК), то начать различные рассылки
         else:
@@ -43,6 +44,8 @@ def send_message(bot):
                 curr_meeting_poll['first_poll'] = 1  # Флаг, что это первый опрос в этом месяце
                 with open(secret.meeting_file, 'w') as meeting_file:  # Записываем данные в файл meeting_file
                     meeting_file.write(json.dumps(curr_meeting_poll))
+                service_func.log(bot, 'отправка опроса о принятии участия в созвоне')
+                service_func.log(bot, 'поставлен флаг, что это первый опрос в этом месяце')
             if now_time.weekday() == 4 and 1 < now_time.day <= 8:  # День (пятница) для остановки опроса о принятии участия в созвоне
                 with open(secret.meeting_file, 'r') as meeting_file:
                     curr_meeting_poll = json.loads(meeting_file.read())
