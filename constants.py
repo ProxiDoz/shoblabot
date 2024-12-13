@@ -42,7 +42,7 @@ russia = ['расия', 'расея', 'раися', 'раеся',
 anthem = 'AwACAgIAAxkBAAJDIWLGyK15Ym3bMc0u5PU9YXtDDxHnAALtHAACbJI4SiCUtXmDfvoxKQQ'
 
 annet_kek = ['кек', 'лол', 'kek', 'lol']
-annet_video = 'BAACAgIAAxkBAAKW52db4yxMeH7cRlA61h_wwhTz--SNAAJCXQACATPhSiVzjWhlPQxhNgQ'
+annet_video = 'BAACAgIAAxkBAAJJN2db5z1qIArBysw7nbB5ZPot5ldBAAK1YgACPaLYSsTy2CPcnhfENgQ'
 
 kirov = ['киров', 'Киров', 'кирове', 'кировский', 'кировское', 'кировчане', 'кировчанское', 'кирова', 'кирову']
 
