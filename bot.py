@@ -305,8 +305,17 @@ def kirov(message):
         service_func.send_error(bot, message, 27, kirov_error)
 
 
+# Обработка Аня_кек
+@bot.message_handler(func=lambda message: True and find_words.word_in_message(message.text, constants.annet_kek))
+def annet(message):
+    try:
+        bot.send_video(secret.shobla_id, constants.annet_video, reply_to_message_id=message.message_id)
+    except Exception as annet_error:
+        service_func.send_error(bot, message, 37, annet_error)
+        
+
 # # # # # # Получаение file_id медиа файлов # # # # # #
-@bot.message_handler(content_types=['photo', 'voice', 'document', 'animation'])
+@bot.message_handler(content_types=['photo', 'voice', 'document', 'animation', 'video'])
 def send_media_id(message):
     try:
         if message.chat.id == secret.apol_id:
@@ -318,6 +327,8 @@ def send_media_id(message):
                 bot.send_message(secret.apol_id, message.document.file_id)
             elif message.animation:
                 bot.send_message(secret.apol_id, message.animation.file_id)
+            elif message.video:
+                bot.send_message(secret.apol_id, message.video.file_id)
     except Exception as send_media_id_error:
         service_func.send_error(bot, message, 33, send_media_id_error)
 
