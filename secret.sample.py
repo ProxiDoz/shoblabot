@@ -17,7 +17,6 @@ tr_app_key = 'ХХХХХХХХХХХХХХХХХХХХХХХХХХХХХХХХ'
 
 # File's paths
 log_file = 'XXXXXXXXXXXXXXX'
-activity_file = 'XXXXXXXXXXXXXXX'
 kirov_audio_path = 'XXXXXXXXXXXXXXX'
 mamma_audio_path = 'XXXXXXXXXXXXXXX'
 meeting_file = 'XXXXXXXXXXXXXXX'

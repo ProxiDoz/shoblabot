@@ -54,14 +54,8 @@ def send_message(bot):
                 except Exception as stop_poll_error:
                     service_func.log(bot, f'Ошибка при закрытии опроса в sdr:\nТекст ошибки:\n{stop_poll_error}')
                     bot.send_message(secret.apol_id, f'❌ Ошибка при закрытии опроса в sdr:\nТекст ошибки:\n{stop_poll_error}')
-            if now_time.day == 1:  # День для статистики по боту выкладывания фоток за месяц и ежемесечной 10челлендж
-                # Загружаем данные из файла activity_count
-                # cur_month = f'{now_time.year - 1}.12' if now_time.month == 1 else f'{now_time.year}.{now_time.month - 1}'
-                # with open(secret.activity_file, 'r') as activity_file:
-                #     activity_count = json.loads(activity_file.read())
-                # month_statistics_text = service_func.month_statistics(bot, activity_count, cur_month)
-                # bot.send_message(secret.shobla_id, month_statistics_text, parse_mode='Markdown')
-                # Рассылка по 10челлендж
+            # Рассылка по 10челлендж
+            if now_time.day == 1:
                 challenge = bot.send_message(secret.shobla_id, '📸 Шоблятки, время для #10челлендж и ваших фоточек за месяц!', parse_mode='Markdown')
                 bot.pin_chat_message(secret.shobla_id, challenge.message_id, disable_notification=False)
             # Отправка поздравлений с особым днём

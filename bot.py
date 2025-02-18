@@ -30,11 +30,9 @@ bot.set_my_commands([
     telebot.types.BotCommand('/help', '❓Полезная информация'),
     telebot.types.BotCommand('/meeting', '🎧Ссылка шоблосозвона'),
     telebot.types.BotCommand('/log', '📋Вывод логов бота'),
-    telebot.types.BotCommand('/stat', '🤖Статистика по использованию бота'),
     telebot.types.BotCommand('/rapid', '✅ Зеленый Rapid'),
     telebot.types.BotCommand('/yapoznaumir', '🧐 Задай вопрос')
 ])
-activity_count = {}  # Переменная для сбора статистики по командам
 with open(secret.meeting_file, 'r') as lang:  # Переменная curr_meeting_poll для сбора данных по опросу
     curr_meeting_poll = json.loads(lang.read())
 
@@ -59,7 +57,6 @@ def yapoznaumir(message):
         service_func.log(bot, f'вызов команды /yapoznaumir by {constants.shobla_member[message.from_user.id]["name"]}')
         bot.send_message(message.chat.id, constants.enter_question_gpt, reply_to_message_id=message.message_id, reply_markup=telebot.types.ForceReply(True))
         bot.delete_message(message.chat.id, message.message_id)
-        service_func.update_activity(bot, 'yapoznaumir')
     except Exception as yapoznaumir_error:
         service_func.send_error(bot, message, 32, yapoznaumir_error)
 
@@ -71,7 +68,6 @@ def handle_start_help(message):
         if message.chat.id == secret.shobla_id or message.from_user.id in constants.shobla_member:  # Это Шобла или человек из Шоблы
             service_func.log(bot, f'вызов команды {message.text} by {constants.shobla_member[message.from_user.id]["name"]}')
             bot.send_message(message.chat.id, constants.help_text, reply_markup=keyboards.help_keyboard, parse_mode='Markdown')
-            service_func.update_activity(bot, message.text.split('@')[0][1:])
         else:
             service_func.log(bot, f'вызов команды {message.text}\n{constants.errors[0 if len(message.text) == 6 else 1]}: '
                                   f'User ID - {message.from_user.id}, user_name - @{message.from_user.username}')
@@ -88,7 +84,6 @@ def who_will(message):
             service_func.log(bot, f'вызов команды /who by {constants.shobla_member[message.from_user.id]["name"]}')
             bot.send_message(secret.shobla_id, constants.enter_question_new, reply_to_message_id=message.message_id, reply_markup=telebot.types.ForceReply(True))
             bot.delete_message(secret.shobla_id, message.message_id)
-            service_func.update_activity(bot, 'who')
         elif message.chat.id in constants.shobla_member:
             bot.send_message(message.chat.id, '❌ Опрос создается только в [Шобле](t.me/c/1126587083/)', parse_mode='Markdown')
     except Exception as who_will_error:
@@ -102,27 +97,8 @@ def send_discount(message):
         if message.from_user.id in constants.shobla_member:
             service_func.log(bot, f'вызов команды /discount by {constants.shobla_member[message.from_user.id]["name"]}')
             bot.send_message(message.chat.id, keyboards.buttons[2][0], reply_markup=keyboards.keyboard_start, parse_mode='Markdown')
-            service_func.update_activity(bot, 'discount')
     except Exception as send_discount_error:
         service_func.send_error(bot, message, 8, send_discount_error)
-
-
-# Вызов статистики
-@bot.message_handler(commands=['stat'])
-def statistics(message):
-    global activity_count
-    try:
-        if message.chat.id == secret.shobla_id or message.from_user.id in constants.shobla_member:  # Это Шобла или человек из Шоблы
-            now_time = datetime.datetime.now()
-            cur_month = f'{now_time.year}.{now_time.month}'
-            with open(secret.activity_file, 'r') as activity_file:  # Загружаем данные из файла activity_count
-                activity_count = json.loads(activity_file.read())
-            month_statistics_text = service_func.month_statistics(bot, activity_count, cur_month)
-            bot.send_message(message.chat.id, month_statistics_text.replace('прошлый', 'текущий'), parse_mode='Markdown')
-        else:
-            service_func.send_error(bot, message, 6, 'вызов команды /stat')
-    except Exception as statistics_error:
-        service_func.send_error(bot, message, 4, statistics_error)
 
 
 # Запрос отправки логов по боту
@@ -148,7 +124,6 @@ def meeting(message):
         if message.from_user.id in constants.shobla_member:  # Это человек из Шоблы
             service_func.log(bot, f'вызов команды /meeting by {constants.shobla_member[message.from_user.id]["name"]}')
             bot.send_photo(message.chat.id, constants.meeting_pic, caption=f'🤖 *Го созвон*\n{constants.meeting_link}', parse_mode='Markdown')
-            service_func.update_activity(bot, 'meeting')
     except Exception as meeting_error:
         service_func.send_error(bot, message, 28, meeting_error)
 
@@ -164,7 +139,6 @@ def usd(message):
                 bot.send_photo(message.chat.id, constants.usd_pic[random.randint(0, len(constants.usd_pic) - 1)],
                                caption=(f'💵 *Курс рубля по данным сайта* [ЦБР](https://www.cbr.ru/currency_base/daily/) *на {date}*:\n'
                                         f'`1$ = {usa_dol}₽`\n`1€ = {eur}₽`\n`1₾ = {geo_lar}₽`\n`100₸ = {kaz_ten}₽`'), parse_mode='Markdown')
-                service_func.update_activity(bot, 'usd')
             except Exception as cbr_parse_error:
                 service_func.send_error(bot, message, 18, f'{cbr.get_exchange_rates()}\n\n{cbr_parse_error}')
     except Exception as usd_error:
@@ -177,7 +151,6 @@ def usd(message):
 def aaa(message):
     try:
         bot.send_message(secret.shobla_id, 'Девка за рулём') if len(message.text) > 2 else bot.send_message(secret.shobla_id, 'Двк з рлм')
-        service_func.update_activity(bot, 'car_girl')
     except Exception as aaa_error:
         service_func.send_error(bot, message, 9, aaa_error)
 
@@ -187,7 +160,6 @@ def aaa(message):
 def damage(message):
     try:
         bot.send_voice(secret.shobla_id, constants.emotional_damage_voice_id)
-        service_func.update_activity(bot, 'damage')
     except Exception as damage_error:
         service_func.send_error(bot, message, 10, damage_error)
 
@@ -198,7 +170,6 @@ def mamma_mia(message):
     try:
         audio = open(secret.mamma_audio_path, 'rb')
         bot.send_audio(message.chat.id, audio, reply_to_message_id=message.message_id)
-        service_func.update_activity(bot, 'mamma')
     except Exception as mamma_mia_error:
         service_func.send_error(bot, message, 30, mamma_mia_error)
 
@@ -208,7 +179,6 @@ def mamma_mia(message):
 def russia(message):
     try:
         bot.send_voice(secret.shobla_id, constants.anthem, '🫡')
-        service_func.update_activity(bot, 'russia')
     except Exception as russia_error:
         service_func.send_error(bot, message, 11, russia_error)
 
@@ -218,7 +188,6 @@ def russia(message):
 def hey_doc(message):
     try:
         bot.send_document(secret.shobla_id, constants.hey_doc_gif_id, caption='@oxy_genium')
-        service_func.update_activity(bot, 'hey_doc')
     except Exception as hey_doc_error:
         service_func.send_error(bot, message, 12, hey_doc_error)
 
@@ -229,7 +198,6 @@ def team(message):
     try:
         bot.send_message(chat_id=secret.shobla_id, disable_notification=False, reply_to_message_id=message.message_id,
                          text=constants.team_text, disable_web_page_preview=True, parse_mode='Markdown')
-        service_func.update_activity(bot, 'team')
     except Exception as team_error:
         service_func.send_error(bot, message, 14, team_error)
 
@@ -239,7 +207,6 @@ def team(message):
 def rapid(message):
     value = ''
     try:
-        service_func.update_activity(bot, 'rapid')
         service_func.log(bot, f'вызов команды /rapid by {constants.shobla_member[message.from_user.id]["name"]}')
         # Сплитуем строку выпилив предварительно ненужные пробелы по бокам
         data = message.text.lower().strip().split(' ')
@@ -253,8 +220,6 @@ def rapid(message):
         answer = json.loads(str(response.read(), 'utf-8'))
         bot.send_message(secret.shobla_id, answer['message'], parse_mode='Markdown')
         service_func.log(bot, f'добавлен новый номер Рапида by {constants.shobla_member[message.from_user.id]["name"]}')
-        if answer['message'] == 'Номер успешно добавлен':
-            service_func.update_activity(bot, 'rapid_new')
     except Exception as rapid_error:
         bot.send_message(secret.zhuykovkb_id, f'Ошибка в функции rapid:\n\nДанные: {quote(value)}\n\nТекст ошибки {rapid_error}')
         service_func.send_error(bot, message, 15, f'{rapid_error}\nДанные: {quote(value)}')
@@ -265,7 +230,6 @@ def rapid(message):
 def badger(message):
     try:
         bot.send_message(secret.shobla_id, 'Барсук')
-        service_func.update_activity(bot, 'cyk')
     except Exception as badger_error:
         service_func.send_error(bot, message, 16, badger_error)
 
@@ -275,7 +239,6 @@ def badger(message):
 def another_badger(message):
     try:
         bot.send_message(secret.shobla_id, 'Барсюк')
-        service_func.update_activity(bot, 'cyk')
     except Exception as another_badger_error:
         service_func.send_error(bot, message, 17, another_badger_error)
 
@@ -300,7 +263,6 @@ def kirov(message):
     try:
         audio = open(secret.kirov_audio_path, 'rb')
         bot.send_audio(message.chat.id, audio, reply_to_message_id=message.message_id)
-        service_func.update_activity(bot, 'kirov')
     except Exception as kirov_error:
         service_func.send_error(bot, message, 27, kirov_error)
 
@@ -370,16 +332,11 @@ def send_text(message):
     try:
         text = message.text
         match = re.search(r'(instagram\.com/\S+)', message.text)
-        # if translitsky.isTranslitsky(text) and text[0:4] != 'http':
-        #     answer = translitsky.doTranslitskyRollback(text)
-        #     bot.send_message(message.chat.id, f'`{answer}`', parse_mode='Markdown', reply_to_message_id=message.message_id)
-        #     service_func.update_activity(bot, 'transl')
         # Если это попытка запинить сообщение
         if message.reply_to_message is not None and text == '@shoblabot' and message.chat.id == secret.shobla_id:
             try:
                 bot.pin_chat_message(chat_id=secret.shobla_id, message_id=message.reply_to_message.message_id, disable_notification=False)
                 service_func.log(bot, f'пин сообщения by {constants.shobla_member[message.from_user.id]["name"]}')
-                service_func.update_activity(bot, 'pin')
             except Exception as pin_error:
                 service_func.send_error(bot, message, 26, pin_error)
         # Если это реплай на сообщение бота
@@ -399,7 +356,6 @@ def send_text(message):
                         bot.delete_message(secret.shobla_id, message.message_id)
                         bot.pin_chat_message(secret.shobla_id, poll.message_id, disable_notification=False)
                         service_func.log(bot, f'создан опрос by {constants.shobla_member[message.from_user.id]["name"]}')
-                        service_func.update_activity(bot, 'opros')
                     else:
                         force_reply = telebot.types.ForceReply(True)
                         bot.delete_message(secret.shobla_id, message.reply_to_message.message_id)
