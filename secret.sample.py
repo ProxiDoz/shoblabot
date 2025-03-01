@@ -20,3 +20,8 @@ log_file = 'XXXXXXXXXXXXXXX'
 kirov_audio_path = 'XXXXXXXXXXXXXXX'
 mamma_audio_path = 'XXXXXXXXXXXXXXX'
 meeting_file = 'XXXXXXXXXXXXXXX'
+
+# ID участниеов Шобла - ReBorn в Telegram
+shobla_member = {ХХХХХХ: {'name': 'Хххх', 'dd_mm': 'Х.Х', 'year': ХХХХ},
+                 ХХХХХХХХХ: {'name': 'Хххх', 'dd_mm': 'Х.Х', 'year': ХХХХ}
+                }

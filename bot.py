@@ -1,24 +1,22 @@
 #!/usr/bin/python3.8.9
 # -*- coding: utf-8 -*-
 # # # # # # Импортозамещение # # # # # #
-import telebot                              # Библиотека piTelegramBotAPI
-import re                                   # Для поиска ссылки в тексте
-import g4f                                  # Для работы с нейронкой
-import json                                 # Представляет словарь в строку
-import time                                 # Для представления времени в читаемом формате
-import datetime                             # ---//---
-import random                               # Присвятой рандом
-import urllib.request as urllib2            # Для Кирюхиного Rapid'a
-from urllib.parse import quote              # ---//---
-import traceback                            # Для записи в лог файл при траблах бота
-import constants                            # Файл с константами
-import secret                               # Файл с токенами
-import helpers.keyboards as keyboards       # Файл с клавиатурами
+import telebot  # Библиотека piTelegramBotAPI
+import re  # Для поиска ссылки в тексте
+import g4f  # Для работы с нейронкой
+import json  # Представляет словарь в строку
+import time  # Для представления времени в читаемом формате
+import random  # Присвятой рандом
+import urllib.request as urllib2  # Для Кирюхиного Rapid'a
+from urllib.parse import quote  # ---//---
+import traceback  # Для записи в лог файл при траблах бота
+import constants  # Файл с константами
+import secret  # Файл с токенами
+import helpers.keyboards as keyboards  # Файл с клавиатурами
 import helpers.service_func as service_func  # Файл со служебными функциями
-import helpers.faggot as faggot             # Файл для функции faggot handler
-import helpers.find_words as find_words     # Файл для функции kirov
-import helpers.translitsky as translitsky   # Файл для функции транслитского
-import helpers.cbr as cbr                   # Файл для команды запросв курса рубля
+import helpers.faggot as faggot  # Файл для функции faggot handler
+import helpers.find_words as find_words  # Файл для функции kirov
+import helpers.cbr as cbr  # Файл для команды запросв курса рубля
 import helpers.scheduled_messages as scheduled_messages  # Файл для функции отправки сообщений по расписанию
 
 # # # # # # Инициализация # # # # # #
@@ -54,7 +52,7 @@ def server_info(message):
 @bot.message_handler(commands=['yapoznaumir'])
 def yapoznaumir(message):
     try:
-        service_func.log(bot, f'вызов команды /yapoznaumir by {constants.shobla_member[message.from_user.id]["name"]}')
+        service_func.log(bot, f'вызов команды /yapoznaumir by {secret.shobla_member[message.from_user.id]["name"]}')
         bot.send_message(message.chat.id, constants.enter_question_gpt, reply_to_message_id=message.message_id, reply_markup=telebot.types.ForceReply(True))
         bot.delete_message(message.chat.id, message.message_id)
     except Exception as yapoznaumir_error:
@@ -65,8 +63,8 @@ def yapoznaumir(message):
 @bot.message_handler(commands=['start', 'help'])
 def handle_start_help(message):
     try:
-        if message.chat.id == secret.shobla_id or message.from_user.id in constants.shobla_member:  # Это Шобла или человек из Шоблы
-            service_func.log(bot, f'вызов команды {message.text} by {constants.shobla_member[message.from_user.id]["name"]}')
+        if message.chat.id == secret.shobla_id or message.from_user.id in secret.shobla_member:  # Это Шобла или человек из Шоблы
+            service_func.log(bot, f'вызов команды {message.text} by {secret.shobla_member[message.from_user.id]["name"]}')
             bot.send_message(message.chat.id, constants.help_text, reply_markup=keyboards.help_keyboard, parse_mode='Markdown')
         else:
             service_func.log(bot, f'вызов команды {message.text}\n{constants.errors[0 if len(message.text) == 6 else 1]}: '
@@ -81,10 +79,10 @@ def handle_start_help(message):
 def who_will(message):
     try:
         if message.chat.id == secret.shobla_id:  # Это Шобла
-            service_func.log(bot, f'вызов команды /who by {constants.shobla_member[message.from_user.id]["name"]}')
+            service_func.log(bot, f'вызов команды /who by {secret.shobla_member[message.from_user.id]["name"]}')
             bot.send_message(secret.shobla_id, constants.enter_question_new, reply_to_message_id=message.message_id, reply_markup=telebot.types.ForceReply(True))
             bot.delete_message(secret.shobla_id, message.message_id)
-        elif message.chat.id in constants.shobla_member:
+        elif message.chat.id in secret.shobla_member:
             bot.send_message(message.chat.id, '❌ Опрос создается только в [Шобле](t.me/c/1126587083/)', parse_mode='Markdown')
     except Exception as who_will_error:
         service_func.send_error(bot, message, 7, who_will_error)
@@ -94,8 +92,8 @@ def who_will(message):
 @bot.message_handler(commands=['discount'])
 def send_discount(message):
     try:
-        if message.from_user.id in constants.shobla_member:
-            service_func.log(bot, f'вызов команды /discount by {constants.shobla_member[message.from_user.id]["name"]}')
+        if message.from_user.id in secret.shobla_member:
+            service_func.log(bot, f'вызов команды /discount by {secret.shobla_member[message.from_user.id]["name"]}')
             bot.send_message(message.chat.id, keyboards.buttons[2][0], reply_markup=keyboards.keyboard_start, parse_mode='Markdown')
     except Exception as send_discount_error:
         service_func.send_error(bot, message, 8, send_discount_error)
@@ -105,9 +103,9 @@ def send_discount(message):
 @bot.message_handler(commands=['log'])
 def share_log(message):
     try:
-        if message.chat.id == secret.shobla_id or message.from_user.id in constants.shobla_member:  # Это Шобла или человек из Шоблы
+        if message.chat.id == secret.shobla_id or message.from_user.id in secret.shobla_member:  # Это Шобла или человек из Шоблы
             try:
-                service_func.log(bot, f'вызов команды /log by {constants.shobla_member[message.from_user.id]["name"]}')
+                service_func.log(bot, f'вызов команды /log by {secret.shobla_member[message.from_user.id]["name"]}')
                 bot.send_document(message.chat.id, open(secret.log_file, 'rb'), caption='🤖📋 Log file')
             except Exception as upload_log_error:
                 service_func.send_error(bot, message, 23, upload_log_error)
@@ -121,8 +119,8 @@ def share_log(message):
 @bot.message_handler(commands=['meeting'])
 def meeting(message):
     try:
-        if message.from_user.id in constants.shobla_member:  # Это человек из Шоблы
-            service_func.log(bot, f'вызов команды /meeting by {constants.shobla_member[message.from_user.id]["name"]}')
+        if message.from_user.id in secret.shobla_member:  # Это человек из Шоблы
+            service_func.log(bot, f'вызов команды /meeting by {secret.shobla_member[message.from_user.id]["name"]}')
             bot.send_photo(message.chat.id, constants.meeting_pic, caption=f'🤖 *Го созвон*\n{constants.meeting_link}', parse_mode='Markdown')
     except Exception as meeting_error:
         service_func.send_error(bot, message, 28, meeting_error)
@@ -132,9 +130,9 @@ def meeting(message):
 @bot.message_handler(commands=['usd'])
 def usd(message):
     try:
-        if message.from_user.id in constants.shobla_member:  # Это человек из Шоблы
+        if message.from_user.id in secret.shobla_member:  # Это человек из Шоблы
             try:
-                service_func.log(bot, f'вызов команды /usd by {constants.shobla_member[message.from_user.id]["name"]}')
+                service_func.log(bot, f'вызов команды /usd by {secret.shobla_member[message.from_user.id]["name"]}')
                 usa_dol, eur, geo_lar, kaz_ten, date = cbr.get_exchange_rates()
                 bot.send_photo(message.chat.id, constants.usd_pic[random.randint(0, len(constants.usd_pic) - 1)],
                                caption=(f'💵 *Курс рубля по данным сайта* [ЦБР](https://www.cbr.ru/currency_base/daily/) *на {date}*:\n'
@@ -207,7 +205,7 @@ def team(message):
 def rapid(message):
     value = ''
     try:
-        service_func.log(bot, f'вызов команды /rapid by {constants.shobla_member[message.from_user.id]["name"]}')
+        service_func.log(bot, f'вызов команды /rapid by {secret.shobla_member[message.from_user.id]["name"]}')
         # Сплитуем строку выпилив предварительно ненужные пробелы по бокам
         data = message.text.lower().strip().split(' ')
         '''Получаем количество элементов сплитованой строки
@@ -219,7 +217,7 @@ def rapid(message):
         response = urllib2.urlopen(f'https://rapid.zhuykovkb.ru/rapid?data={quote(value)}&memberid={message.from_user.id}')
         answer = json.loads(str(response.read(), 'utf-8'))
         bot.send_message(secret.shobla_id, answer['message'], parse_mode='Markdown')
-        service_func.log(bot, f'добавлен новый номер Рапида by {constants.shobla_member[message.from_user.id]["name"]}')
+        service_func.log(bot, f'добавлен новый номер Рапида by {secret.shobla_member[message.from_user.id]["name"]}')
     except Exception as rapid_error:
         bot.send_message(secret.zhuykovkb_id, f'Ошибка в функции rapid:\n\nДанные: {quote(value)}\n\nТекст ошибки {rapid_error}')
         service_func.send_error(bot, message, 15, f'{rapid_error}\nДанные: {quote(value)}')
@@ -274,7 +272,7 @@ def annet(message):
         bot.send_video(secret.shobla_id, constants.annet_video, reply_to_message_id=message.message_id)
     except Exception as annet_error:
         service_func.send_error(bot, message, 37, annet_error)
-        
+
 
 # # # # # # Получаение file_id медиа файлов # # # # # #
 @bot.message_handler(content_types=['photo', 'voice', 'document', 'animation', 'video'])
@@ -336,7 +334,7 @@ def send_text(message):
         if message.reply_to_message is not None and text == '@shoblabot' and message.chat.id == secret.shobla_id:
             try:
                 bot.pin_chat_message(chat_id=secret.shobla_id, message_id=message.reply_to_message.message_id, disable_notification=False)
-                service_func.log(bot, f'пин сообщения by {constants.shobla_member[message.from_user.id]["name"]}')
+                service_func.log(bot, f'пин сообщения by {secret.shobla_member[message.from_user.id]["name"]}')
             except Exception as pin_error:
                 service_func.send_error(bot, message, 26, pin_error)
         # Если это реплай на сообщение бота
@@ -345,7 +343,7 @@ def send_text(message):
             if message.reply_to_message.text == constants.enter_question_new or message.reply_to_message.text == constants.too_large_question:
                 try:
                     if len(text) <= 291:
-                        poll_text = f'{constants.shobla_member[message.from_user.id]["name"]}: {text}'
+                        poll_text = f'{secret.shobla_member[message.from_user.id]["name"]}: {text}'
                         poll = bot.send_poll(secret.shobla_id, poll_text, constants.poll_options, is_anonymous=False, allows_multiple_answers=False)
                         stop_button = telebot.types.InlineKeyboardButton(text='Остановить опрос 🚫',
                                                                          callback_data=f'stop_{poll.message_id}_{message.from_user.id}')
@@ -355,7 +353,7 @@ def send_text(message):
                         bot.edit_message_reply_markup(secret.shobla_id, poll.message_id, reply_markup=keyboard_opros_stop)
                         bot.delete_message(secret.shobla_id, message.message_id)
                         bot.pin_chat_message(secret.shobla_id, poll.message_id, disable_notification=False)
-                        service_func.log(bot, f'создан опрос by {constants.shobla_member[message.from_user.id]["name"]}')
+                        service_func.log(bot, f'создан опрос by {secret.shobla_member[message.from_user.id]["name"]}')
                     else:
                         force_reply = telebot.types.ForceReply(True)
                         bot.delete_message(secret.shobla_id, message.reply_to_message.message_id)
