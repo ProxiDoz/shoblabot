@@ -1,10 +1,8 @@
 #!/usr/bin/python3.8.9
 # -*- coding: utf-8 -*-
-import json                                 # Представляет словарь в строку
 import time                                 # Для представления времени в читаемом формате
-import datetime                             # ---//---
 import psutil                               # Для вытаскивания данных по ОЗУ сервера
-from secret import apol_id, shobla_id, log_file, activity_file       # Файл с токенами
+from secret import apol_id, shobla_id, log_file       # Файл с токенами
 import constants                            # Файл с константами
 
 
