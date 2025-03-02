@@ -66,13 +66,13 @@ def send_message(bot):
                 bot.send_message(secret.shobla_id, f'🥳 Сегодня ботику уже *{now_time.year - 2016} лет*!', parse_mode='Markdown')
             # Отправка поздравлений с ДР
             try:
-                for user_id in constants.shobla_member:
-                    age = now_time.year - constants.shobla_member[user_id]['year']
-                    if constants.shobla_member[user_id]['dd_mm'] == today:
+                for user_id in secret.shjobla_member:
+                    age = now_time.year - secret.shjobla_member[user_id]['year']
+                    if secret.shjobla_member[user_id]['dd_mm'] == today:
                         if age % 10 == 0:  # Если у человека юбилей
-                            bot.send_message(secret.shobla_id, constants.happy_anniversary.format(constants.shobla_member[user_id]['name'], user_id, age), parse_mode='Markdown')
+                            bot.send_message(secret.shobla_id, constants.happy_anniversary.format(secret.shjobla_member[user_id]['name'], user_id, age), parse_mode='Markdown')
                         else:
-                            bot.send_message(secret.shobla_id, f'🥳 [{constants.shobla_member[user_id]["name"]}](tg://user?id={user_id}), с др!', parse_mode='Markdown')
+                            bot.send_message(secret.shobla_id, f'🥳 [{secret.shjobla_member[user_id]["name"]}](tg://user?id={user_id}), с др!', parse_mode='Markdown')
             except Exception as happy_bd_error:
                 service_func.log(bot, f'{constants.errors[35]}:\nТекст ошибки:\n{happy_bd_error}')
                 bot.send_message(secret.apol_id, f'❌ {constants.errors[35]}\nТекст ошибки:\n{happy_bd_error}')
