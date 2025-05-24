@@ -29,7 +29,6 @@ bot.set_my_commands([
     telebot.types.BotCommand('/meeting', '🎧Ссылка шоблосозвона'),
     telebot.types.BotCommand('/log', '📋Вывод логов бота'),
     telebot.types.BotCommand('/rapid', '✅ Зеленый Rapid'),
-    telebot.types.BotCommand('/yapoznaumir', '🧐 Задай вопрос')
 ])
 with open(secret.meeting_file, 'r') as lang:  # Переменная curr_meeting_poll для сбора данных по опросу
     curr_meeting_poll = json.loads(lang.read())
@@ -46,17 +45,6 @@ def server_info(message):
             service_func.send_error(bot, message, 6, 'Вызов команды /s')
     except Exception as server_info_error:
         service_func.send_error(bot, message, 5, server_info_error)
-
-
-# Вызов команды для задания вопросов
-@bot.message_handler(commands=['yapoznaumir'])
-def yapoznaumir(message):
-    try:
-        service_func.log(bot, f'вызов команды /yapoznaumir by {secret.shobla_member[message.from_user.id]["name"]}')
-        bot.send_message(message.chat.id, constants.enter_question_gpt, reply_to_message_id=message.message_id, reply_markup=telebot.types.ForceReply(True))
-        bot.delete_message(message.chat.id, message.message_id)
-    except Exception as yapoznaumir_error:
-        service_func.send_error(bot, message, 32, yapoznaumir_error)
 
 
 # Вызов стартового сообщения / справки
@@ -360,13 +348,6 @@ def send_text(message):
                         bot.send_message(message.chat.id, constants.too_large_question, reply_to_message_id=message.message_id, reply_markup=force_reply)
                 except Exception as poll_reply_error:
                     service_func.send_error(bot, message, 19, poll_reply_error)
-            # Если вводится вопрос к нейронке
-            elif message.reply_to_message.text == constants.enter_question_gpt:
-                try:
-                    response = g4f.ChatCompletion.create(model='gpt-3.5-turbo-16k', messages=[{"role": "user", "content": message.text}], stream=False)
-                    bot.send_message(message.chat.id, response, reply_to_message_id=message.message_id, parse_mode='Markdown')
-                except Exception as g4f_error:
-                    service_func.send_error(bot, message, 32, g4f_error)
         # Если это ссылка из Instagram
         elif match:
             new_url = re.sub(r'instagram\.com', 'ddinstagram.com', match.group(1))  # Заменяем домен на ddinstagram.com
