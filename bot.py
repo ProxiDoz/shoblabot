@@ -3,7 +3,6 @@
 # # # # # # Импортозамещение # # # # # #
 import telebot  # Библиотека piTelegramBotAPI
 import re  # Для поиска ссылки в тексте
-import g4f  # Для работы с нейронкой
 import json  # Представляет словарь в строку
 import time  # Для представления времени в читаемом формате
 import random  # Присвятой рандом
@@ -26,12 +25,10 @@ bot.set_my_commands([
     telebot.types.BotCommand('/usd', '💵 Курс рубля'),
     telebot.types.BotCommand('/who', '✅❌Создать опрос'),
     telebot.types.BotCommand('/help', '❓Полезная информация'),
-    telebot.types.BotCommand('/meeting', '🎧Ссылка шоблосозвона'),
+    telebot.types.BotCommand('/meeting', '🎧Ссылка шоблодискорда'),
     telebot.types.BotCommand('/log', '📋Вывод логов бота'),
     telebot.types.BotCommand('/rapid', '✅ Зеленый Rapid'),
 ])
-with open(secret.meeting_file, 'r') as lang:  # Переменная curr_meeting_poll для сбора данных по опросу
-    curr_meeting_poll = json.loads(lang.read())
 
 
 # # # # # # Доступные команды # # # # # #
@@ -288,28 +285,6 @@ def callback_buttons(call):
         keyboards.button_func(bot, call)
     except Exception as callback_buttons_error:
         service_func.send_error(bot, call.message, 3, callback_buttons_error)
-
-
-# # # # # # Обработка опросов # # # # # #
-@bot.poll_handler(func=lambda poll: True and poll.is_closed == 1 and str(poll.id) == curr_meeting_poll['poll_id'] and poll.total_voter_count > 1)
-def poll_results(poll):
-    global curr_meeting_poll
-    try:
-        meeting_results = []
-        for item in poll.options:
-            meeting_results.append(item.voter_count)
-        max_date = meeting_results[0:4].index(max(meeting_results[0:4]))
-        max_time = meeting_results[4:].index(max(meeting_results[4:])) + 4
-        curr_meeting_poll['max_date'], curr_meeting_poll['max_time'] = max_date, max_time
-        with open(secret.meeting_file, 'w') as meeting_file:  # Записываем данные в файл meeting_file
-            meeting_file.write(json.dumps(curr_meeting_poll))
-        service_func.log(bot, f'Приглашение на общий созвон будет отправлено{constants.meeting_options[max_time]}{constants.meeting_options[max_date][4:]}')
-        poll_results_msg = bot.send_message(secret.shobla_id, f'Шоблятки, созвон на этой неделе будет в{constants.meeting_options[max_date][4:]} {constants.meeting_options[max_time]}',
-                                            parse_mode='Markdown')
-        bot.pin_chat_message(secret.shobla_id, poll_results_msg.message_id, disable_notification=False)
-    except Exception as poll_results_error:
-        service_func.log(bot, f'{constants.errors[29]}\nТекст ошибки: {poll_results_error}')
-        bot.send_message(secret.apol_id, f'❌ Ошибка в функции poll_results:\nСообщение: {poll}\nТекст ошибки:\n{poll_results_error}')
 
 
 # # # # # # Обработка текста реплаев и # # # # # #
