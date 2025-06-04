@@ -12,22 +12,18 @@ def send_message(bot):
     try:
         threading.Timer(3600, send_message).start()  # Каждые полчаса - 1800, каждые 10 мин - 600
         now_time = datetime.datetime.now()
-        # Отправка предупреждения о загрузке оперативной памяти
-        service_func.alarm(bot)
-        # Если сейчас 9 утра (по МСК), то начать различные рассылки
+        today = f'{now_time.day}.{now_time.month}'
+        service_func.alarm(bot)  # Отправка предупреждения о загрузке оперативной памяти
         if now_time.hour == 9:
-            # Рассылка по 10челлендж
-            if now_time.day == 1:
+            if now_time.day == 1:  # Рассылка по 10челлендж
                 challenge = bot.send_message(secret.shobla_id, '📸 Шоблятки, время для #10челлендж и ваших фоточек за месяц!', parse_mode='Markdown')
                 bot.pin_chat_message(secret.shobla_id, challenge.message_id, disable_notification=False)
             # Отправка поздравлений с особым днём
-            today = f'{now_time.day}.{now_time.month}'
             if today == '28.5':  # День Баяна в Шобле отмечается 28 мая
                 bot.send_photo(secret.shobla_id, constants.bayan_day_pic, caption='🪗 Шобла, поздравляю с Днём Баяна!')
-            if today == '24.11':  # День Рождения бота
+            elif today == '24.11':  # День Рождения бота
                 bot.send_message(secret.shobla_id, f'🥳 Сегодня ботику уже *{now_time.year - 2016} лет*!', parse_mode='Markdown')
-            # Отправка поздравлений с ДР
-            try:
+            try:  # Отправка поздравлений с ДР
                 for user_id in secret.shobla_member:
                     age = now_time.year - secret.shobla_member[user_id]['year']
                     if secret.shobla_member[user_id]['dd_mm'] == today:

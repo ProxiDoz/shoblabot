@@ -13,25 +13,15 @@ help_keyboard = telebot.types.InlineKeyboardMarkup(row_width=2)
 help_keyboard.add(cool_guys, discord_link, signal_link, film_photo)
 
 # Текст сообщения по inline-кнопке остановки опроса
-wrong_stop = 'Остановить опрос может только его создатель☝️(а не ты, пес)'
+wrong_stop = 'Остановить опрос может только его создатель☝️'
 
 # Данные для клавиатуры в команде /discount
-buttons = {0: ['🆗 О\'кей',  # 0
-               '🎗 Лента',  # 1
-               '❎ Перекресток',  # 2
-               '5️⃣ Пятерочка',  # 3
-               '🧲 Магнит',  # 4
-               '🛒 Дикси',  # 5
-               '🛒 Ашан',  # 6
-               '🛒 Верный',  # 7
-               '🥐 Буше',  # 8
-               '💊 Вита',  # 9
-               '💊 Столички'],
+buttons = {0: ['🆗 Окей', '🎗 Лента', '❎ Перекресток', '5️⃣ Пятерка', '🧲 Магнит', '🛒 Дикси', '🛒 Ашан', '🛒 Верный', '🥐 Буше', '💊 Вита', '💊 Столички'],
            1: ['disc_0', 'disc_1', 'disc_2', 'disc_3', 'disc_4', 'disc_5', 'disc_6', 'disc_7', 'disc_8', 'disc_9', 'disc_10'],
-           2: ['🆗 [О\'кей](https://i.imgur.com/zhx9CkA.png)',
+           2: ['🆗 [Окей](https://i.imgur.com/zhx9CkA.png)',
                '🎗 [Лента](https://i.imgur.com/SVq4ILS.png)',
                '❎ [Перекресток](https://i.imgur.com/5wra693.png)',
-               '5️⃣ [Пятерочка](https://i.imgur.com/9sJyYcx.png)',
+               '5️⃣ [Пятерка](https://i.imgur.com/9sJyYcx.png)',
                '🧲 [Магнит](https://i.imgur.com/cbVdBnv.png)',
                '🛒 [Дикси](https://i.imgur.com/FIQdWAh.png)',
                '🛒 [Ашан](https://i.imgur.com/iGsQ2Ds.jpg)',
@@ -42,18 +32,15 @@ buttons = {0: ['🆗 О\'кей',  # 0
 
 # Начальная клавиатура со скидками
 keyboard_start = telebot.types.InlineKeyboardMarkup(row_width=2)
-for i in range(0, len(buttons[0]) - 1, 2):
-    keyboard_start.add(telebot.types.InlineKeyboardButton(text=buttons[0][i + 1], callback_data=buttons[1][i + 1]),
-                       telebot.types.InlineKeyboardButton(text=buttons[0][i + 2], callback_data=buttons[1][i + 2]))
+for i in range(1, len(buttons[0]), 2):
+    keyboard_start.add(telebot.types.InlineKeyboardButton(text=buttons[0][i], callback_data=buttons[1][i]),
+                       telebot.types.InlineKeyboardButton(text=buttons[0][i + 1], callback_data=buttons[1][i + 1]))
 
 
 # Определение функции по callback_data
 def button_func(bot, call):
     try:
-        if call.data[0:4] == 'stop':  # Нажата кнопка остановки опроса
-            stop_poll(bot, call)
-        elif call.data[0:4] == 'disc':  # Нажата кнопка скидок
-            edit_discount(bot, call)
+        stop_poll(bot, call) if call.data[0:4] == 'stop' else edit_discount(bot, call)  # Нажата кнопка остановки опроса или смены скидки
     except Exception as button_func_error:
         service_func.send_error(bot, call.message, 21, button_func_error)
 
@@ -62,8 +49,8 @@ def button_func(bot, call):
 def edit_discount(bot, call):
     try:
         discount_id = int(call.data.split('_')[1])
-        buttons_text = buttons[0][0:discount_id] + buttons[0][discount_id + 1:len(buttons[0])]
-        buttons_callback_data = buttons[1][0:discount_id] + buttons[1][discount_id + 1:len(buttons[1])]
+        buttons_text = buttons[0][:discount_id] + buttons[0][discount_id + 1:]
+        buttons_callback_data = buttons[1][:discount_id] + buttons[1][discount_id + 1:]
         keyboard_update = telebot.types.InlineKeyboardMarkup(row_width=2)
         for j in range(0, len(buttons[0]) - 2, 2):
             keyboard_update.add(telebot.types.InlineKeyboardButton(text=buttons_text[j], callback_data=buttons_callback_data[j]),
@@ -77,8 +64,7 @@ def edit_discount(bot, call):
 # Функция остановки опроса
 def stop_poll(bot, call):
     try:
-        message_id = int(call.data.split('_')[1])
-        user_id = int(call.data.split('_')[2])
-        bot.stop_poll(secret.shobla_id, message_id) if call.from_user.id == user_id else bot.answer_callback_query(call.id, wrong_stop, show_alert=True)
+        message_id, user_id = call.data[5:].split('_')
+        bot.stop_poll(secret.shobla_id, int(message_id)) if call.from_user.id == int(user_id) else bot.answer_callback_query(call.id, wrong_stop, show_alert=True)
     except Exception as stop_poll_error:
         service_func.send_error(bot, call.message, 22, stop_poll_error)

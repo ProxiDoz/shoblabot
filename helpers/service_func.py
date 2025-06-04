@@ -33,7 +33,7 @@ def server_status(bot, message):
     try:
         if len(message.text) == 2:
             bot.send_message(apol_id, f'🤖 RAM free: {psutil.virtual_memory()[2]}% из 1024 Мбайт')
-            log(bot, f'Отправка статуса памяти сервера - RAM free: {psutil.virtual_memory()[2]}% из 512Мбайт')
+            log(bot, f'Отправка статуса памяти сервера - RAM free: {psutil.virtual_memory()[2]}% из 1024 Мбайт')
         else:
             bot.send_message(shobla_id, message.text[3:len(message.text)])
     except Exception as server_info_error:
