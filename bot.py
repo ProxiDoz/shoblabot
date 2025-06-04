@@ -79,7 +79,7 @@ def send_discount(message):
     try:
         if message.from_user.id in secret.shobla_member:
             service_func.log(bot, f'вызов команды /discount by {secret.shobla_member[message.from_user.id]["name"]}')
-            bot.send_message(message.chat.id, keyboards.buttons[2][0], reply_markup=keyboards.keyboard_start, parse_mode='Markdown')
+            bot.send_message(message.chat.id, keyboards.buttons[2][1], reply_markup=keyboards.keyboard_start, parse_mode='Markdown')
     except Exception as send_discount_error:
         service_func.send_error(bot, message, 8, send_discount_error)
 

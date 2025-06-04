@@ -16,8 +16,8 @@ help_keyboard.add(cool_guys, discord_link, signal_link, film_photo)
 wrong_stop = 'Остановить опрос может только его создатель☝️'
 
 # Данные для клавиатуры в команде /discount
-buttons = {0: ['🆗 Окей', '🎗 Лента', '❎ Перекресток', '5️⃣ Пятерка', '🧲 Магнит', '🛒 Дикси', '🛒 Ашан', '🛒 Верный', '🥐 Буше', '💊 Вита', '💊 Столички'],
-           1: ['disc_0', 'disc_1', 'disc_2', 'disc_3', 'disc_4', 'disc_5', 'disc_6', 'disc_7', 'disc_8', 'disc_9', 'disc_10'],
+buttons = {0: ['🆗 Окей', '🎗 Лента', '❎ Перекресток', '5️⃣ Пятерка', '🧲 Магнит', '🛒 Дикси', '🛒 Ашан', '🛒 Верный', '🥐 Буше'],
+           1: ['disc_0', 'disc_1', 'disc_2', 'disc_3', 'disc_4', 'disc_5', 'disc_6', 'disc_7', 'disc_8'],
            2: ['🆗 [Окей](https://i.imgur.com/zhx9CkA.png)',
                '🎗 [Лента](https://i.imgur.com/SVq4ILS.png)',
                '❎ [Перекресток](https://i.imgur.com/5wra693.png)',
@@ -26,15 +26,12 @@ buttons = {0: ['🆗 Окей', '🎗 Лента', '❎ Перекресток',
                '🛒 [Дикси](https://i.imgur.com/FIQdWAh.png)',
                '🛒 [Ашан](https://i.imgur.com/iGsQ2Ds.jpg)',
                '🛒 [Верный](https://i.imgur.com/Dxg7owo.png)',
-               '🥐 [Буше](https://i.imgur.com/H6ins0K.jpg)',
-               '💊 [Вита](https://i.imgur.com/37nibRA.png)',
-               '💊 [Столички](https://i.imgur.com/vImCtCv.png)']}
+               '🥐 [Буше](https://i.imgur.com/H6ins0K.jpg)']}
 
 # Начальная клавиатура со скидками
 keyboard_start = telebot.types.InlineKeyboardMarkup(row_width=2)
-for i in range(1, len(buttons[0]), 2):
-    keyboard_start.add(telebot.types.InlineKeyboardButton(text=buttons[0][i], callback_data=buttons[1][i]),
-                       telebot.types.InlineKeyboardButton(text=buttons[0][i + 1], callback_data=buttons[1][i + 1]))
+keyboard_start.add(telebot.types.InlineKeyboardButton(text='◀️ '+buttons[0][0], callback_data=buttons[1][0]),
+                   telebot.types.InlineKeyboardButton(text='▶️ '+buttons[0][2], callback_data=buttons[1][2]))
 
 
 # Определение функции по callback_data
@@ -49,12 +46,9 @@ def button_func(bot, call):
 def edit_discount(bot, call):
     try:
         discount_id = int(call.data.split('_')[1])
-        buttons_text = buttons[0][:discount_id] + buttons[0][discount_id + 1:]
-        buttons_callback_data = buttons[1][:discount_id] + buttons[1][discount_id + 1:]
         keyboard_update = telebot.types.InlineKeyboardMarkup(row_width=2)
-        for j in range(0, len(buttons[0]) - 2, 2):
-            keyboard_update.add(telebot.types.InlineKeyboardButton(text=buttons_text[j], callback_data=buttons_callback_data[j]),
-                                telebot.types.InlineKeyboardButton(text=buttons_text[j + 1], callback_data=buttons_callback_data[j + 1]))
+        keyboard_update.add(telebot.types.InlineKeyboardButton(text='◀️ '+buttons[0][discount_id - 1], callback_data=buttons[1][discount_id - 1]),
+                            telebot.types.InlineKeyboardButton(text='▶️ '+buttons[0][(discount_id + 1) % 9], callback_data=buttons[1][(discount_id + 1) % 9]))
         text = buttons[2][discount_id]
         bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text=text, parse_mode='Markdown', reply_markup=keyboard_update)
     except Exception as edit_discount_error:
