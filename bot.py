@@ -128,6 +128,20 @@ def usd(message):
         service_func.send_error(bot, message, 31, usd_error)
 
 
+# Команда на анпин сообщения в шобле
+@bot.message_handler(commands=['unpin'])
+def unpin(message):
+    try:
+        if message.reply_to_message is not None and message.from_user.id in secret.shobla_member:  # Это человек из Шоблы
+            try:
+                bot.unpin_chat_message(chat_id=secret.shobla_id, message_id=message.reply_to_message.message_id)
+                bot.delete_message(secret.shobla_id, message.message_id)
+            except Exception as unpin_error:
+                service_func.send_error(bot, message, 32, unpin_error)
+    except Exception as unpin_error:
+        service_func.send_error(bot, message, 32, unpin_error)
+
+
 # # # # # # Обработка текста # # # # # #
 # Обработка девки за рулем
 @bot.message_handler(func=lambda message: message.text and message.text.lower().replace('a', '').replace('а', '') == '' and message.chat.id == secret.shobla_id)
