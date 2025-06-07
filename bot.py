@@ -39,9 +39,10 @@ def server_info(message):
         if message.from_user.id == secret.apol_id:  # Это Апол
             service_func.server_status(bot, message)
         else:
-            service_func.send_error(bot, message, 6, 'Вызов команды /s')
+            service_func.log(bot, f'вызов команды {message.text}\n{constants.errors[4]}: '
+                                  f'User ID - {message.from_user.id}, user_name - @{message.from_user.username}')
     except Exception as server_info_error:
-        service_func.send_error(bot, message, 5, server_info_error)
+        service_func.send_error(bot, message, 4, server_info_error)
 
 
 # Вызов стартового сообщения / справки
@@ -54,7 +55,6 @@ def handle_start_help(message):
         else:
             service_func.log(bot, f'вызов команды {message.text}\n{constants.errors[0 if len(message.text) == 6 else 1]}: '
                                   f'User ID - {message.from_user.id}, user_name - @{message.from_user.username}')
-            bot.send_message(message.chat.id, constants.help_text_light, parse_mode='Markdown')
     except Exception as handle_start_help_error:
         service_func.send_error(bot, message, 0 if message.text == '/start' else 1, handle_start_help_error)
 
@@ -67,8 +67,8 @@ def who_will(message):
             service_func.log(bot, f'вызов команды /who by {secret.shobla_member[message.from_user.id]["name"]}')
             bot.send_message(secret.shobla_id, constants.enter_question_new, reply_to_message_id=message.message_id, reply_markup=telebot.types.ForceReply(True))
             bot.delete_message(secret.shobla_id, message.message_id)
-        elif message.chat.id in secret.shobla_member:
-            bot.send_message(message.chat.id, '❌ Опрос создается только в [Шобле](t.me/c/1126587083/)', parse_mode='Markdown')
+        elif message.from_user.id in secret.shobla_member:  # Это человек из Шоблы
+            bot.send_message(message.chat.id, '❌ Опрос создается только в Шобле', parse_mode='Markdown')
     except Exception as who_will_error:
         service_func.send_error(bot, message, 7, who_will_error)
 
@@ -77,7 +77,7 @@ def who_will(message):
 @bot.message_handler(commands=['discount'])
 def send_discount(message):
     try:
-        if message.from_user.id in secret.shobla_member:
+        if message.from_user.id in secret.shobla_member:  # Это человек из Шоблы
             service_func.log(bot, f'вызов команды /discount by {secret.shobla_member[message.from_user.id]["name"]}')
             bot.send_message(message.chat.id, keyboards.buttons[2][1], reply_markup=keyboards.keyboard_start, parse_mode='Markdown')
     except Exception as send_discount_error:
@@ -88,14 +88,9 @@ def send_discount(message):
 @bot.message_handler(commands=['log'])
 def share_log(message):
     try:
-        if message.chat.id == secret.shobla_id or message.from_user.id in secret.shobla_member:  # Это Шобла или человек из Шоблы
-            try:
-                service_func.log(bot, f'вызов команды /log by {secret.shobla_member[message.from_user.id]["name"]}')
-                bot.send_document(message.chat.id, open(secret.log_file, 'rb'), caption='🤖📋 Log file')
-            except Exception as upload_log_error:
-                service_func.send_error(bot, message, 23, upload_log_error)
-        else:
-            service_func.send_error(bot, message, 6, 'вызов команды /log')
+        if message.from_user.id in secret.shobla_member:  # Это человек из Шоблы
+            service_func.log(bot, f'вызов команды /log by {secret.shobla_member[message.from_user.id]["name"]}')
+            bot.send_document(message.chat.id, open(secret.log_file, 'rb'), caption='🤖📋 Log file')
     except Exception as share_log_error:
         service_func.send_error(bot, message, 24, share_log_error)
 
@@ -116,14 +111,11 @@ def meeting(message):
 def usd(message):
     try:
         if message.from_user.id in secret.shobla_member:  # Это человек из Шоблы
-            try:
-                service_func.log(bot, f'вызов команды /usd by {secret.shobla_member[message.from_user.id]["name"]}')
-                usa_dol, eur, geo_lar, kaz_ten, date = cbr.get_exchange_rates()
-                bot.send_photo(message.chat.id, constants.usd_pic[random.randint(0, len(constants.usd_pic) - 1)],
-                               caption=(f'💵 *Курс рубля по данным сайта* [ЦБР](https://www.cbr.ru/currency_base/daily/) *на {date}*:\n'
-                                        f'`1$ = {usa_dol}₽`\n`1€ = {eur}₽`\n`1₾ = {geo_lar}₽`\n`100₸ = {kaz_ten}₽`'), parse_mode='Markdown')
-            except Exception as cbr_parse_error:
-                service_func.send_error(bot, message, 18, f'{cbr.get_exchange_rates()}\n\n{cbr_parse_error}')
+            service_func.log(bot, f'вызов команды /usd by {secret.shobla_member[message.from_user.id]["name"]}')
+            usa_dol, eur, geo_lar, kaz_ten, date = cbr.get_exchange_rates()
+            bot.send_photo(message.chat.id, constants.usd_pic[random.randint(0, len(constants.usd_pic) - 1)],
+                           caption=(f'💵 *Курс рубля по данным сайта* [ЦБР](https://www.cbr.ru/currency_base/daily/) *на {date}*:\n'
+                                    f'`🇺🇸 1$ = {usa_dol}₽`\n`🇪🇺 1€ = {eur}₽`\n`🇬🇪 1₾ = {geo_lar}₽`\n`🇰🇿 100₸ = {kaz_ten}₽`'), parse_mode='Markdown')
     except Exception as usd_error:
         service_func.send_error(bot, message, 31, usd_error)
 
@@ -133,11 +125,8 @@ def usd(message):
 def unpin(message):
     try:
         if message.reply_to_message is not None and message.from_user.id in secret.shobla_member:  # Это человек из Шоблы
-            try:
-                bot.unpin_chat_message(chat_id=secret.shobla_id, message_id=message.reply_to_message.message_id)
-                bot.delete_message(secret.shobla_id, message.message_id)
-            except Exception as unpin_error:
-                service_func.send_error(bot, message, 32, unpin_error)
+            bot.unpin_chat_message(chat_id=secret.shobla_id, message_id=message.reply_to_message.message_id)
+            bot.delete_message(secret.shobla_id, message.message_id)
     except Exception as unpin_error:
         service_func.send_error(bot, message, 32, unpin_error)
 
@@ -200,7 +189,7 @@ def team(message):
 
 
 # Обработка @rapid
-@bot.message_handler(func=lambda message: message.text and message.text.lower().startswith(constants.rapid) and message.chat.id == secret.shobla_id)
+@bot.message_handler(func=lambda message: message.text and message.text.lower().startswith('/rapid') and message.chat.id == secret.shobla_id)
 def rapid(message):
     value = ''
     try:
@@ -226,18 +215,9 @@ def rapid(message):
 @bot.message_handler(func=lambda message: message.text and message.text.lower() in constants.suk and message.chat.id == secret.shobla_id)
 def badger(message):
     try:
-        bot.send_message(secret.shobla_id, 'Барсук')
+        bot.send_message(secret.shobla_id, 'Бар'+message.text)
     except Exception as badger_error:
         service_func.send_error(bot, message, 16, badger_error)
-
-
-# Обработка барсюка
-@bot.message_handler(func=lambda message: message.text and message.text.lower() in constants.syuk and message.chat.id == secret.shobla_id)
-def another_badger(message):
-    try:
-        bot.send_message(secret.shobla_id, 'Барсюк')
-    except Exception as another_badger_error:
-        service_func.send_error(bot, message, 17, another_badger_error)
 
 
 # Обработка каждого сообщения на гея/лешу
@@ -322,8 +302,7 @@ def send_text(message):
                     if len(text) <= 291:
                         poll_text = f'{secret.shobla_member[message.from_user.id]["name"]}: {text}'
                         poll = bot.send_poll(secret.shobla_id, poll_text, constants.poll_options, is_anonymous=False, allows_multiple_answers=False)
-                        stop_button = telebot.types.InlineKeyboardButton(text='Остановить опрос 🚫',
-                                                                         callback_data=f'stop_{poll.message_id}_{message.from_user.id}')
+                        stop_button = telebot.types.InlineKeyboardButton(text='Остановить опрос 🚫', callback_data=f'stop_{poll.message_id}_{message.from_user.id}')
                         keyboard_opros_stop = telebot.types.InlineKeyboardMarkup(row_width=1)
                         keyboard_opros_stop.add(stop_button)
                         bot.delete_message(secret.shobla_id, message.reply_to_message.message_id)
