@@ -17,6 +17,8 @@ import helpers.faggot as faggot  # Файл для функции faggot handler
 import helpers.find_words as find_words  # Файл для функции kirov
 import helpers.cbr as cbr  # Файл для команды запросв курса рубля
 import helpers.scheduled_messages as scheduled_messages  # Файл для функции отправки сообщений по расписанию
+import ffmpeg  # Для .mov to .webm конвертора
+
 
 # # # # # # Инициализация # # # # # #
 bot = telebot.TeleBot(secret.bot_token)  # Token бота
@@ -264,6 +266,17 @@ def send_media_id(message):
                 bot.send_message(secret.apol_id, message.voice.file_id)
             elif message.document:
                 bot.send_message(secret.apol_id, message.document.file_id)
+                bit_rate = '1M'
+                if message.caption:
+                    bit_rate = message.caption
+                if '.MP4' in message.document.file_name:
+                    file_path = bot.get_file(message.document.file_id).file_path
+                    file = bot.download_file(file_path)
+                    with open(secret.input_file, 'wb+') as file_flow:
+                        file_flow.write(file)
+                    ffmpeg.input(secret.input_file).output(secret.output_file, vcodec='libvpx-vp9', vf='scale=512:-2', b=bit_rate, an=None, loglevel="quiet").run(overwrite_output=True)
+                    output_file = open(secret.output_file, 'rb')
+                    bot.send_document(message.chat.id, output_file)
             elif message.animation:
                 bot.send_message(secret.apol_id, message.animation.file_id)
             elif message.video:
