@@ -269,7 +269,7 @@ def send_media_id(message):
                 bit_rate = '1M'
                 if message.caption:
                     bit_rate = message.caption
-                if '.MP4' in message.document.file_name:
+                if '.MP4' or '.MOV' in message.document.file_name:
                     file_path = bot.get_file(message.document.file_id).file_path
                     file = bot.download_file(file_path)
                     with open(secret.input_file, 'wb+') as file_flow:
