@@ -26,10 +26,9 @@ bot.set_my_commands([
     telebot.types.BotCommand('/discount', '🤑Скидки'),
     telebot.types.BotCommand('/usd', '💵 Курс рубля'),
     telebot.types.BotCommand('/who', '✅❌Создать опрос'),
-    telebot.types.BotCommand('/help', '❓Полезная информация'),
-    telebot.types.BotCommand('/meeting', '🎧Ссылка шоблодискорда'),
-    telebot.types.BotCommand('/log', '📋Вывод логов бота'),
     telebot.types.BotCommand('/rapid', '✅ Зеленый Rapid'),
+    telebot.types.BotCommand('/meeting', '🎧Ссылка шоблодискорда'),
+    telebot.types.BotCommand('/help', '❓Полезная информация')
 ])
 
 
@@ -217,7 +216,7 @@ def rapid(message):
 @bot.message_handler(func=lambda message: message.text and message.text.lower() in constants.suk and message.chat.id == secret.shobla_id)
 def badger(message):
     try:
-        bot.send_message(secret.shobla_id, 'Бар'+message.text)
+        bot.send_message(secret.shobla_id, 'Бар'+message.text.lower())
     except Exception as badger_error:
         service_func.send_error(bot, message, 16, badger_error)
 
