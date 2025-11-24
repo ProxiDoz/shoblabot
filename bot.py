@@ -205,7 +205,12 @@ def rapid(message):
         # Ну тут почти без изменений, тока data[1] became value
         response = urllib2.urlopen(f'https://rapid.zhuykovkb.ru/rapid?data={quote(value)}&memberid={message.from_user.id}')
         answer = json.loads(str(response.read(), 'utf-8'))
-        bot.send_message(secret.shobla_id, answer['message'], parse_mode='Markdown')
+        if answer['message'] == 'Номер успешно добавлен':
+            bot.send_document(secret.shobla_id, constants.artyomed, caption=answer['message'])
+        elif answer['message'] == 'Номер уже присутствует в базе':
+            bot.send_document(secret.shobla_id, constants.not_artyomed, caption=answer['message'])
+        else:
+            bot.send_message(secret.shobla_id, answer['message'], parse_mode='Markdown')
         service_func.log(bot, f'добавлен новый номер Рапида by {secret.shobla_member[message.from_user.id]["name"]}')
     except Exception as rapid_error:
         bot.send_message(secret.zhuykovkb_id, f'Ошибка в функции rapid:\n\nДанные: {quote(value)}\n\nТекст ошибки {rapid_error}')
@@ -357,3 +362,4 @@ try:
         log_file_flow.write(f'\nSTART\n{time.ctime(time.time())} - время запуска бота\n')
 except Exception as e:
     bot.send_message(secret.apol_id, f'❌ Ошибка при логировании start_time:\nТекст ошибки:\n{e}')
+
