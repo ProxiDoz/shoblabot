@@ -25,7 +25,7 @@ buttons = {0: ['🆗 Окей', '🎗 Лента', '❎ Перекресток',
                '🛒 [Дикси](https://i.imgur.com/FIQdWAh.png)',
                '🛒 [Ашан](https://i.imgur.com/iGsQ2Ds.jpg)',
                '🛒 [Верный](https://i.imgur.com/Dxg7owo.png)',
-               '🥐 [Буше](https://i.imgur.com/H6ins0K.jpg)']}
+               '🥐 [Буше](https://i.imgur.com/ZZUCgky.png)']}
 
 # Начальная клавиатура со скидками
 keyboard_start = telebot.types.InlineKeyboardMarkup(row_width=2)
