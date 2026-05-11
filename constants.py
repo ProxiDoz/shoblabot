@@ -1,4 +1,4 @@
-#!/usr/bin/python3.8.9
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # Тексты при командах /start и /help
@@ -54,7 +54,7 @@ team_text = '⚠️ *Внимание, Шобла*\n\n' \
             '[Тарс](t.me/shackoor), [Апол](t.me/apoll), [Ивановский](t.me/ivanovmm), [Конатик](t.me/KanatoF), [Кир](t.me/zhuykovkb), [Катя](tg://user?id=434756061), ' \
             '[Максон](t.me/MrGogu), [Носик](tg://user?id=51994109), [Окз](t.me/oxy_genium), [Паузеньк](t.me/Pausenk), [НТЩ](t.me/ntshch), [Толяновский](t.me/toliyansky), ' \
             '[Виктор](t.me/FrelVick), [Морго](t.me/margoiv_a), [Мишаня](t.me/Mich37), [Ксю](t.me/ksenia_boorda), [Ромолэ](t.me/Roman_Kazitskiy), [Эльтос](t.me/elvira_aes), ' \
-            '[Аня](t.me/kebushka), [Таня](t.me/KostinaT), [Деннис](tg://user?id=503404575)'
+            '[Аня](t.me/kebushka), [Таня](t.me/KostinaT), [Деннис](tg://user?id=503404575), [Женя](t.me/NosovaJenny)'
 
 # Барсук
 suk = ['сук', 'cyk', 'сюк']
@@ -78,43 +78,35 @@ usd_pic = ['AgACAgIAAxkBAAJHhmTaCE6SoWoEh5banay5zgbROoO9AAIkyDEbrm3RSh-zi8Myj9vv
            'AgACAgIAAxkBAAJHomTbnPNMcPKjuOLlrYL2dy4lx0gZAAJ-0jEbtWPZSoA36V56k08-AQADAgADeAADMAQ']
 
 # Ошибки
-errors = ['Ошибка команды /start',  # 0
-          'Ошибка команды /help',  # 1
-          'Ошибка при попытке обновления опроса /who',  # 2
-          'Ошибка в обработчике Callback кнопок callback_buttons',  # 3
-          'Ошибка команды /s',  # 4
-          'Ошибка в функции service_func.server_status',  # 5
-          '---',  # 6
-          'Ошибка команды /who',  # 7
-          'Ошибка команды /discount',  # 8
-          'Ошибка в функции aaa (devka)',  # 9
-          'ошибка в функции emotional daaamage',  # 10
+errors = ['Ошибка команды /s',  # 0
+          'Ошибка команды /start или /help',  # 1
+          'Ошибка команды /who',  # 2
+          'Ошибка команды /discount',  # 3
+          'Ошибка в функции share_log',  # 4
+          'Ошибка в функции meeting',  # 5
+          'Ошибка в функции usd',  # 6
+          'Ошибка в функции unpin',  # 7
+          'Ошибка в функции aaa (devka)',  # 8
+          'Ошибка в функции emotional daaamage',  # 9
+          'Ошибка в функции mammamia',  # 10
           'Ошибка в функции russia',  # 11
           'Ошибка в функции vracha',  # 12
-          'Ошибка в функции send_error',  # 13
+          'Ошибка в функции barsuk',  # 13
           'Ошибка в функции team',  # 14
           'Ошибка в функции rapid',  # 15
-          'Ошибка в функции barsuk',  # 16
-          '---',  # 17
-          '---',  # 18
-          'Ошибка при создании опроса',  # 19
-          'Ошибка в обработчике текста send_text',  # 20
-          'Ошибка в функции keyboards.button_func',  # 21
-          'Ошибка при остановке опроса',  # 22
-          '---',  # 23
-          'Ошибка в функции share_log',  # 24
-          'Ошибка в педо-функции',  # 25
-          'Ошибка при пине сообщения',  # 26
-          'Ощибка в функции kirov',  # 27
-          'Ошибка в функции meeting',  # 28
-          '---',  # 29
-          'Ошибка в функции mammamia',  # 30
-          'Ошибка в функции usd',  # 31
-          'Ошибка в функции unpin',  # 32
-          'Ошибка в функции send_media_id',  # 33
-          'Ошибка в функции scheduled_messages',  # 34
-          'Ошибка в функции отправки поздравления в Шоблу',  # 35
-          'Ошибка при обновлении скидочных кнопок',  # 36
-          'Ошибка в функции annet'  # 37
+          'Ошибка в педо-функции',  # 16
+          'Ощибка в функции kirov',  # 17
+          'Ошибка в функции annet'  # 18
+          'Ошибка в функции send_media_id',  # 19
+          'Ошибка в обработчике Callback кнопок callback_buttons',  # 20
+          'Ошибка в обработчике текста send_text',  # 21
+          'Ошибка при пине сообщения',  # 22
+          'Ошибка при создании опроса',  # 23
+          'Ошибка в функции keyboards.button_func',  # 24
+          'Ошибка при обновлении скидочных кнопок',  # 25
+          'Ошибка при остановке опроса',  # 26
+          'Ошибка в функции отправки поздравления в Шоблу',  # 27
+          'Ошибка в функции scheduled_messages',  # 28
+          'Ошибка в функции send_error',  # 29
+          'Ошибка в функции service_func.server_status'  # 30
           ]
-
