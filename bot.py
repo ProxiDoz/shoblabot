@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 # # # # # # Импортозамещение # # # # # #
 import telebot  # Библиотека piTelegramBotAPI
+from telebot import apihelper
 import json  # Представляет словарь в строку
 from datetime import datetime  # Для представления времени в читаемом формате
 import random  # Присвятой рандом
@@ -22,29 +23,7 @@ import os  # Для прокси
 
 
 # # # # # # Инициализация # # # # # #
-def apply_socks_proxy():
-    """Configure SOCKS5 proxy for the whole process via env."""
-    use_proxy = os.getenv("PROXY_SOCKS5_USE", "false").lower() == "true"
-    if not use_proxy:
-        return
-
-    host = 'shackoor.fvds.ru'
-    port = '52308'
-
-    if not host or not port:
-        print("Proxy enabled but PROXY_SOCKS5_HOST/PORT not set")
-        return
-
-    proxy = f"socks5h://{host}:{port}"
-
-    os.environ["ALL_PROXY"] = proxy
-    os.environ["HTTP_PROXY"] = proxy
-    os.environ["HTTPS_PROXY"] = proxy
-
-    print(f"[Proxy] SOCKS5 {host}:{port} enabled")
-
-
-apply_socks_proxy()
+apihelper.API_URL = "http://tg.vonnie-line.cc/bot{0}/{1}"
 bot = telebot.TeleBot(secret.bot_token)  # Token бота
 bot.set_my_commands([
     telebot.types.BotCommand('/discount', '🤑Скидки'),
